@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Terms &amp; Conditions · Pocket Glance</title>
+  <meta name="description" content="Terms and Conditions for the Pocket Glance budgeting app by NextTier.">
+  <meta name="theme-color" content="#1C1A19">
+  <style>
+/* Pocket Glance "Classical" theme, from the app's NTTokens.kt:
+   Paper (light) and Ink (dark) palettes, Bodoni Moda headings, Inter UI text.
+   The fonts are the app's own files, served from fonts/, so nothing loads from a third party.
+   Motion is CSS only, and is switched off for visitors who ask for reduced motion. */
+@font-face { font-family: "Bodoni Moda"; src: url("fonts/bodoni_moda.ttf") format("truetype"); font-weight: 400 900; font-style: normal; font-display: swap; }
+@font-face { font-family: "Bodoni Moda"; src: url("fonts/bodoni_moda_italic.ttf") format("truetype"); font-weight: 400 900; font-style: italic; font-display: swap; }
+@font-face { font-family: "Inter"; src: url("fonts/inter_regular.ttf") format("truetype"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Inter"; src: url("fonts/inter_medium.ttf") format("truetype"); font-weight: 500; font-display: swap; }
+@font-face { font-family: "Inter"; src: url("fonts/inter_semibold.ttf") format("truetype"); font-weight: 600; font-display: swap; }
+:root {
+  color-scheme: light dark;
+  --page: #F8F7F5;
+  --tile: #E8E6E3;
+  --text: #201F1D;
+  --muted: rgba(32, 31, 29, 0.64);
+  --divider: rgba(32, 31, 29, 0.12);
+  --accent: #A06F24;
+  --link: #5A3B0A;
+  --plate: #1C1A19;
+  --plate-text: #F6F4F2;
+  --gold: #E1AD66;
+  --heading: "Bodoni Moda", "Bodoni 72", Didot, Georgia, serif;
+  --ui: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --page: #1C1A19;
+    --tile: #282524;
+    --text: #F6F4F2;
+    --muted: rgba(246, 244, 242, 0.66);
+    --divider: rgba(243, 242, 242, 0.16);
+    --link: #E1AD66;
+  }
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+body {
+  margin: 0; background: var(--page); color: var(--text);
+  font: 400 17px/1.65 var(--ui); font-feature-settings: "ss07";
+  -webkit-font-smoothing: antialiased; overflow-wrap: break-word;
+}
+.wrap { max-width: 980px; margin: 0 auto; padding: 0 22px; }
+strong { font-weight: 600; }
+a:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 6px; }
+
+/* Text links: the underline draws in on hover */
+main a:not(.card) {
+  color: var(--link); text-decoration: none;
+  background: linear-gradient(var(--accent), var(--accent)) 0 100% / 100% 1px no-repeat;
+  transition: background-size .3s var(--ease);
+}
+main a:not(.card):hover { background-size: 0 1px; background-position: 100% 100%; }
+
+/* Frosted bar that stays at the top */
+.bar {
+  position: sticky; top: 0; z-index: 10;
+  background: rgba(28, 26, 25, 0.72);
+  -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid rgba(246, 244, 242, 0.08);
+}
+.bar .wrap { display: flex; align-items: center; justify-content: space-between; gap: 8px 16px; flex-wrap: wrap; min-height: 52px; padding-top: 8px; padding-bottom: 8px; }
+.brand { font: 600 12px/1 var(--ui); letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); text-decoration: none; }
+nav { display: flex; gap: 2px; margin: 0 -10px; }
+nav a {
+  font: 400 13px/1 var(--ui); color: rgba(246, 244, 242, 0.72); text-decoration: none;
+  padding: 8px 10px; border-radius: 999px; transition: color .2s, background-color .2s;
+}
+nav a:hover { color: #fff; }
+nav a[aria-current="page"] { color: #fff; background: rgba(246, 244, 242, 0.12); }
+
+/* Hero: the app's dark plate, with a slow gold glow */
+.hero { position: relative; overflow: hidden; background: var(--plate); color: var(--plate-text); text-align: center; padding: 88px 0 96px; }
+.hero::before {
+  content: ""; position: absolute; inset: -40% -10% auto; height: 150%;
+  background: radial-gradient(closest-side, rgba(225, 173, 102, 0.20), transparent 70%);
+  animation: drift 16s ease-in-out infinite alternate; pointer-events: none;
+}
+.hero .wrap { position: relative; }
+.eyebrow { font: 600 12px/1 var(--ui); letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin: 0 0 22px; }
+h1 { font: 600 clamp(2.6rem, 8vw, 4.75rem)/1.04 var(--heading); letter-spacing: -0.01em; margin: 0 auto 24px; max-width: 14ch; text-wrap: balance; }
+.lead { font: italic 500 clamp(1.15rem, 2.4vw, 1.4rem)/1.5 var(--heading); margin: 0 auto 26px; max-width: 34em; color: rgba(246, 244, 242, 0.82); text-wrap: pretty; }
+.meta { margin: 0; font-size: 0.8rem; letter-spacing: 0.02em; color: rgba(246, 244, 242, 0.5); }
+.hero .wrap > * { animation: rise .9s var(--ease) both; }
+.hero .wrap > :nth-child(2) { animation-delay: .08s; }
+.hero .wrap > :nth-child(3) { animation-delay: .18s; }
+.hero .wrap > :nth-child(4) { animation-delay: .28s; }
+
+/* Three quiet promises under the hero */
+.tiles { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); padding-top: 14px; }
+.tiles div { background: var(--tile); border-radius: 22px; padding: 28px 26px 26px; }
+.tiles b { display: block; font: 600 1.55rem/1.15 var(--heading); margin-bottom: 8px; }
+.tiles span { color: var(--muted); font-size: 0.95rem; line-height: 1.5; display: block; }
+
+/* Sections: heading on the left, text on the right, a hairline between */
+main { padding-bottom: 72px; }
+section { border-top: 1px solid var(--divider); padding: 44px 0 32px; }
+section:first-of-type { border-top: 0; }
+h2 { font: 600 clamp(1.6rem, 3.2vw, 2rem)/1.15 var(--heading); margin: 0 0 18px; text-wrap: balance; }
+h2 span { display: block; font: 600 12px/1 var(--ui); letter-spacing: 0.16em; color: var(--accent); margin-bottom: 12px; }
+@media (min-width: 820px) {
+  section { display: grid; grid-template-columns: 290px minmax(0, 1fr); column-gap: 56px; padding: 60px 0 46px; }
+  section > * { grid-column: 2; }
+  section > h2 { grid-column: 1; grid-row: 1 / span 30; align-self: start; position: sticky; top: 92px; margin: 0; }
+}
+p { margin: 0 0 14px; }
+ul, ol { padding-left: 1.2em; margin: 0 0 14px; }
+li { margin: 7px 0; padding-left: 4px; }
+li::marker { color: var(--accent); }
+.short { font: italic 500 1.3rem/1.4 var(--heading); margin: 0 0 18px; text-wrap: pretty; }
+.table-wrap { overflow-x: auto; margin: 0 0 14px; }
+table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+th, td { text-align: left; vertical-align: top; padding: 12px 14px 12px 0; border-bottom: 1px solid var(--divider); }
+th { color: var(--muted); font: 500 0.72rem/1.3 var(--ui); text-transform: uppercase; letter-spacing: 0.1em; }
+tr:last-child td { border-bottom: 0; }
+
+/* Landing-page cards */
+.cards { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); padding-top: 14px; }
+.card {
+  display: block; background: var(--tile); border-radius: 22px; padding: 30px 28px; min-height: 190px;
+  text-decoration: none; color: var(--text); transition: transform .45s var(--ease), box-shadow .45s var(--ease);
+}
+.card:hover { transform: translateY(-4px); box-shadow: 0 18px 40px -18px rgba(0, 0, 0, 0.35); }
+.card b { display: block; font: 600 1.7rem/1.15 var(--heading); margin-bottom: 10px; }
+.card span { color: var(--muted); font-size: 0.97rem; display: block; }
+.card i { display: inline-block; margin-top: 18px; font-style: normal; font-weight: 500; font-size: 0.92rem; color: var(--link); transition: transform .45s var(--ease); }
+.card:hover i { transform: translateX(5px); }
+
+footer { border-top: 1px solid var(--divider); color: var(--muted); font-size: 0.8rem; padding: 22px 0 40px; }
+footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 20px; }
+footer a { color: inherit; text-decoration: none; }
+footer a:hover { color: var(--text); }
+
+@keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+@keyframes drift { from { transform: translate3d(-6%, 0, 0) scale(1); } to { transform: translate3d(6%, 4%, 0) scale(1.12); } }
+
+/* Content eases in as it scrolls into view, where the browser supports it.
+   Everything stays visible where it does not. */
+@supports (animation-timeline: view()) {
+  main section, .tiles div, .card {
+    animation: rise linear both; animation-timeline: view(); animation-range: entry 0% entry 28%;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before { animation: none !important; transition: none !important; }
+}
+@media print {
+  .bar, .tiles { display: none; }
+  .hero { background: none; color: #000; padding: 0 0 20px; text-align: left; }
+  .hero::before { display: none; }
+  .lead, .meta, .eyebrow { color: #333; }
+  body { background: #fff; }
+  * { animation: none !important; }
+}
+  </style>
+</head>
+<body>
+<header class="bar">
+  <div class="wrap">
+    <a class="brand" href="index.html">Pocket Glance</a>
+    <nav aria-label="Legal pages">
+      <a href="privacy.html">Privacy</a>
+      <a href="terms.html" aria-current="page">Terms</a>
+      <a href="delete-data.html">Delete your data</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap">
+    <p class="eyebrow">Pocket Glance</p>
+    <h1>Terms &amp; Conditions</h1>
+    <p class="lead">Pocket Glance helps you keep track of your own money. These terms say what you can expect from the app, what we ask of you, and where our responsibility ends.</p>
+    <p class="meta">Pocket Glance by NextTier · Effective 15 November 2026</p>
+  </div>
+</div>
+
+<main class="wrap">
+  <section>
+    <h2><span>01</span>Agreement</h2>
+    <p>These terms are an agreement between you and <strong>NextTier</strong>, the independent developer of the Pocket Glance app. NextTier is an individual developer's publishing name, not a company, and "we" in these terms means that developer. By installing or using the app you accept them and our <a href="privacy.html">Privacy Policy</a>. If you do not agree, do not use the app.</p>
+    <p>You must be at least 18, or the age of legal majority where you live, to use the app and make purchases.</p>
+  </section>
+
+  <section>
+    <h2><span>02</span>A tracking tool, not financial advice</h2>
+    <p class="short">The app records what you enter. It does not handle your money or tell you what to do with it.</p>
+    <p>Pocket Glance lets you record and review your spending, budgets, savings goals and subscriptions. It does not connect to bank accounts, and it does not hold, move, lend or invest money or make or cancel payments for you. We are not a bank, payment service, or financial, tax or legal adviser.</p>
+    <p>Figures, charts and insights in the app are general information based on your entries. They are not financial, investment, tax or legal advice. You are responsible for your own financial decisions.</p>
+  </section>
+
+  <section>
+    <h2><span>03</span>Accuracy</h2>
+    <ul>
+      <li>The app is only as accurate as what you enter. Check it against your own statements.</li>
+      <li>Currency conversions use reference rates built into the app. They are approximate, are not live, and will differ from your bank's rate.</li>
+      <li>Reminders depend on your device and its settings and may arrive late or not at all. Paying bills and cancelling subscriptions or trials on time remains your responsibility.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2><span>04</span>Your data and backups</h2>
+    <p class="short">Your records are yours and live on your phone. We hold no copy, so we cannot restore them.</p>
+    <ul>
+      <li>If your phone is lost, reset or replaced, or you uninstall the app or clear its storage, your data is gone unless you have a backup. Keeping one is your responsibility.</li>
+      <li>If you forget a backup password, the backup cannot be opened. We cannot reset it.</li>
+      <li>Backups without a password and exported spreadsheets are not encrypted. Where you keep them is up to you.</li>
+      <li>You are responsible for securing your device and your Google account.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2><span>05</span>Pocket Glance Pro</h2>
+    <p>Pro is sold through Google Play as an auto-renewing yearly subscription or a one-time lifetime purchase. The price, billing period and any free trial are shown before you confirm.</p>
+    <ul>
+      <li><strong>Free trial.</strong> If Google Play offers you one, you are charged the yearly price when it ends unless you cancel first.</li>
+      <li><strong>Renewal.</strong> The subscription renews automatically each year at the then-current price until you cancel.</li>
+      <li><strong>Cancelling.</strong> Cancel any time in Google Play under <strong>Payments &amp; subscriptions → Subscriptions</strong>, or at <a href="https://play.google.com/store/account/subscriptions" rel="noopener">play.google.com/store/account/subscriptions</a>. Pro stays active until the end of the paid period. Uninstalling the app does not cancel a subscription.</li>
+      <li><strong>Lifetime.</strong> This means access to Pro for as long as we offer and support the app. It is tied to the Google account that bought it and cannot be transferred.</li>
+      <li><strong>Refunds.</strong> Refunds are handled through Google Play under <a href="https://support.google.com/googleplay/answer/2479637" rel="noopener">its refund policies</a>. We do not refund part-used periods unless the law requires it.</li>
+      <li><strong>Changes.</strong> We may change prices and which features are free or part of Pro. You will be told about a price change through Google Play in advance, and features you paid for stay available for the period you paid for.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2><span>06</span>Using the app</h2>
+    <p>We give you a personal, non-transferable licence to use the app on your own devices for non-commercial purposes. The app and the Pocket Glance and NextTier names belong to us. You agree not to:</p>
+    <ul>
+      <li>copy, modify, resell or redistribute the app;</li>
+      <li>reverse-engineer it, except where the law allows;</li>
+      <li>bypass purchase checks, plan limits or security features;</li>
+      <li>use it for anything unlawful.</li>
+    </ul>
+    <p>If we suffer a loss because you break these terms or misuse the app, you agree to cover it, as far as the law allows.</p>
+  </section>
+
+  <section>
+    <h2><span>07</span>Changes to the app and other services</h2>
+    <p>We may update, change or discontinue the app or any feature at any time, and we are not obliged to provide support or updates. The app is built and maintained by one person, so replies to support requests may take time. The app relies on Google Play, Google Drive, Firebase and your device. We do not control them and are not responsible for their availability or for loss they cause, including lost or unavailable backups.</p>
+  </section>
+
+  <section>
+    <h2><span>08</span>No warranty</h2>
+    <p>We work to keep the app accurate and reliable, but it is provided <strong>"as is" and "as available"</strong>, without warranties of any kind, as far as the law allows. We do not promise that it will be error-free or always available, that calculations, conversions or reminders will be correct or on time, or that data will never be lost.</p>
+  </section>
+
+  <section>
+    <h2><span>09</span>Limitation of liability</h2>
+    <p>As far as the law allows:</p>
+    <ul>
+      <li>we are not liable for indirect or consequential losses, or for any loss of data, money, profit or savings, or any missed payment, late fee, unwanted renewal, tax consequence or financial decision;</li>
+      <li>our total liability for all claims about the app is limited to the amount you paid us in the 12 months before the claim, or USD 10 if that is greater.</li>
+    </ul>
+    <p><strong>Your legal rights.</strong> Nothing in these terms limits liability that cannot be limited by law, or removes consumer rights that the law of your country says cannot be waived.</p>
+  </section>
+
+  <section>
+    <h2><span>10</span>Disputes</h2>
+    <p>If you have a complaint, email us first and give us 30 days to put it right. These terms are governed by the laws of the country where the developer lives, and its courts have jurisdiction. If you are a consumer, you keep any mandatory protections of the country where you live. As far as the law allows, claims may only be brought individually, not as part of a class action, and within one year.</p>
+  </section>
+
+  <section>
+    <h2><span>11</span>General</h2>
+    <p>We may update these terms. The current version is always on this page with its effective date, and continuing to use the app means you accept it. You can stop at any time by uninstalling the app, after cancelling any subscription. We may end your licence if you seriously break these terms.</p>
+    <p>If part of these terms cannot be enforced, the rest still applies. These terms are between you and us, not Google.</p>
+    <p>Questions: <a href="mailto:nexttierstudio@gmail.com">nexttierstudio@gmail.com</a></p>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 NextTier · Pocket Glance</span>
+    <span><a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="delete-data.html">Delete your data</a> · <a href="mailto:nexttierstudio@gmail.com">nexttierstudio@gmail.com</a></span>
+  </div>
+</footer>
+</body>
+</html>

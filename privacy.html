@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Privacy Policy · Pocket Glance</title>
+  <meta name="description" content="Privacy Policy for the Pocket Glance budgeting app by NextTier. Your financial data stays on your device.">
+  <meta name="theme-color" content="#1C1A19">
+  <style>
+/* Pocket Glance "Classical" theme, from the app's NTTokens.kt:
+   Paper (light) and Ink (dark) palettes, Bodoni Moda headings, Inter UI text.
+   The fonts are the app's own files, served from fonts/, so nothing loads from a third party.
+   Motion is CSS only, and is switched off for visitors who ask for reduced motion. */
+@font-face { font-family: "Bodoni Moda"; src: url("fonts/bodoni_moda.ttf") format("truetype"); font-weight: 400 900; font-style: normal; font-display: swap; }
+@font-face { font-family: "Bodoni Moda"; src: url("fonts/bodoni_moda_italic.ttf") format("truetype"); font-weight: 400 900; font-style: italic; font-display: swap; }
+@font-face { font-family: "Inter"; src: url("fonts/inter_regular.ttf") format("truetype"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Inter"; src: url("fonts/inter_medium.ttf") format("truetype"); font-weight: 500; font-display: swap; }
+@font-face { font-family: "Inter"; src: url("fonts/inter_semibold.ttf") format("truetype"); font-weight: 600; font-display: swap; }
+:root {
+  color-scheme: light dark;
+  --page: #F8F7F5;
+  --tile: #E8E6E3;
+  --text: #201F1D;
+  --muted: rgba(32, 31, 29, 0.64);
+  --divider: rgba(32, 31, 29, 0.12);
+  --accent: #A06F24;
+  --link: #5A3B0A;
+  --plate: #1C1A19;
+  --plate-text: #F6F4F2;
+  --gold: #E1AD66;
+  --heading: "Bodoni Moda", "Bodoni 72", Didot, Georgia, serif;
+  --ui: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --page: #1C1A19;
+    --tile: #282524;
+    --text: #F6F4F2;
+    --muted: rgba(246, 244, 242, 0.66);
+    --divider: rgba(243, 242, 242, 0.16);
+    --link: #E1AD66;
+  }
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+body {
+  margin: 0; background: var(--page); color: var(--text);
+  font: 400 17px/1.65 var(--ui); font-feature-settings: "ss07";
+  -webkit-font-smoothing: antialiased; overflow-wrap: break-word;
+}
+.wrap { max-width: 980px; margin: 0 auto; padding: 0 22px; }
+strong { font-weight: 600; }
+a:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 6px; }
+
+/* Text links: the underline draws in on hover */
+main a:not(.card) {
+  color: var(--link); text-decoration: none;
+  background: linear-gradient(var(--accent), var(--accent)) 0 100% / 100% 1px no-repeat;
+  transition: background-size .3s var(--ease);
+}
+main a:not(.card):hover { background-size: 0 1px; background-position: 100% 100%; }
+
+/* Frosted bar that stays at the top */
+.bar {
+  position: sticky; top: 0; z-index: 10;
+  background: rgba(28, 26, 25, 0.72);
+  -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid rgba(246, 244, 242, 0.08);
+}
+.bar .wrap { display: flex; align-items: center; justify-content: space-between; gap: 8px 16px; flex-wrap: wrap; min-height: 52px; padding-top: 8px; padding-bottom: 8px; }
+.brand { font: 600 12px/1 var(--ui); letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); text-decoration: none; }
+nav { display: flex; gap: 2px; margin: 0 -10px; }
+nav a {
+  font: 400 13px/1 var(--ui); color: rgba(246, 244, 242, 0.72); text-decoration: none;
+  padding: 8px 10px; border-radius: 999px; transition: color .2s, background-color .2s;
+}
+nav a:hover { color: #fff; }
+nav a[aria-current="page"] { color: #fff; background: rgba(246, 244, 242, 0.12); }
+
+/* Hero: the app's dark plate, with a slow gold glow */
+.hero { position: relative; overflow: hidden; background: var(--plate); color: var(--plate-text); text-align: center; padding: 88px 0 96px; }
+.hero::before {
+  content: ""; position: absolute; inset: -40% -10% auto; height: 150%;
+  background: radial-gradient(closest-side, rgba(225, 173, 102, 0.20), transparent 70%);
+  animation: drift 16s ease-in-out infinite alternate; pointer-events: none;
+}
+.hero .wrap { position: relative; }
+.eyebrow { font: 600 12px/1 var(--ui); letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin: 0 0 22px; }
+h1 { font: 600 clamp(2.6rem, 8vw, 4.75rem)/1.04 var(--heading); letter-spacing: -0.01em; margin: 0 auto 24px; max-width: 14ch; text-wrap: balance; }
+.lead { font: italic 500 clamp(1.15rem, 2.4vw, 1.4rem)/1.5 var(--heading); margin: 0 auto 26px; max-width: 34em; color: rgba(246, 244, 242, 0.82); text-wrap: pretty; }
+.meta { margin: 0; font-size: 0.8rem; letter-spacing: 0.02em; color: rgba(246, 244, 242, 0.5); }
+.hero .wrap > * { animation: rise .9s var(--ease) both; }
+.hero .wrap > :nth-child(2) { animation-delay: .08s; }
+.hero .wrap > :nth-child(3) { animation-delay: .18s; }
+.hero .wrap > :nth-child(4) { animation-delay: .28s; }
+
+/* Three quiet promises under the hero */
+.tiles { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); padding-top: 14px; }
+.tiles div { background: var(--tile); border-radius: 22px; padding: 28px 26px 26px; }
+.tiles b { display: block; font: 600 1.55rem/1.15 var(--heading); margin-bottom: 8px; }
+.tiles span { color: var(--muted); font-size: 0.95rem; line-height: 1.5; display: block; }
+
+/* Sections: heading on the left, text on the right, a hairline between */
+main { padding-bottom: 72px; }
+section { border-top: 1px solid var(--divider); padding: 44px 0 32px; }
+section:first-of-type { border-top: 0; }
+h2 { font: 600 clamp(1.6rem, 3.2vw, 2rem)/1.15 var(--heading); margin: 0 0 18px; text-wrap: balance; }
+h2 span { display: block; font: 600 12px/1 var(--ui); letter-spacing: 0.16em; color: var(--accent); margin-bottom: 12px; }
+@media (min-width: 820px) {
+  section { display: grid; grid-template-columns: 290px minmax(0, 1fr); column-gap: 56px; padding: 60px 0 46px; }
+  section > * { grid-column: 2; }
+  section > h2 { grid-column: 1; grid-row: 1 / span 30; align-self: start; position: sticky; top: 92px; margin: 0; }
+}
+p { margin: 0 0 14px; }
+ul, ol { padding-left: 1.2em; margin: 0 0 14px; }
+li { margin: 7px 0; padding-left: 4px; }
+li::marker { color: var(--accent); }
+.short { font: italic 500 1.3rem/1.4 var(--heading); margin: 0 0 18px; text-wrap: pretty; }
+.table-wrap { overflow-x: auto; margin: 0 0 14px; }
+table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+th, td { text-align: left; vertical-align: top; padding: 12px 14px 12px 0; border-bottom: 1px solid var(--divider); }
+th { color: var(--muted); font: 500 0.72rem/1.3 var(--ui); text-transform: uppercase; letter-spacing: 0.1em; }
+tr:last-child td { border-bottom: 0; }
+
+/* Landing-page cards */
+.cards { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); padding-top: 14px; }
+.card {
+  display: block; background: var(--tile); border-radius: 22px; padding: 30px 28px; min-height: 190px;
+  text-decoration: none; color: var(--text); transition: transform .45s var(--ease), box-shadow .45s var(--ease);
+}
+.card:hover { transform: translateY(-4px); box-shadow: 0 18px 40px -18px rgba(0, 0, 0, 0.35); }
+.card b { display: block; font: 600 1.7rem/1.15 var(--heading); margin-bottom: 10px; }
+.card span { color: var(--muted); font-size: 0.97rem; display: block; }
+.card i { display: inline-block; margin-top: 18px; font-style: normal; font-weight: 500; font-size: 0.92rem; color: var(--link); transition: transform .45s var(--ease); }
+.card:hover i { transform: translateX(5px); }
+
+footer { border-top: 1px solid var(--divider); color: var(--muted); font-size: 0.8rem; padding: 22px 0 40px; }
+footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 20px; }
+footer a { color: inherit; text-decoration: none; }
+footer a:hover { color: var(--text); }
+
+@keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+@keyframes drift { from { transform: translate3d(-6%, 0, 0) scale(1); } to { transform: translate3d(6%, 4%, 0) scale(1.12); } }
+
+/* Content eases in as it scrolls into view, where the browser supports it.
+   Everything stays visible where it does not. */
+@supports (animation-timeline: view()) {
+  main section, .tiles div, .card {
+    animation: rise linear both; animation-timeline: view(); animation-range: entry 0% entry 28%;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before { animation: none !important; transition: none !important; }
+}
+@media print {
+  .bar, .tiles { display: none; }
+  .hero { background: none; color: #000; padding: 0 0 20px; text-align: left; }
+  .hero::before { display: none; }
+  .lead, .meta, .eyebrow { color: #333; }
+  body { background: #fff; }
+  * { animation: none !important; }
+}
+  </style>
+</head>
+<body>
+<header class="bar">
+  <div class="wrap">
+    <a class="brand" href="index.html">Pocket Glance</a>
+    <nav aria-label="Legal pages">
+      <a href="privacy.html" aria-current="page">Privacy</a>
+      <a href="terms.html">Terms</a>
+      <a href="delete-data.html">Delete your data</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap">
+    <p class="eyebrow">Pocket Glance</p>
+    <h1>Privacy Policy</h1>
+    <p class="lead">Your money is your business. Pocket Glance keeps your transactions, budgets and goals on your own phone. We have no accounts and no servers that receive them, so we cannot see your finances.</p>
+    <p class="meta">Pocket Glance by NextTier · Effective 15 November 2026</p>
+  </div>
+</div>
+
+<main class="wrap">
+  <div class="tiles" aria-label="Privacy at a glance">
+    <div><b>On your phone.</b><span>What you enter is stored on your device, not on our systems.</span></div>
+    <div><b>No account.</b><span>No sign-up, no bank login, no access to your SMS or contacts.</span></div>
+    <div><b>No ads.</b><span>No advertising, no profiles, and no selling of your data.</span></div>
+  </div>
+
+  <section>
+    <h2><span>01</span>Who we are</h2>
+    <p>Pocket Glance is a personal budgeting app for Android, made by <strong>NextTier</strong>, an independent developer. NextTier is an individual developer's publishing name, not a company, and "we" in this policy means that developer. This policy explains what the app stores, the small amount of data that can leave your device, and your choices.</p>
+    <p>Contact: <a href="mailto:nexttierstudio@gmail.com">nexttierstudio@gmail.com</a></p>
+  </section>
+
+  <section>
+    <h2><span>02</span>What stays on your phone</h2>
+    <p class="short">Everything you type into the app is saved on your phone. It is not sent to us.</p>
+    <p>This covers your transactions, amounts, notes, categories, budgets, savings goals, subscriptions, reminders and settings. A few features use your device without sending anything out:</p>
+    <ul>
+      <li><strong>Currency suggestion.</strong> The app reads your SIM or network country on the device.</li>
+      <li><strong>Exchange rates.</strong> Conversion uses rates built into the app.</li>
+      <li><strong>App lock.</strong> Android checks your fingerprint, face or screen lock. The app never receives them.</li>
+      <li><strong>Reminders.</strong> These are scheduled and shown by your device.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2><span>03</span>Usage and crash data (optional)</h2>
+    <p class="short">To fix bugs, the app sends technical diagnostics to Google Firebase. You can turn this off at any time.</p>
+    <p>While <strong>Settings → Privacy &amp; security → Share usage &amp; crash data</strong> is on (the default), the app sends:</p>
+    <ul>
+      <li>which screens are opened, and whether an in-app purchase took place;</li>
+      <li>crash and error reports;</li>
+      <li>performance measurements, such as start-up time;</li>
+      <li>device model, Android version, app version, language, and country or region derived from your IP address;</li>
+      <li>a random installation identifier created by Firebase, and your IP address, which Google receives when data is sent.</li>
+    </ul>
+    <p>The app is designed so that this never includes your amounts, transactions, notes, category names or anything else you type. The identifier is random and is not linked to your name, email or Google account. The app is configured not to collect the advertising ID, and this data is not used for advertising.</p>
+    <p>Turning the setting off stops collection straight away and deletes any crash reports not yet sent.</p>
+  </section>
+
+  <section>
+    <h2><span>04</span>Backups (optional)</h2>
+    <p class="short">Backups go from your phone straight to your own Google account. They never pass through us.</p>
+    <ul>
+      <li><strong>Google Drive backup.</strong> If you turn this on, you sign in with Google and the app saves backup files in a private app folder in <strong>your</strong> Drive. The app cannot see your other Drive files. You can protect backups with a password, which stays on your device and which we cannot recover. The app shows your Google account email in Settings and keeps it on your device.</li>
+      <li><strong>Android device backup.</strong> If backup is on in your phone's settings, Android may include the app's data in your device backup. Google handles this under your account settings.</li>
+    </ul>
+    <p>Pocket Glance's use of information received from Google APIs adheres to the <a href="https://developers.google.com/terms/api-services-user-data-policy" rel="noopener">Google API Services User Data Policy</a>, including the Limited Use requirements. Drive access is used only for backup and restore.</p>
+  </section>
+
+  <section>
+    <h2><span>05</span>Purchases</h2>
+    <p>Pocket Glance Pro is sold through Google Play, which processes your payment. We never receive your card or bank details. The app asks Google Play whether you own Pro and keeps the answer on your device. We can see order records in our Google Play developer account (such as order number, product, price and country) to handle refunds and support.</p>
+  </section>
+
+  <section>
+    <h2><span>06</span>What we never do</h2>
+    <ul>
+      <li>We do not sell your data or share it for advertising.</li>
+      <li>We do not show ads.</li>
+      <li>We do not connect to your bank or read your SMS, contacts, location, camera, microphone or files.</li>
+      <li>We do not build a profile of you.</li>
+    </ul>
+    <p>The app's permissions are limited to notifications, internet access, restarting reminders after a reboot, biometrics for app lock, and Google Play billing.</p>
+  </section>
+
+  <section>
+    <h2><span>07</span>Who processes data</h2>
+    <p>Google is the only other party involved: Firebase processes usage and crash data for us as our service provider, Google Drive stores your backups in your own account, and Google Play handles purchases. Google may process data in the United States and other countries under its own safeguards. See <a href="https://firebase.google.com/support/privacy" rel="noopener">Firebase's privacy information</a> and <a href="https://policies.google.com/privacy" rel="noopener">Google's Privacy Policy</a>.</p>
+    <p>We may disclose the limited information we hold if the law requires it or to protect our legal rights, and it may pass to a new owner if the app is transferred. We cannot hand over your financial records to anyone, because we do not have them.</p>
+  </section>
+
+  <section>
+    <h2><span>08</span>How long data is kept</h2>
+    <div class="table-wrap">
+      <table>
+        <tr><th>Data</th><th>Kept until</th></tr>
+        <tr><td>Data on your phone</td><td>You delete it, clear the app's storage or uninstall</td></tr>
+        <tr><td>Drive backups</td><td>You delete them. The app keeps the newest five</td></tr>
+        <tr><td>Analytics</td><td>Deleted by Google after 2 months at our current setting, and never more than 14 months</td></tr>
+        <tr><td>Crash and performance data</td><td>Deleted by Google within 90 days</td></tr>
+        <tr><td>Purchase records</td><td>As long as Google Play and tax law require</td></tr>
+      </table>
+    </div>
+    <p>Step-by-step deletion instructions are on the <a href="delete-data.html">Delete your data</a> page.</p>
+  </section>
+
+  <section>
+    <h2><span>09</span>Security</h2>
+    <p>Data on your phone is protected by Android's app sandbox and, if you enable it, app lock. Anything the app sends travels over encrypted connections. No system is completely secure, so we cannot guarantee absolute security. You are responsible for securing your device, your Google account and any backup or export files. Exported spreadsheet files are not encrypted.</p>
+  </section>
+
+  <section>
+    <h2><span>10</span>Your rights</h2>
+    <p>You hold your own data, so you can view, export, correct or delete it in the app at any time, and you can turn off usage data and backups.</p>
+    <p>Depending on where you live (for example the EEA, the UK, California or India), you may also have the right to ask us for access, correction or deletion, to object to processing, and to complain to your data protection authority. We process usage and crash data on the basis of our legitimate interest in a reliable app. Because that data is tied to a random identifier, we usually cannot tell which records are yours. Email us and we will help as far as we can, within the time the law allows.</p>
+  </section>
+
+  <section>
+    <h2><span>11</span>Children</h2>
+    <p>Pocket Glance is designed for adults and is not directed to children. We do not knowingly collect personal data from children.</p>
+  </section>
+
+  <section>
+    <h2><span>12</span>Changes and contact</h2>
+    <p>We may update this policy. The current version is always on this page with its effective date, and important changes will also be noted in the app or its release notes.</p>
+    <p>This website uses no cookies or tracking. If you email us, we use your message only to reply.</p>
+    <p>Questions or requests: <a href="mailto:nexttierstudio@gmail.com">nexttierstudio@gmail.com</a></p>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 NextTier · Pocket Glance</span>
+    <span><a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="delete-data.html">Delete your data</a> · <a href="mailto:nexttierstudio@gmail.com">nexttierstudio@gmail.com</a></span>
+  </div>
+</footer>
+</body>
+</html>
