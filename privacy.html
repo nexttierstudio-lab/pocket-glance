@@ -6,11 +6,15 @@
   <title>Privacy Policy · Pocket Glance</title>
   <meta name="description" content="Privacy Policy for the Pocket Glance budgeting app by NextTier. Your financial data stays on your device.">
   <meta name="theme-color" content="#1C1A19">
+  <script>
+    // Applies a saved light/dark choice before the page paints. Stored in this browser only.
+    try { var t = localStorage.getItem("theme"); if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t); } catch (e) {}
+  </script>
   <style>
 /* Pocket Glance "Classical" theme, from the app's NTTokens.kt:
    Paper (light) and Ink (dark) palettes, Bodoni Moda headings, Inter UI text.
    The fonts are the app's own files, served from fonts/, so nothing loads from a third party.
-   Motion is CSS only, and is switched off for visitors who ask for reduced motion. */
+   Motion is CSS only and is switched off for visitors who ask for reduced motion. */
 @font-face { font-family: "Bodoni Moda"; src: url("fonts/bodoni_moda.ttf") format("truetype"); font-weight: 400 900; font-style: normal; font-display: swap; }
 @font-face { font-family: "Bodoni Moda"; src: url("fonts/bodoni_moda_italic.ttf") format("truetype"); font-weight: 400 900; font-style: italic; font-display: swap; }
 @font-face { font-family: "Inter"; src: url("fonts/inter_regular.ttf") format("truetype"); font-weight: 400; font-display: swap; }
@@ -32,8 +36,9 @@
   --ui: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
 }
+/* Dark follows the device setting, unless the visitor picked a mode with the switch. */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     --page: #1C1A19;
     --tile: #282524;
     --text: #F6F4F2;
@@ -42,6 +47,16 @@
     --link: #E1AD66;
   }
 }
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page: #1C1A19;
+  --tile: #282524;
+  --text: #F6F4F2;
+  --muted: rgba(246, 244, 242, 0.66);
+  --divider: rgba(243, 242, 242, 0.16);
+  --link: #E1AD66;
+}
+:root[data-theme="light"] { color-scheme: light; }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; scroll-padding-top: 72px; }
 body {
@@ -77,6 +92,21 @@ nav a {
 }
 nav a:hover { color: #fff; }
 nav a[aria-current="page"] { color: #fff; background: rgba(246, 244, 242, 0.12); }
+
+/* Light / dark switch in the bar. Hidden until the script that drives it has run. */
+.right { display: flex; align-items: center; gap: 14px; }
+.theme {
+  appearance: none; border: 0; padding: 0; width: 30px; height: 30px; border-radius: 50%;
+  display: grid; place-items: center; cursor: pointer;
+  background: rgba(246, 244, 242, 0.12); color: rgba(246, 244, 242, 0.85);
+  transition: background-color .2s, transform .5s var(--ease);
+}
+.theme[hidden] { display: none; }
+.theme:hover { background: rgba(246, 244, 242, 0.22); color: #fff; }
+.theme:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+:root[data-theme="dark"] .theme { transform: rotate(180deg); }
+body, .tiles div, .card { transition: background-color .35s var(--ease), color .35s var(--ease); }
+.card { transition: background-color .35s var(--ease), color .35s var(--ease), transform .45s var(--ease), box-shadow .45s var(--ease); }
 
 /* Hero: the app's dark plate, with a slow gold glow */
 .hero { position: relative; overflow: hidden; background: var(--plate); color: var(--plate-text); text-align: center; padding: 88px 0 96px; }
@@ -168,11 +198,16 @@ footer a:hover { color: var(--text); }
 <header class="bar">
   <div class="wrap">
     <a class="brand" href="index.html">Pocket Glance</a>
-    <nav aria-label="Legal pages">
-      <a href="privacy.html" aria-current="page">Privacy</a>
-      <a href="terms.html">Terms</a>
-      <a href="delete-data.html">Delete your data</a>
-    </nav>
+    <div class="right">
+      <nav aria-label="Legal pages">
+        <a href="privacy.html" aria-current="page">Privacy</a>
+        <a href="terms.html">Terms</a>
+        <a href="delete-data.html">Delete your data</a>
+      </nav>
+      <button class="theme" type="button" hidden aria-label="Switch between light and dark mode" title="Light / dark">
+        <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.25" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 1.75a6.25 6.25 0 0 1 0 12.5z" fill="currentColor"/></svg>
+      </button>
+    </div>
   </div>
 </header>
 
@@ -291,7 +326,7 @@ footer a:hover { color: var(--text); }
   <section>
     <h2><span>12</span>Changes and contact</h2>
     <p>We may update this policy. The current version is always on this page with its effective date, and important changes will also be noted in the app or its release notes.</p>
-    <p>This website uses no cookies or tracking. If you email us, we use your message only to reply.</p>
+    <p>This website uses no cookies or tracking. If you use the light/dark switch, your choice is saved in your own browser and sent nowhere. If you email us, we use your message only to reply.</p>
     <p>Questions or requests: <a href="mailto:nexttierstudio@gmail.com">nexttierstudio@gmail.com</a></p>
   </section>
 </main>
@@ -302,5 +337,18 @@ footer a:hover { color: var(--text); }
     <span><a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="delete-data.html">Delete your data</a> · <a href="mailto:nexttierstudio@gmail.com">nexttierstudio@gmail.com</a></span>
   </div>
 </footer>
+<script>
+  (function () {
+    var b = document.querySelector(".theme"), r = document.documentElement;
+    if (!b) return;
+    b.hidden = false;
+    b.addEventListener("click", function () {
+      var now = r.getAttribute("data-theme") || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      var next = now === "dark" ? "light" : "dark";
+      r.setAttribute("data-theme", next);
+      try { localStorage.setItem("theme", next); } catch (e) {}
+    });
+  })();
+</script>
 </body>
 </html>
