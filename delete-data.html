@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Delete Your Data · Pocket Glance</title>
   <meta name="description" content="How to delete your Pocket Glance data. No account is needed and no request has to be sent.">
-  <meta name="theme-color" content="#1C1A19">
+  <meta name="theme-color" content="#F8F7F5" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#1C1A19" media="(prefers-color-scheme: dark)">
   <script>
     // Applies a saved light/dark choice before the page paints. Stored in this browser only.
     try { var t = localStorage.getItem("theme"); if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t); } catch (e) {}
@@ -32,6 +33,20 @@
   --plate: #1C1A19;
   --plate-text: #F6F4F2;
   --gold: #E1AD66;
+  /* Top bar and hero: these match the page in light mode and use the dark plate in dark mode. */
+  --brand: #8F6118;
+  --bar-bg: rgba(248, 247, 245, 0.78);
+  --bar-line: rgba(32, 31, 29, 0.10);
+  --bar-text: #201F1D;
+  --bar-muted: rgba(32, 31, 29, 0.66);
+  --bar-chip: rgba(32, 31, 29, 0.08);
+  --bar-chip-hover: rgba(32, 31, 29, 0.14);
+  --hero-bg: var(--page);
+  --hero-text: var(--text);
+  --hero-lead: rgba(32, 31, 29, 0.78);
+  --hero-meta: rgba(32, 31, 29, 0.55);
+  --hero-line: var(--divider);
+  --glow: transparent;
   --heading: "Bodoni Moda", "Bodoni 72", Didot, Georgia, serif;
   --ui: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
@@ -45,6 +60,19 @@
     --muted: rgba(246, 244, 242, 0.66);
     --divider: rgba(243, 242, 242, 0.16);
     --link: #E1AD66;
+    --brand: #E1AD66;
+    --bar-bg: rgba(28, 26, 25, 0.72);
+    --bar-line: rgba(246, 244, 242, 0.08);
+    --bar-text: #fff;
+    --bar-muted: rgba(246, 244, 242, 0.72);
+    --bar-chip: rgba(246, 244, 242, 0.12);
+    --bar-chip-hover: rgba(246, 244, 242, 0.22);
+    --hero-bg: #1C1A19;
+    --hero-text: #F6F4F2;
+    --hero-lead: rgba(246, 244, 242, 0.82);
+    --hero-meta: rgba(246, 244, 242, 0.5);
+    --hero-line: transparent;
+    --glow: rgba(225, 173, 102, 0.20);
   }
 }
 :root[data-theme="dark"] {
@@ -55,6 +83,19 @@
   --muted: rgba(246, 244, 242, 0.66);
   --divider: rgba(243, 242, 242, 0.16);
   --link: #E1AD66;
+  --brand: #E1AD66;
+  --bar-bg: rgba(28, 26, 25, 0.72);
+  --bar-line: rgba(246, 244, 242, 0.08);
+  --bar-text: #fff;
+  --bar-muted: rgba(246, 244, 242, 0.72);
+  --bar-chip: rgba(246, 244, 242, 0.12);
+  --bar-chip-hover: rgba(246, 244, 242, 0.22);
+  --hero-bg: #1C1A19;
+  --hero-text: #F6F4F2;
+  --hero-lead: rgba(246, 244, 242, 0.82);
+  --hero-meta: rgba(246, 244, 242, 0.5);
+  --hero-line: transparent;
+  --glow: rgba(225, 173, 102, 0.20);
 }
 :root[data-theme="light"] { color-scheme: light; }
 * { box-sizing: border-box; }
@@ -79,47 +120,47 @@ main a:not(.card):hover { background-size: 0 1px; background-position: 100% 100%
 /* Frosted bar that stays at the top */
 .bar {
   position: sticky; top: 0; z-index: 10;
-  background: rgba(28, 26, 25, 0.72);
+  background: var(--bar-bg);
   -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px);
-  border-bottom: 1px solid rgba(246, 244, 242, 0.08);
+  border-bottom: 1px solid var(--bar-line);
 }
 .bar .wrap { display: flex; align-items: center; justify-content: space-between; gap: 8px 16px; flex-wrap: wrap; min-height: 52px; padding-top: 8px; padding-bottom: 8px; }
-.brand { font: 600 12px/1 var(--ui); letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); text-decoration: none; }
+.brand { font: 600 12px/1 var(--ui); letter-spacing: 0.18em; text-transform: uppercase; color: var(--brand); text-decoration: none; }
 nav { display: flex; gap: 2px; margin: 0 -10px; }
 nav a {
-  font: 400 13px/1 var(--ui); color: rgba(246, 244, 242, 0.72); text-decoration: none;
+  font: 400 13px/1 var(--ui); color: var(--bar-muted); text-decoration: none;
   padding: 8px 10px; border-radius: 999px; transition: color .2s, background-color .2s;
 }
-nav a:hover { color: #fff; }
-nav a[aria-current="page"] { color: #fff; background: rgba(246, 244, 242, 0.12); }
+nav a:hover { color: var(--bar-text); }
+nav a[aria-current="page"] { color: var(--bar-text); background: var(--bar-chip); }
 
 /* Light / dark switch in the bar. Hidden until the script that drives it has run. */
 .right { display: flex; align-items: center; gap: 14px; }
 .theme {
   appearance: none; border: 0; padding: 0; width: 30px; height: 30px; border-radius: 50%;
   display: grid; place-items: center; cursor: pointer;
-  background: rgba(246, 244, 242, 0.12); color: rgba(246, 244, 242, 0.85);
+  background: var(--bar-chip); color: var(--bar-text);
   transition: background-color .2s, transform .5s var(--ease);
 }
 .theme[hidden] { display: none; }
-.theme:hover { background: rgba(246, 244, 242, 0.22); color: #fff; }
+.theme:hover { background: var(--bar-chip-hover); }
 .theme:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
 :root[data-theme="dark"] .theme { transform: rotate(180deg); }
-body, .tiles div, .card { transition: background-color .35s var(--ease), color .35s var(--ease); }
+body, .bar, .hero, .tiles div, .card { transition: background-color .35s var(--ease), color .35s var(--ease); }
 .card { transition: background-color .35s var(--ease), color .35s var(--ease), transform .45s var(--ease), box-shadow .45s var(--ease); }
 
-/* Hero: the app's dark plate, with a slow gold glow */
-.hero { position: relative; overflow: hidden; background: var(--plate); color: var(--plate-text); text-align: center; padding: 88px 0 96px; }
+/* Hero: matches the page in light mode; the app's dark plate with a slow gold glow in dark mode */
+.hero { position: relative; overflow: hidden; background: var(--hero-bg); color: var(--hero-text); border-bottom: 1px solid var(--hero-line); text-align: center; padding: 88px 0 96px; }
 .hero::before {
   content: ""; position: absolute; inset: -40% -10% auto; height: 150%;
-  background: radial-gradient(closest-side, rgba(225, 173, 102, 0.20), transparent 70%);
+  background: radial-gradient(closest-side, var(--glow), transparent 70%);
   animation: drift 16s ease-in-out infinite alternate; pointer-events: none;
 }
 .hero .wrap { position: relative; }
-.eyebrow { font: 600 12px/1 var(--ui); letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin: 0 0 22px; }
+.eyebrow { font: 600 12px/1 var(--ui); letter-spacing: 0.18em; text-transform: uppercase; color: var(--brand); margin: 0 0 22px; }
 h1 { font: 600 clamp(2.6rem, 8vw, 4.75rem)/1.04 var(--heading); letter-spacing: -0.01em; margin: 0 auto 24px; max-width: 14ch; text-wrap: balance; }
-.lead { font: italic 500 clamp(1.15rem, 2.4vw, 1.4rem)/1.5 var(--heading); margin: 0 auto 26px; max-width: 34em; color: rgba(246, 244, 242, 0.82); text-wrap: pretty; }
-.meta { margin: 0; font-size: 0.8rem; letter-spacing: 0.02em; color: rgba(246, 244, 242, 0.5); }
+.lead { font: italic 500 clamp(1.15rem, 2.4vw, 1.4rem)/1.5 var(--heading); margin: 0 auto 26px; max-width: 34em; color: var(--hero-lead); text-wrap: pretty; }
+.meta { margin: 0; font-size: 0.8rem; letter-spacing: 0.02em; color: var(--hero-meta); }
 .hero .wrap > * { animation: rise .9s var(--ease) both; }
 .hero .wrap > :nth-child(2) { animation-delay: .08s; }
 .hero .wrap > :nth-child(3) { animation-delay: .18s; }
