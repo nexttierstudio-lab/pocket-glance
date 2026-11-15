@@ -5,8 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Privacy Policy · Pocket Glance</title>
   <meta name="description" content="Privacy Policy for the Pocket Glance budgeting app by NextTier. Your financial data stays on your device.">
-  <meta name="theme-color" content="#F8F7F5" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#1C1A19" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#1C1A19">
   <script>
     // Applies a saved light/dark choice before the page paints. Stored in this browser only.
     try { var t = localStorage.getItem("theme"); if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t); } catch (e) {}
@@ -51,31 +50,8 @@
   --ui: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
 }
-/* Dark follows the device setting, unless the visitor picked a mode with the switch. */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --page: #1C1A19;
-    --tile: #282524;
-    --text: #F6F4F2;
-    --muted: rgba(246, 244, 242, 0.66);
-    --divider: rgba(243, 242, 242, 0.16);
-    --link: #E1AD66;
-    --brand: #E1AD66;
-    --bar-bg: rgba(28, 26, 25, 0.72);
-    --bar-line: rgba(246, 244, 242, 0.08);
-    --bar-text: #fff;
-    --bar-muted: rgba(246, 244, 242, 0.72);
-    --bar-chip: rgba(246, 244, 242, 0.12);
-    --bar-chip-hover: rgba(246, 244, 242, 0.22);
-    --hero-bg: #1C1A19;
-    --hero-text: #F6F4F2;
-    --hero-lead: rgba(246, 244, 242, 0.82);
-    --hero-meta: rgba(246, 244, 242, 0.5);
-    --hero-line: transparent;
-    --glow: rgba(225, 173, 102, 0.20);
-  }
-}
-:root[data-theme="dark"] {
+/* Dark is the default. Light applies only when the visitor picks it with the switch. */
+:root:not([data-theme="light"]) {
   color-scheme: dark;
   --page: #1C1A19;
   --tile: #282524;
@@ -145,7 +121,7 @@ nav a[aria-current="page"] { color: var(--bar-text); background: var(--bar-chip)
 .theme[hidden] { display: none; }
 .theme:hover { background: var(--bar-chip-hover); }
 .theme:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
-:root[data-theme="dark"] .theme { transform: rotate(180deg); }
+:root[data-theme="light"] .theme { transform: rotate(180deg); }
 body, .bar, .hero, .tiles div, .card { transition: background-color .35s var(--ease), color .35s var(--ease); }
 .card { transition: background-color .35s var(--ease), color .35s var(--ease), transform .45s var(--ease), box-shadow .45s var(--ease); }
 
@@ -384,7 +360,7 @@ footer a:hover { color: var(--text); }
     if (!b) return;
     b.hidden = false;
     b.addEventListener("click", function () {
-      var now = r.getAttribute("data-theme") || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      var now = r.getAttribute("data-theme") || "dark";
       var next = now === "dark" ? "light" : "dark";
       r.setAttribute("data-theme", next);
       try { localStorage.setItem("theme", next); } catch (e) {}
