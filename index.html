@@ -1,16 +1,29 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" dir="ltr" data-lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Pocket Glance · Private budget tracker</title>
   <meta name="description" content="Pocket Glance is a calm, private budget tracker for Android. Track spending, budgets, subscriptions and savings goals with no bank login and no ads. Your financial data stays on your phone.">
   <meta name="theme-color" content="#141312">
+  <link rel="alternate" hreflang="en" href="https://nexttierstudio-lab.github.io/pocket-glance/">
+  <link rel="alternate" hreflang="es-419" href="https://nexttierstudio-lab.github.io/pocket-glance/es/">
+  <link rel="alternate" hreflang="pt-BR" href="https://nexttierstudio-lab.github.io/pocket-glance/pt/">
+  <link rel="alternate" hreflang="fr" href="https://nexttierstudio-lab.github.io/pocket-glance/fr/">
+  <link rel="alternate" hreflang="de" href="https://nexttierstudio-lab.github.io/pocket-glance/de/">
+  <link rel="alternate" hreflang="hi" href="https://nexttierstudio-lab.github.io/pocket-glance/hi/">
+  <link rel="alternate" hreflang="ar" href="https://nexttierstudio-lab.github.io/pocket-glance/ar/">
+  <link rel="alternate" hreflang="ja" href="https://nexttierstudio-lab.github.io/pocket-glance/ja/">
+  <link rel="alternate" hreflang="ko" href="https://nexttierstudio-lab.github.io/pocket-glance/ko/">
+  <link rel="alternate" hreflang="zh-Hans" href="https://nexttierstudio-lab.github.io/pocket-glance/zh/">
+  <link rel="alternate" hreflang="x-default" href="https://nexttierstudio-lab.github.io/pocket-glance/">
+  <link rel="canonical" href="https://nexttierstudio-lab.github.io/pocket-glance/">
   <link rel="icon" type="image/png" href="img/favicon.png">
   <link rel="apple-touch-icon" href="img/icon-192.png">
   <meta property="og:title" content="Pocket Glance · Private budget tracker">
   <meta property="og:description" content="Track spending, budgets and subscriptions. Private, with no bank login needed.">
-  <meta property="og:image" content="img/icon-192.png">
+  <meta property="og:image" content="https://nexttierstudio-lab.github.io/pocket-glance/img/icon-192.png">
+  <meta property="og:locale" content="en_US">
   <script>
     // Applies a saved light/dark choice before the page paints. Stored in this browser only.
     try { var t = localStorage.getItem("theme"); if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t); } catch (e) {}
@@ -175,7 +188,7 @@ h1 em { font-style: italic; font-weight: 500; }
 .stage .left  { top: 70px; transform: translateX(calc(var(--pw) * -0.82)) rotate(-7deg) scale(.86); }
 .stage .right { top: 70px; transform: translateX(calc(var(--pw) * 0.82)) rotate(7deg) scale(.86); }
 .hero-veil { position: absolute; inset: 0; z-index: 4; background: var(--page); opacity: 0; pointer-events: none; }
-.cue { position: absolute; left: max(22px, calc(50vw - 520px)); bottom: 26px; z-index: 5; display: none; flex-direction: column; align-items: center; gap: 10px; font: 500 11px/1 var(--ui); letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
+.cue { position: absolute; inset-inline-start: max(22px, calc(50vw - 520px)); bottom: 26px; z-index: 5; display: none; flex-direction: column; align-items: center; gap: 10px; font: 500 11px/1 var(--ui); letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
 .cue i { width: 1px; height: 38px; background: linear-gradient(var(--brand), transparent); animation: cue 2.2s var(--ease) infinite; transform-origin: top; }
 .motion .hero { height: 320vh; }
 .motion .hero-pin { position: sticky; top: 0; height: 100vh; padding-top: 0; }
@@ -189,6 +202,7 @@ h1 em { font-style: italic; font-weight: 500; }
 .statement-inner { position: sticky; top: 0; height: 100vh; display: grid; place-items: center; }
 .statement p { font: 600 clamp(2rem, 5.4vw, 4rem)/1.12 var(--heading); letter-spacing: -0.01em; max-width: 17ch; margin: 0 auto; text-align: center; text-wrap: balance; }
 .statement .w { display: inline-block; transition: color .35s var(--ease), transform .5s var(--ease), filter .5s var(--ease); }
+.statement em { font-style: normal; color: var(--brand); }
 .motion .statement .w { color: var(--faint); transform: translateY(0.12em); filter: blur(2px); }
 .motion .statement .w.lit { color: var(--text); transform: none; filter: none; }
 .motion .statement .w.lit.g { color: var(--brand); }
@@ -221,8 +235,8 @@ p { margin: 0 0 14px; }
 .step:first-child { border-top: 0; }
 .step .short { font: italic 500 clamp(1.15rem, 2vw, 1.4rem)/1.45 var(--heading); color: var(--muted); margin: 0 0 18px; max-width: 26em; }
 .step ul { list-style: none; padding: 0; margin: 0; max-width: 30em; }
-.step li { position: relative; padding-left: 22px; margin: 9px 0; color: var(--muted); }
-.step li::before { content: ""; position: absolute; left: 0; top: 0.66em; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+.step li { position: relative; padding-inline-start: 22px; margin: 9px 0; color: var(--muted); }
+.step li::before { content: ""; position: absolute; inset-inline-start: 0; top: 0.66em; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
 .step .shot { max-width: 260px; margin: 36px auto 0; }
 .pro-tag { display: inline-block; font: 600 11px/1 var(--ui); letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); border: 1px solid var(--accent); padding: 6px 10px; border-radius: 999px; vertical-align: middle; margin-left: 6px; font-style: normal; }
 .device { display: none; }
@@ -276,7 +290,7 @@ p { margin: 0 0 14px; }
 .plate h2 { max-width: 12ch; margin: 0 auto 22px; }
 .plate h2 .gold { background: linear-gradient(100deg, #F3D3A2, #E1AD66 50%, #C48A3A); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .plate .lede { font: 400 clamp(1.05rem, 1.8vw, 1.25rem)/1.5 var(--ui); color: rgba(246, 244, 242, 0.72); max-width: 32em; margin: 0 auto 56px; }
-.facts { display: grid; gap: 1px; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); background: rgba(246, 244, 242, 0.1); border-radius: 20px; overflow: hidden; text-align: left; max-width: 920px; margin: 0 auto 44px; }
+.facts { display: grid; gap: 1px; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); background: rgba(246, 244, 242, 0.1); border-radius: 20px; overflow: hidden; text-align: start; max-width: 920px; margin: 0 auto 44px; }
 .facts div { background: #1C1A19; padding: 28px 24px; }
 :root:not([data-theme="light"]) .facts div { background: #1E1C1B; }
 .facts b { display: block; font: 600 1.35rem/1.2 var(--heading); margin-bottom: 8px; color: var(--gold); }
@@ -300,8 +314,8 @@ p { margin: 0 0 14px; }
 .plan h3 { font-size: 2.2rem; margin-bottom: 8px; }
 .plan > p { color: var(--muted); font-size: 0.97rem; margin-bottom: 24px; }
 .plan ul { list-style: none; padding: 0; margin: 0; }
-.plan li { padding: 12px 0 12px 30px; border-top: 1px solid var(--divider); position: relative; font-size: 0.97rem; }
-.plan li::before { content: ""; position: absolute; left: 2px; top: 18px; width: 12px; height: 7px; border-left: 2px solid var(--accent); border-bottom: 2px solid var(--accent); transform: rotate(-45deg); }
+.plan li { padding-block: 12px; padding-inline: 30px 0; border-top: 1px solid var(--divider); position: relative; font-size: 0.97rem; }
+.plan li::before { content: ""; position: absolute; inset-inline-start: 2px; top: 18px; width: 12px; height: 7px; border-left: 2px solid var(--accent); border-bottom: 2px solid var(--accent); transform: rotate(-45deg); }
 .fine { text-align: center; color: var(--muted); font-size: 0.86rem; max-width: 40em; margin: 26px auto 0; }
 
 /* ---------- Legal cards ---------- */
@@ -327,6 +341,57 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
 footer a { color: inherit; text-decoration: none; }
 footer a:hover { color: var(--text); }
 
+
+/* ---------- Language menu ---------- */
+.lang { position: relative; }
+.lang summary { list-style: none; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; cursor: pointer; background: var(--bar-chip); color: var(--bar-text); transition: background-color .2s; }
+.lang summary::-webkit-details-marker { display: none; }
+.lang summary:hover, .lang[open] summary { background: var(--bar-chip-hover); }
+.lang ul { position: absolute; inset-inline-end: 0; top: calc(100% + 10px); margin: 0; padding: 6px; list-style: none; min-width: 180px; background: var(--page); border: 1px solid var(--bar-line); border-radius: 16px; box-shadow: 0 24px 50px -20px rgba(0, 0, 0, 0.5); z-index: 40; }
+.lang a { display: flex; justify-content: space-between; gap: 12px; padding: 9px 12px; border-radius: 10px; color: var(--text); text-decoration: none; font: 400 14px/1.2 var(--ui); }
+.lang a:hover { background: var(--bar-chip); }
+.lang a[aria-current="true"] { color: var(--brand); font-weight: 600; }
+.lang a[aria-current="true"]::after { content: "✓"; }
+.legal-note { text-align: center; color: var(--muted); font-size: 0.86rem; margin: 22px auto 0; }
+
+/* ---------- Scripts other than Latin ----------
+   Bodoni Moda and Inter only cover Latin, so each script falls back to a matching
+   serif / sans that ships with the visitor's system. */
+:lang(hi) { --heading: "Bodoni Moda", "Noto Serif Devanagari", "Nirmala UI", "Kohinoor Devanagari", serif; --ui: "Inter", "Noto Sans Devanagari", "Nirmala UI", system-ui, sans-serif; }
+:lang(ar) { --heading: "Bodoni Moda", "Noto Naskh Arabic", "Geeza Pro", "Segoe UI", serif; --ui: "Inter", "Noto Sans Arabic", "Segoe UI", system-ui, sans-serif; }
+:lang(ja) { --heading: "Bodoni Moda", "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", serif; --ui: "Inter", "Noto Sans JP", "Hiragino Sans", "Yu Gothic UI", "Meiryo", sans-serif; }
+:lang(ko) { --heading: "Bodoni Moda", "Noto Serif KR", "AppleMyungjo", "Batang", serif; --ui: "Inter", "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif; }
+:lang(zh) { --heading: "Bodoni Moda", "Noto Serif SC", "Songti SC", "SimSun", serif; --ui: "Inter", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif; }
+:lang(hi) h1, :lang(ar) h1, :lang(hi) h2, :lang(ar) h2, :lang(hi) h3, :lang(ar) h3 { line-height: 1.3; }
+:lang(ja) h1, :lang(ko) h1, :lang(zh) h1, :lang(ja) h2, :lang(ko) h2, :lang(zh) h2, :lang(ja) h3, :lang(ko) h3, :lang(zh) h3 { line-height: 1.2; letter-spacing: 0; }
+:lang(ja) h1, :lang(ko) h1, :lang(zh) h1 { max-width: 12em; }
+/* Break Japanese at phrase boundaries and Korean only at spaces, as their readers expect. */
+:lang(ja) { word-break: auto-phrase; }
+:lang(ko) { word-break: keep-all; }
+:lang(hi) h1, :lang(ar) h1 { max-width: 13em; }
+:lang(ja) .statement p, :lang(ko) .statement p, :lang(zh) .statement p { max-width: 13em; line-height: 1.35; }
+:lang(hi) .statement p, :lang(ar) .statement p { line-height: 1.45; }
+/* No italics in scripts that have none */
+:lang(hi) em, :lang(ar) em, :lang(ja) em, :lang(ko) em, :lang(zh) em,
+:lang(hi) .short, :lang(ar) .short, :lang(ja) .short, :lang(ko) .short, :lang(zh) .short { font-style: normal; }
+:lang(ja) .kicker, :lang(ko) .kicker, :lang(zh) .kicker, :lang(hi) .kicker, :lang(ja) .eyebrow, :lang(ko) .eyebrow, :lang(zh) .eyebrow, :lang(hi) .eyebrow { letter-spacing: 0.08em; }
+/* Arabic letters join, so they are never spaced out */
+:lang(ar) .kicker, :lang(ar) .eyebrow, :lang(ar) .cue, :lang(ar) h1, :lang(ar) h2, :lang(ar) h3 { letter-spacing: 0; }
+
+/* ---------- Right to left ---------- */
+[dir="rtl"] .progress { transform-origin: 100% 50%; }
+[dir="rtl"] .more::after { content: "‹"; }
+[dir="rtl"] .more:hover::after { transform: translateX(-4px); }
+[dir="rtl"] .card:hover i { transform: translateX(-5px); }
+[dir="rtl"] .facts { text-align: right; }
+/* The sideways gallery always runs left to right; its text still reads right to left. */
+[dir="rtl"] .hs-track { direction: ltr; }
+[dir="rtl"] .hs-intro, [dir="rtl"] .hs-item figcaption { direction: rtl; }
+@media (min-width: 860px) {
+  [dir="rtl"].motion .step { transform: translateX(10px); }
+  [dir="rtl"].motion .step.is-on { transform: none; }
+}
+
 @keyframes rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
 @keyframes rise-big { from { opacity: 0; transform: translateY(80px); } to { opacity: 1; transform: none; } }
 @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
@@ -343,7 +408,7 @@ footer a:hover { color: var(--text); }
 <div class="progress" aria-hidden="true"></div>
 <header class="bar">
   <div class="wrap">
-    <a class="brand" href="index.html" aria-current="page"><img src="img/icon-192.png" alt="" width="24" height="24">Pocket Glance</a>
+    <a class="brand" href="./" aria-current="page"><img src="img/icon-192.png" alt="" width="24" height="24">Pocket Glance</a>
     <div class="right">
       <nav aria-label="Site">
         <a class="nav-hide" href="#features">Features</a>
@@ -352,6 +417,10 @@ footer a:hover { color: var(--text); }
         <a href="terms.html">Terms</a>
         <a class="nav-cta" href="https://play.google.com/store/apps/details?id=com.nexttier.pocketglance" title="Download on Google Play"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4.2 2.4c-.3.3-.4.7-.4 1.2v16.8c0 .5.1.9.4 1.2l9.5-9.6zm10.6 10.7 2.7 2.7-11.4 6.5c-.4.2-.9.3-1.2.1zm0-2.2-9.9-9.3c.3-.2.8-.1 1.2.1l11.4 6.5zm3.9 3.9-3-3 3-3 3.2 1.8c.9.5.9 1.9 0 2.4z"/></svg><span>Download now</span></a>
       </nav>
+      <details class="lang">
+        <summary aria-label="Language" title="Language"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.25" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M1.75 8h12.5M8 1.75c1.9 1.8 2.8 3.9 2.8 6.25S9.9 12.45 8 14.25C6.1 12.45 5.2 10.35 5.2 8S6.1 3.55 8 1.75z" fill="none" stroke="currentColor" stroke-width="1.3"/></svg></summary>
+        <ul><li><a href="./" hreflang="en" lang="en" data-lang="en" aria-current="true">English</a></li><li><a href="es/" hreflang="es-419" lang="es-419" data-lang="es">Español</a></li><li><a href="pt/" hreflang="pt-BR" lang="pt-BR" data-lang="pt">Português</a></li><li><a href="fr/" hreflang="fr" lang="fr" data-lang="fr">Français</a></li><li><a href="de/" hreflang="de" lang="de" data-lang="de">Deutsch</a></li><li><a href="hi/" hreflang="hi" lang="hi" data-lang="hi">हिन्दी</a></li><li><a href="ar/" hreflang="ar" lang="ar" data-lang="ar">العربية</a></li><li><a href="ja/" hreflang="ja" lang="ja" data-lang="ja">日本語</a></li><li><a href="ko/" hreflang="ko" lang="ko" data-lang="ko">한국어</a></li><li><a href="zh/" hreflang="zh-Hans" lang="zh-Hans" data-lang="zh">简体中文</a></li></ul>
+      </details>
       <button class="theme" type="button" hidden aria-label="Switch between light and dark mode" title="Light / dark">
         <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.25" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 1.75a6.25 6.25 0 0 1 0 12.5z" fill="currentColor"/></svg>
       </button>
@@ -387,7 +456,7 @@ footer a:hover { color: var(--text); }
 <main>
   <div class="statement" id="statement">
     <div class="statement-inner wrap">
-      <p data-words>Your balance. Your budget. Your goals. All on your phone, and nowhere else.</p>
+      <p data-words>Your balance. Your budget. Your goals. All <em class="g">on your phone, and nowhere else.</em></p>
     </div>
   </div>
 
@@ -574,7 +643,7 @@ footer a:hover { color: var(--text); }
       <a class="card spot up d1" href="terms.html"><b>Terms &amp; Conditions</b><span>The agreement for using Pocket Glance and Pocket Glance Pro.</span><i>Read →</i></a>
       <a class="card spot up d2" href="delete-data.html"><b>Delete your data</b><span>How to remove your data from your phone and your Google Drive.</span><i>Read →</i></a>
     </div>
-  </div>
+The Privacy Policy, Terms and data deletion pages are in English.  </div>
 
   <div class="wrap closer">
     <div class="icon-wrap up"><img src="img/icon-192.png" alt="" width="104" height="104"></div>
@@ -591,6 +660,25 @@ footer a:hover { color: var(--text); }
   </div>
 </footer>
 <script>
+  // Language: remember the one picked from the menu; the English page sends a returning
+  // visitor to the language they picked before.
+  (function () {
+    var here = document.documentElement.getAttribute("data-lang");
+    document.querySelectorAll(".lang a[hreflang]").forEach(function (a) {
+      a.addEventListener("click", function () { try { localStorage.setItem("lang", a.getAttribute("data-lang")); } catch (e) {} });
+    });
+    document.addEventListener("click", function (e) {
+      var d = document.querySelector(".lang[open]");
+      if (d && !d.contains(e.target)) d.removeAttribute("open");
+    });
+    if (here !== "en") return;
+    try {
+      var saved = localStorage.getItem("lang");
+      var link = saved && saved !== "en" && document.querySelector('.lang a[data-lang="' + saved + '"]');
+      if (link) location.replace(link.href + location.hash);
+    } catch (e) {}
+  })();
+
   // Light / dark switch, the same as on the legal pages.
   (function () {
     var b = document.querySelector(".theme"), r = document.documentElement;
@@ -645,18 +733,37 @@ footer a:hover { color: var(--text); }
     $$(".up").forEach(function (el) { io.observe(el); });
     $$(".stat b[data-to]").forEach(function (b) { b.textContent = b.dataset.from; });
 
-    // Statement words.
+    // Statement words. Intl.Segmenter splits languages written without spaces
+    // (Japanese, Chinese) into words; punctuation sticks to the word before it.
     var statement = $("#statement"), para = statement.querySelector("[data-words]"), words = [];
-    var parts = para.textContent.trim().split(/\s+/), goldFrom = parts.length - 6;
-    para.textContent = "";
-    parts.forEach(function (w, i) {
-      var s = document.createElement("span");
-      s.className = "w" + (i >= goldFrom ? " g" : "");
-      s.textContent = w;
-      para.appendChild(s);
-      if (i < parts.length - 1) para.appendChild(document.createTextNode(" "));
-      words.push(s);
+    var seg = window.Intl && Intl.Segmenter ? new Intl.Segmenter(root.lang, { granularity: "word" }) : null;
+    function pieces(text) {
+      if (seg) {
+        var out = [];
+        Array.from(seg.segment(text)).forEach(function (s) {
+          if (/^\s+$/.test(s.segment)) out.push(" ");
+          else if (!s.isWordLike && out.length && out[out.length - 1] !== " ") out[out.length - 1] += s.segment;
+          else out.push(s.segment);
+        });
+        return out;
+      }
+      return text.split(/(\s+)/).map(function (t) { return /^\s+$/.test(t) ? " " : t; });
+    }
+    var frag = document.createDocumentFragment();
+    Array.prototype.slice.call(para.childNodes).forEach(function (node) {
+      var gold = node.nodeType === 1;
+      pieces(node.textContent).forEach(function (t) {
+        if (!t) return;
+        if (t === " ") { frag.appendChild(document.createTextNode(" ")); return; }
+        var s = document.createElement("span");
+        s.className = "w" + (gold ? " g" : "");
+        s.textContent = t;
+        frag.appendChild(s);
+        words.push(s);
+      });
     });
+    para.textContent = "";
+    para.appendChild(frag);
 
     var hero = $(".hero"), copy = $(".hero-copy"), veil = $(".hero-veil"), cue = $(".cue");
     var cPh = $(".stage .center"), lPh = $(".stage .left"), rPh = $(".stage .right");
