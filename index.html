@@ -3,18 +3,25 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Pocket Glance · Privacy and Terms</title>
-  <meta name="description" content="Privacy Policy, Terms and data deletion instructions for the Pocket Glance budgeting app by NextTier.">
+  <title>Pocket Glance · Private budget tracker</title>
+  <meta name="description" content="Pocket Glance is a calm, private budget tracker for Android. Track spending, budgets, subscriptions and savings goals with no bank login and no ads. Your financial data stays on your phone.">
   <meta name="theme-color" content="#1C1A19">
+  <link rel="icon" type="image/png" href="img/favicon.png">
+  <link rel="apple-touch-icon" href="img/icon-192.png">
+  <meta property="og:title" content="Pocket Glance · Private budget tracker">
+  <meta property="og:description" content="Track spending, budgets and subscriptions. Private, with no bank login needed.">
+  <meta property="og:image" content="img/icon-192.png">
   <script>
     // Applies a saved light/dark choice before the page paints. Stored in this browser only.
     try { var t = localStorage.getItem("theme"); if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t); } catch (e) {}
+    // Scroll motion is opt-in: only when scripts run and the visitor has not asked for reduced motion.
+    if (window.matchMedia && !matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("motion");
   </script>
   <style>
-/* Pocket Glance "Classical" theme, from the app's NTTokens.kt:
+/* Pocket Glance "Classical" theme, from the app's NTTokens.kt, shared with privacy.html and terms.html:
    Paper (light) and Ink (dark) palettes, Bodoni Moda headings, Inter UI text.
    The fonts are the app's own files, served from fonts/, so nothing loads from a third party.
-   Motion is CSS only and is switched off for visitors who ask for reduced motion. */
+   Scroll motion is driven by a small script at the end of the page and is off for reduced motion. */
 @font-face { font-family: "Bodoni Moda"; src: url("fonts/bodoni_moda.ttf") format("truetype"); font-weight: 400 900; font-style: normal; font-display: swap; }
 @font-face { font-family: "Bodoni Moda"; src: url("fonts/bodoni_moda_italic.ttf") format("truetype"); font-weight: 400 900; font-style: italic; font-display: swap; }
 @font-face { font-family: "Inter"; src: url("fonts/inter_regular.ttf") format("truetype"); font-weight: 400; font-display: swap; }
@@ -26,91 +33,92 @@
   --tile: #E8E6E3;
   --text: #201F1D;
   --muted: rgba(32, 31, 29, 0.64);
+  --faint: rgba(32, 31, 29, 0.18);
   --divider: rgba(32, 31, 29, 0.12);
   --accent: #A06F24;
   --link: #5A3B0A;
   --plate: #1C1A19;
   --plate-text: #F6F4F2;
   --gold: #E1AD66;
-  /* Top bar and hero: these match the page in light mode and use the dark plate in dark mode. */
   --brand: #8F6118;
+  --gold-grad: linear-gradient(100deg, #5A3B0A 0%, #A06F24 45%, #C48A3A 100%);
   --bar-bg: rgba(248, 247, 245, 0.78);
   --bar-line: rgba(32, 31, 29, 0.10);
   --bar-text: #201F1D;
   --bar-muted: rgba(32, 31, 29, 0.66);
   --bar-chip: rgba(32, 31, 29, 0.08);
   --bar-chip-hover: rgba(32, 31, 29, 0.14);
-  --hero-bg: var(--page);
-  --hero-text: var(--text);
-  --hero-lead: rgba(32, 31, 29, 0.78);
-  --hero-meta: rgba(32, 31, 29, 0.55);
-  --hero-line: var(--divider);
-  --glow: transparent;
+  --glow: rgba(160, 111, 36, 0.12);
+  --frame: #201F1D;
+  --shadow: 0 50px 100px -40px rgba(32, 31, 29, 0.5);
   --heading: "Bodoni Moda", "Bodoni 72", Didot, Georgia, serif;
   --ui: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --hp: 0;
 }
 /* Dark is the default. Light applies only when the visitor picks it with the switch. */
 :root:not([data-theme="light"]) {
   color-scheme: dark;
-  --page: #1C1A19;
-  --tile: #282524;
+  --page: #141312;
+  --tile: #232120;
   --text: #F6F4F2;
-  --muted: rgba(246, 244, 242, 0.66);
-  --divider: rgba(243, 242, 242, 0.16);
+  --muted: rgba(246, 244, 242, 0.62);
+  --faint: rgba(246, 244, 242, 0.16);
+  --divider: rgba(243, 242, 242, 0.14);
   --link: #E1AD66;
   --brand: #E1AD66;
-  --bar-bg: rgba(28, 26, 25, 0.72);
+  --gold-grad: linear-gradient(100deg, #F3D3A2 0%, #E1AD66 45%, #A06F24 100%);
+  --bar-bg: rgba(20, 19, 18, 0.72);
   --bar-line: rgba(246, 244, 242, 0.08);
   --bar-text: #fff;
   --bar-muted: rgba(246, 244, 242, 0.72);
   --bar-chip: rgba(246, 244, 242, 0.12);
   --bar-chip-hover: rgba(246, 244, 242, 0.22);
-  --hero-bg: #1C1A19;
-  --hero-text: #F6F4F2;
-  --hero-lead: rgba(246, 244, 242, 0.82);
-  --hero-meta: rgba(246, 244, 242, 0.5);
-  --hero-line: transparent;
-  --glow: rgba(225, 173, 102, 0.20);
+  --glow: rgba(225, 173, 102, 0.22);
+  --frame: #050504;
+  --shadow: 0 50px 110px -30px rgba(0, 0, 0, 0.85);
 }
 :root[data-theme="light"] { color-scheme: light; }
+:root:not([data-theme="light"]) .only-light,
+:root[data-theme="light"] .only-dark { display: none; }
+
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+html { scroll-behavior: smooth; scroll-padding-top: 60px; }
 body {
   margin: 0; background: var(--page); color: var(--text);
-  font: 400 17px/1.65 var(--ui); font-feature-settings: "ss07";
-  -webkit-font-smoothing: antialiased; overflow-wrap: break-word;
+  font: 400 17px/1.6 var(--ui); font-feature-settings: "ss07";
+  -webkit-font-smoothing: antialiased; overflow-wrap: break-word; overflow-x: clip;
 }
-.wrap { max-width: 980px; margin: 0 auto; padding: 0 22px; }
+img { display: block; max-width: 100%; }
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 22px; }
 strong { font-weight: 600; }
 a:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 6px; }
-
-/* Text links: the underline draws in on hover */
-main a:not(.card) {
+.gold { background: var(--gold-grad); -webkit-background-clip: text; background-clip: text; color: transparent; padding: 0 0.1em; margin: 0 -0.1em; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+.text-link {
   color: var(--link); text-decoration: none;
   background: linear-gradient(var(--accent), var(--accent)) 0 100% / 100% 1px no-repeat;
   transition: background-size .3s var(--ease);
 }
-main a:not(.card):hover { background-size: 0 1px; background-position: 100% 100%; }
+.text-link:hover { background-size: 0 1px; background-position: 100% 100%; }
 
-/* Frosted bar that stays at the top */
+/* ---------- Bar ---------- */
 .bar {
-  position: sticky; top: 0; z-index: 10;
+  position: sticky; top: 0; z-index: 20;
   background: var(--bar-bg);
   -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px);
   border-bottom: 1px solid var(--bar-line);
 }
 .bar .wrap { display: flex; align-items: center; justify-content: space-between; gap: 8px 16px; flex-wrap: wrap; min-height: 52px; padding-top: 8px; padding-bottom: 8px; }
-.brand { font: 600 12px/1 var(--ui); letter-spacing: 0.18em; text-transform: uppercase; color: var(--brand); text-decoration: none; }
-nav { display: flex; gap: 2px; margin: 0 -10px; }
+.brand { display: flex; align-items: center; gap: 10px; font: 600 12px/1 var(--ui); letter-spacing: 0.18em; text-transform: uppercase; color: var(--brand); text-decoration: none; }
+.brand img { width: 24px; height: 24px; border-radius: 7px; }
+nav { display: flex; flex-wrap: wrap; align-items: center; gap: 2px; margin: 0 -10px; }
 nav a {
   font: 400 13px/1 var(--ui); color: var(--bar-muted); text-decoration: none;
   padding: 8px 10px; border-radius: 999px; transition: color .2s, background-color .2s;
 }
 nav a:hover { color: var(--bar-text); }
-nav a[aria-current="page"] { color: var(--bar-text); background: var(--bar-chip); }
-
-/* Light / dark switch in the bar. Hidden until the script that drives it has run. */
+nav a.nav-cta { color: #fff; background: var(--accent); padding: 7px 14px; margin-left: 6px; font-weight: 500; }
+nav a.nav-cta:hover { background: #8F6118; color: #fff; }
 .right { display: flex; align-items: center; gap: 14px; }
 .theme {
   appearance: none; border: 0; padding: 0; width: 30px; height: 30px; border-radius: 50%;
@@ -120,106 +128,219 @@ nav a[aria-current="page"] { color: var(--bar-text); background: var(--bar-chip)
 }
 .theme[hidden] { display: none; }
 .theme:hover { background: var(--bar-chip-hover); }
-.theme:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
 :root[data-theme="light"] .theme { transform: rotate(180deg); }
-body, .bar, .hero, .tiles div, .card { transition: background-color .35s var(--ease), color .35s var(--ease); }
-.card { transition: background-color .35s var(--ease), color .35s var(--ease), transform .45s var(--ease), box-shadow .45s var(--ease); }
+body, .bar, .card, .plan, .stat { transition: background-color .35s var(--ease), color .35s var(--ease); }
+@media (max-width: 520px) { nav a.nav-hide { display: none; } }
 
-/* Hero: matches the page in light mode; the app's dark plate with a slow gold glow in dark mode */
-.hero { position: relative; overflow: hidden; background: var(--hero-bg); color: var(--hero-text); border-bottom: 1px solid var(--hero-line); text-align: center; padding: 88px 0 96px; }
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex; align-items: center; gap: 10px; text-decoration: none;
+  font: 500 16px/1 var(--ui); padding: 16px 26px; border-radius: 999px;
+  transition: transform .35s var(--ease), box-shadow .35s var(--ease), background-color .2s;
+}
+.btn-gold { background: var(--accent); color: #fff; box-shadow: 0 14px 34px -14px rgba(160, 111, 36, 0.9); }
+.btn-gold:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 20px 40px -14px rgba(160, 111, 36, 0.95); }
+.more { font: 500 16px/1 var(--ui); color: var(--link); text-decoration: none; display: inline-flex; align-items: center; gap: 4px; padding: 16px 8px; }
+.more::after { content: "›"; font-size: 1.3em; line-height: 0; transition: transform .3s var(--ease); }
+.more:hover::after { transform: translateX(4px); }
+
+/* ---------- Phones: real captures in a plain rounded frame ---------- */
+.phone {
+  /* Bezel and corners scale with the phone's width (elliptical radii keep the corners round
+     on a 1080x2400 screen), so the status bar clears the corner at every size. */
+  /* Screen is 1080x2400 at 94.6% of the width; a 2.7%-of-width bezel on every side gives 1 : 2.156. */
+  position: relative; width: 100%; aspect-ratio: 1000 / 2156; border-radius: 13.5% / 6.26%;
+  background: var(--frame); box-shadow: var(--shadow);
+}
+/* Insets in % resolve against the phone itself, so the bezel is the same share of every phone. */
+/* An absolutely positioned <img> does not stretch to its insets, so the size is set explicitly. */
+.phone > img, .phone > .screens { position: absolute; left: 2.7%; top: 1.2525%; width: 94.6%; height: 97.495%; max-width: none; object-fit: cover; border-radius: 11.4% / 5.1%; overflow: hidden; }
+.phone .screens img { width: 100%; height: 100%; object-fit: cover; border-radius: inherit; }
+.phone::after { /* soft highlight on the glass */
+  content: ""; position: absolute; inset: 1.2525% 2.7%; border-radius: 11.4% / 5.1%; pointer-events: none;
+  background: linear-gradient(130deg, rgba(255,255,255,0.10), transparent 38%);
+}
+
+/* ---------- Hero ---------- */
+.hero { position: relative; overflow: hidden; text-align: center; padding: 96px 0 0; }
 .hero::before {
-  content: ""; position: absolute; inset: -40% -10% auto; height: 150%;
+  content: ""; position: absolute; left: 50%; top: 18%; width: 1100px; height: 900px; margin-left: -550px;
   background: radial-gradient(closest-side, var(--glow), transparent 70%);
   animation: drift 16s ease-in-out infinite alternate; pointer-events: none;
 }
-.hero .wrap { position: relative; }
-.eyebrow { font: 600 12px/1 var(--ui); letter-spacing: 0.18em; text-transform: uppercase; color: var(--brand); margin: 0 0 22px; }
-h1 { font: 600 clamp(2.6rem, 8vw, 4.75rem)/1.04 var(--heading); letter-spacing: -0.01em; margin: 0 auto 24px; max-width: 14ch; text-wrap: balance; }
-.lead { font: italic 500 clamp(1.15rem, 2.4vw, 1.4rem)/1.5 var(--heading); margin: 0 auto 26px; max-width: 34em; color: var(--hero-lead); text-wrap: pretty; }
-.meta { margin: 0; font-size: 0.8rem; letter-spacing: 0.02em; color: var(--hero-meta); }
-.hero .wrap > * { animation: rise .9s var(--ease) both; }
-.hero .wrap > :nth-child(2) { animation-delay: .08s; }
-.hero .wrap > :nth-child(3) { animation-delay: .18s; }
-.hero .wrap > :nth-child(4) { animation-delay: .28s; }
-
-/* Three quiet promises under the hero */
-.tiles { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); padding-top: 14px; }
-.tiles div { background: var(--tile); border-radius: 22px; padding: 28px 26px 26px; }
-.tiles b { display: block; font: 600 1.55rem/1.15 var(--heading); margin-bottom: 8px; }
-.tiles span { color: var(--muted); font-size: 0.95rem; line-height: 1.5; display: block; }
-
-/* Sections: heading on the left, text on the right, a hairline between */
-main { padding-bottom: 72px; }
-section { border-top: 1px solid var(--divider); padding: 44px 0 32px; }
-section:first-of-type { border-top: 0; }
-h2 { font: 600 clamp(1.6rem, 3.2vw, 2rem)/1.15 var(--heading); margin: 0 0 18px; text-wrap: balance; }
-h2 span { display: block; font: 600 12px/1 var(--ui); letter-spacing: 0.16em; color: var(--accent); margin-bottom: 12px; }
-@media (min-width: 820px) {
-  section { display: grid; grid-template-columns: 290px minmax(0, 1fr); column-gap: 56px; padding: 60px 0 46px; }
-  section > * { grid-column: 2; }
-  section > h2 { grid-column: 1; grid-row: 1 / span 30; align-self: start; position: sticky; top: 92px; margin: 0; }
+.hero-copy { position: relative; z-index: 2; }
+.motion .hero-copy {
+  opacity: calc(1 - var(--hp) * 1.7);
+  transform: translate3d(0, calc(var(--hp) * -70px), 0) scale(calc(1 - var(--hp) * 0.08));
 }
+.hero-copy > * { animation: rise 1s var(--ease) both; }
+.hero-copy > :nth-child(2) { animation-delay: .1s; }
+.hero-copy > :nth-child(3) { animation-delay: .2s; }
+.hero-copy > :nth-child(4) { animation-delay: .3s; }
+.eyebrow { font: 600 13px/1 var(--ui); letter-spacing: 0.2em; text-transform: uppercase; color: var(--brand); margin: 0 0 20px; }
+h1 { font: 600 clamp(3rem, 10vw, 6.6rem)/0.98 var(--heading); letter-spacing: -0.02em; margin: 0 auto 26px; max-width: 11ch; text-wrap: balance; }
+h1 em { font-style: italic; font-weight: 500; }
+.lead { font: 400 clamp(1.1rem, 2.2vw, 1.4rem)/1.45 var(--ui); margin: 0 auto 30px; max-width: 30em; color: var(--muted); text-wrap: pretty; padding: 0 22px; }
+.actions { display: flex; flex-wrap: wrap; gap: 6px 18px; justify-content: center; align-items: center; }
+
+.stage { --w: 300px; --spread: 250px; position: relative; height: 640px; margin-top: 64px; animation: rise-big 1.3s .25s var(--ease) both; }
+.stage .phone { position: absolute; left: 50%; top: 0; width: var(--w); }
+.stage .center { z-index: 2; transform: translate3d(-50%, calc(var(--hp) * -120px), 0) scale(calc(1 + var(--hp) * 0.05)); }
+.stage .left  { top: 70px; transform: translate3d(calc(-50% - var(--spread) - var(--hp) * 90px), calc(var(--hp) * -40px), 0) rotate(calc(-7deg + var(--hp) * 4deg)) scale(.86); opacity: .85; }
+.stage .right { top: 70px; transform: translate3d(calc(-50% + var(--spread) + var(--hp) * 90px), calc(var(--hp) * -40px), 0) rotate(calc(7deg - var(--hp) * 4deg)) scale(.86); opacity: .85; }
+@media (max-width: 700px) { .stage { --w: 220px; --spread: 150px; height: 470px; margin-top: 48px; } .hero { padding-top: 64px; } }
+
+/* ---------- Sections ---------- */
+main { padding-bottom: 40px; }
+.section { padding: 140px 0 0; }
+.kicker { display: block; font: 600 13px/1 var(--ui); letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-bottom: 18px; }
+h2 { font: 600 clamp(2.3rem, 6vw, 4.2rem)/1.02 var(--heading); letter-spacing: -0.015em; margin: 0 0 22px; text-wrap: balance; }
+h3 { font: 600 clamp(1.9rem, 4vw, 3rem)/1.05 var(--heading); letter-spacing: -0.01em; margin: 0 0 18px; text-wrap: balance; }
 p { margin: 0 0 14px; }
-ul, ol { padding-left: 1.2em; margin: 0 0 14px; }
-li { margin: 7px 0; padding-left: 4px; }
-li::marker { color: var(--accent); }
-.short { font: italic 500 1.3rem/1.4 var(--heading); margin: 0 0 18px; text-wrap: pretty; }
-.table-wrap { overflow-x: auto; margin: 0 0 14px; }
-table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
-th, td { text-align: left; vertical-align: top; padding: 12px 14px 12px 0; border-bottom: 1px solid var(--divider); }
-th { color: var(--muted); font: 500 0.72rem/1.3 var(--ui); text-transform: uppercase; letter-spacing: 0.1em; }
-tr:last-child td { border-bottom: 0; }
+.center-head { text-align: center; max-width: 40em; margin: 0 auto 56px; }
+.center-head p { color: var(--muted); font-size: clamp(1.05rem, 1.8vw, 1.25rem); }
 
-/* Landing-page cards */
-.cards { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); padding-top: 14px; }
-.card {
-  display: block; background: var(--tile); border-radius: 22px; padding: 30px 28px; min-height: 190px;
-  text-decoration: none; color: var(--text); transition: transform .45s var(--ease), box-shadow .45s var(--ease);
+/* Fade-up as things enter view (only when motion is on) */
+.motion .up { opacity: 0; transform: translate3d(0, 40px, 0); transition: opacity 1s var(--ease), transform 1s var(--ease); }
+.motion .up.in { opacity: 1; transform: none; }
+.motion .card.up.in:hover { transform: translateY(-5px); transition-delay: 0s; }
+.motion .btn-gold.up.in:hover { transform: translateY(-2px) scale(1.02); transition-delay: 0s; }
+.motion .up.d1 { transition-delay: .08s; } .motion .up.d2 { transition-delay: .16s; } .motion .up.d3 { transition-delay: .24s; }
+
+/* ---------- Statement: words light up as you scroll ---------- */
+.statement { position: relative; height: 240vh; }
+.statement-inner { position: sticky; top: 0; height: 100vh; display: grid; place-items: center; }
+.statement p { font: 600 clamp(2rem, 5.4vw, 4rem)/1.12 var(--heading); letter-spacing: -0.01em; max-width: 17ch; margin: 0 auto; text-align: center; text-wrap: balance; }
+.statement .w { transition: color .35s var(--ease); }
+.motion .statement .w { color: var(--faint); }
+.motion .statement .w.lit { color: var(--text); }
+.motion .statement .w.lit.g { color: var(--brand); }
+:root:not(.motion) .statement { height: auto; padding: 140px 0 0; }
+:root:not(.motion) .statement-inner { position: static; height: auto; }
+
+/* ---------- Story: sticky phone, steps scroll past ---------- */
+.story { display: grid; gap: 0; }
+.step { padding: 72px 0; border-top: 1px solid var(--divider); }
+.step:first-child { border-top: 0; }
+.step .short { font: italic 500 clamp(1.15rem, 2vw, 1.4rem)/1.45 var(--heading); color: var(--muted); margin: 0 0 18px; max-width: 26em; }
+.step ul { list-style: none; padding: 0; margin: 0; max-width: 30em; }
+.step li { position: relative; padding-left: 22px; margin: 9px 0; color: var(--muted); }
+.step li::before { content: ""; position: absolute; left: 0; top: 0.66em; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+.step .shot { max-width: 260px; margin: 36px auto 0; }
+.pro-tag { display: inline-block; font: 600 11px/1 var(--ui); letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); border: 1px solid var(--accent); padding: 6px 10px; border-radius: 999px; vertical-align: middle; margin-left: 6px; font-style: normal; }
+.device { display: none; }
+@media (min-width: 860px) {
+  .motion .story { grid-template-columns: minmax(0, 1fr) 330px; gap: 80px; }
+  .motion .step { min-height: 92vh; display: flex; flex-direction: column; justify-content: center; border-top: 0; padding: 0; opacity: .22; transition: opacity .6s var(--ease); }
+  .motion .step.is-on { opacity: 1; }
+  .motion .step .shot { display: none; }
+  .motion .device { display: block; }
+  .device-inner { position: sticky; top: max(70px, calc(50vh - 360px)); }
+  .device .screens { position: relative; overflow: hidden; }
+  .device .screens img { position: absolute; inset: 0; opacity: 0; transform: scale(1.06); transition: opacity .7s var(--ease), transform 1.1s var(--ease); }
+  .device .screens img.is-on { opacity: 1; transform: none; }
+  .dots { display: flex; justify-content: center; gap: 8px; margin-top: 22px; }
+  .dots span { width: 7px; height: 7px; border-radius: 999px; background: var(--faint); transition: width .5s var(--ease), background-color .5s; }
+  .dots span.is-on { width: 26px; background: var(--accent); }
 }
-.card:hover { transform: translateY(-4px); box-shadow: 0 18px 40px -18px rgba(0, 0, 0, 0.35); }
-.card b { display: block; font: 600 1.7rem/1.15 var(--heading); margin-bottom: 10px; }
+
+/* ---------- Parallax gallery ---------- */
+.gallery { position: relative; height: 760px; overflow: hidden; margin-top: 10px; }
+.gallery .layer { position: absolute; top: 120px; will-change: transform; }
+.gallery .layer .phone { width: 100%; }
+.gallery .g1 { left: 6%;  width: 230px; top: 220px; }
+.gallery .g2 { left: 50%; width: 290px; margin-left: -145px; top: 90px; z-index: 2; }
+.gallery .g3 { right: 6%; width: 230px; top: 260px; }
+@media (max-width: 700px) {
+  .gallery { height: 600px; }
+  .gallery .g1 { left: -60px; width: 180px; } .gallery .g3 { right: -60px; width: 180px; }
+  .gallery .g2 { width: 220px; margin-left: -110px; }
+}
+
+/* ---------- Privacy plate: zooms to full size as it arrives ---------- */
+.plate {
+  --pp: 1;
+  position: relative; overflow: hidden; background: #1C1A19; color: var(--plate-text);
+  border-radius: 32px; padding: 110px 28px; text-align: center;
+  transform: scale(calc(0.88 + var(--pp) * 0.12)); transform-origin: 50% 0;
+}
+:root:not([data-theme="light"]) .plate { background: #201E1C; box-shadow: inset 0 0 0 1px rgba(246, 244, 242, 0.06); }
+.plate .glow {
+  position: absolute; left: 50%; top: 50%; width: 900px; height: 900px; margin: -450px 0 0 -450px;
+  background: radial-gradient(closest-side, rgba(225, 173, 102, 0.28), transparent 70%); pointer-events: none;
+}
+.plate > :not(.glow) { position: relative; }
+.plate .kicker { color: var(--gold); }
+.plate h2 { max-width: 12ch; margin: 0 auto 22px; }
+.plate h2 .gold { background: linear-gradient(100deg, #F3D3A2, #E1AD66 50%, #C48A3A); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.plate .lede { font: 400 clamp(1.05rem, 1.8vw, 1.25rem)/1.5 var(--ui); color: rgba(246, 244, 242, 0.72); max-width: 32em; margin: 0 auto 56px; }
+.facts { display: grid; gap: 1px; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); background: rgba(246, 244, 242, 0.1); border-radius: 20px; overflow: hidden; text-align: left; max-width: 920px; margin: 0 auto 44px; }
+.facts div { background: #1C1A19; padding: 28px 24px; }
+:root:not([data-theme="light"]) .facts div { background: #201E1C; }
+.facts b { display: block; font: 600 1.35rem/1.2 var(--heading); margin-bottom: 8px; color: var(--gold); }
+.facts span { font-size: 0.93rem; line-height: 1.5; color: rgba(246, 244, 242, 0.7); }
+.plate .more { color: var(--gold); }
+
+/* ---------- Big numbers ---------- */
+.stats { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+.stat { background: var(--tile); border-radius: 26px; padding: 34px 28px 30px; }
+.stat b { display: block; font: 600 clamp(4rem, 8vw, 5.6rem)/0.9 var(--heading); letter-spacing: -0.03em; margin-bottom: 14px; }
+.stat span { display: block; color: var(--muted); font-size: 0.98rem; }
+.world { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; max-width: 760px; margin: 40px auto 0; }
+.world span { border: 1px solid var(--divider); border-radius: 999px; padding: 8px 15px; font-size: 0.92rem; color: var(--muted); }
+
+/* ---------- Free and Pro ---------- */
+.plans { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); max-width: 940px; margin: 0 auto; }
+.plan { background: var(--tile); border-radius: 26px; padding: 40px 34px; }
+.plan.pro { background: transparent; position: relative; }
+.plan.pro::before { content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1px; background: var(--gold-grad); -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; }
+.plan h3 { font-size: 2.2rem; margin-bottom: 8px; }
+.plan > p { color: var(--muted); font-size: 0.97rem; margin-bottom: 24px; }
+.plan ul { list-style: none; padding: 0; margin: 0; }
+.plan li { padding: 12px 0 12px 30px; border-top: 1px solid var(--divider); position: relative; font-size: 0.97rem; }
+.plan li::before { content: ""; position: absolute; left: 2px; top: 18px; width: 12px; height: 7px; border-left: 2px solid var(--accent); border-bottom: 2px solid var(--accent); transform: rotate(-45deg); }
+.fine { text-align: center; color: var(--muted); font-size: 0.86rem; max-width: 40em; margin: 26px auto 0; }
+
+/* ---------- Legal cards ---------- */
+.cards { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+.card { display: block; background: var(--tile); border-radius: 26px; padding: 32px 30px; min-height: 190px; text-decoration: none; color: var(--text); transition: transform .45s var(--ease), box-shadow .45s var(--ease), background-color .35s var(--ease); }
+.card:hover { transform: translateY(-5px); box-shadow: 0 22px 44px -20px rgba(0, 0, 0, 0.4); }
+.card b { display: block; font: 600 1.65rem/1.15 var(--heading); margin-bottom: 10px; }
 .card span { color: var(--muted); font-size: 0.97rem; display: block; }
 .card i { display: inline-block; margin-top: 18px; font-style: normal; font-weight: 500; font-size: 0.92rem; color: var(--link); transition: transform .45s var(--ease); }
 .card:hover i { transform: translateX(5px); }
+
+/* ---------- Closer ---------- */
+.closer { text-align: center; padding: 160px 0 80px; position: relative; }
+.closer img.icon { width: 104px; height: 104px; border-radius: 26px; margin: 0 auto 32px; box-shadow: var(--shadow); }
+.closer h2 { max-width: 12ch; margin: 0 auto 18px; }
+.closer p { color: var(--muted); margin-bottom: 30px; font-size: 1.15rem; }
 
 footer { border-top: 1px solid var(--divider); color: var(--muted); font-size: 0.8rem; padding: 22px 0 40px; }
 footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 20px; }
 footer a { color: inherit; text-decoration: none; }
 footer a:hover { color: var(--text); }
 
-@keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+@keyframes rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+@keyframes rise-big { from { opacity: 0; transform: translateY(80px); } to { opacity: 1; transform: none; } }
 @keyframes drift { from { transform: translate3d(-6%, 0, 0) scale(1); } to { transform: translate3d(6%, 4%, 0) scale(1.12); } }
-
-/* Content eases in as it scrolls into view, where the browser supports it.
-   Everything stays visible where it does not. */
-@supports (animation-timeline: view()) {
-  main section, .tiles div, .card {
-    animation: rise linear both; animation-timeline: view(); animation-range: entry 0% entry 28%;
-  }
-}
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before { animation: none !important; transition: none !important; }
-}
-@media print {
-  .bar, .tiles { display: none; }
-  .hero { background: none; color: #000; padding: 0 0 20px; text-align: left; }
-  .hero::before { display: none; }
-  .lead, .meta, .eyebrow { color: #333; }
-  body { background: #fff; }
-  * { animation: none !important; }
 }
   </style>
 </head>
 <body>
 <header class="bar">
   <div class="wrap">
-    <a class="brand" href="index.html">Pocket Glance</a>
+    <a class="brand" href="index.html" aria-current="page"><img src="img/icon-192.png" alt="" width="24" height="24">Pocket Glance</a>
     <div class="right">
-      <nav aria-label="Legal pages">
+      <nav aria-label="Site">
+        <a class="nav-hide" href="#features">Features</a>
+        <a class="nav-hide" href="#pro">Pro</a>
         <a href="privacy.html">Privacy</a>
         <a href="terms.html">Terms</a>
-        <a href="delete-data.html">Delete your data</a>
+        <a class="nav-cta" href="https://play.google.com/store/apps/details?id=com.nexttier.pocketglance">Get</a>
       </nav>
       <button class="theme" type="button" hidden aria-label="Switch between light and dark mode" title="Light / dark">
         <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.25" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 1.75a6.25 6.25 0 0 1 0 12.5z" fill="currentColor"/></svg>
@@ -228,19 +349,211 @@ footer a:hover { color: var(--text); }
   </div>
 </header>
 
-<div class="hero">
-  <div class="wrap">
+<section class="hero">
+  <div class="hero-copy">
     <p class="eyebrow">Pocket Glance</p>
-    <h1>Private budgeting, on your phone.</h1>
-    <p class="lead">Pocket Glance is a personal budgeting app for Android by NextTier, an independent developer. No account, no bank login, no ads. What you enter stays on your device.</p>
+    <h1>Your money. <em class="gold">At a glance.</em></h1>
+    <p class="lead">A calm, private budget tracker for Android. No bank login. No account. No ads.</p>
+    <div class="actions">
+      <a class="btn btn-gold" href="https://play.google.com/store/apps/details?id=com.nexttier.pocketglance">
+        <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4.2 2.4c-.3.3-.4.7-.4 1.2v16.8c0 .5.1.9.4 1.2l9.5-9.6zm10.6 10.7 2.7 2.7-11.4 6.5c-.4.2-.9.3-1.2.1zm0-2.2-9.9-9.3c.3-.2.8-.1 1.2.1l11.4 6.5zm3.9 3.9-3-3 3-3 3.2 1.8c.9.5.9 1.9 0 2.4z"/></svg>
+        Get it on Google Play
+      </a>
+      <a class="more" href="#features">See what it does</a>
+    </div>
   </div>
-</div>
+  <div class="stage" aria-hidden="true">
+    <div class="phone left"><img src="img/subs.webp" alt=""></div>
+    <div class="phone right"><img src="img/goals.webp" alt=""></div>
+    <div class="phone center"><img class="only-dark" src="img/home_dark.webp" alt=""><img class="only-light" src="img/home.webp" alt=""></div>
+  </div>
+</section>
 
-<main class="wrap">
-  <div class="cards">
-  <a class="card" href="privacy.html"><b>Privacy Policy</b><span>What the app stores, what can leave your device, and your choices.</span><i>Read →</i></a>
-  <a class="card" href="terms.html"><b>Terms &amp; Conditions</b><span>The agreement for using Pocket Glance and Pocket Glance Pro.</span><i>Read →</i></a>
-  <a class="card" href="delete-data.html"><b>Delete your data</b><span>How to remove your data from your phone and your Google Drive.</span><i>Read →</i></a>
+<main>
+  <div class="statement" id="statement">
+    <div class="statement-inner wrap">
+      <p data-words>Your balance. Your budget. Your goals. All on your phone, and nowhere else.</p>
+    </div>
+  </div>
+
+  <div class="wrap section" id="features">
+    <div class="center-head up">
+      <span class="kicker">What it does</span>
+      <h2>Everything you need. <span class="gold">Nothing you don't.</span></h2>
+      <p>Budgeting that stays small and quiet, so you actually keep doing it.</p>
+    </div>
+
+    <div class="story">
+      <div class="steps">
+        <article class="step is-on">
+          <span class="kicker">At a glance</span>
+          <h3>Balance, budget and a safe daily spend.</h3>
+          <p class="short">One calm screen tells you where the month stands.</p>
+          <ul>
+            <li>Available balance, income and expenses for the month</li>
+            <li>What's left in your budget, and a safe amount to spend per day</li>
+            <li>A logging streak with rest days, so one missed day doesn't reset everything</li>
+          </ul>
+          <div class="shot"><div class="phone"><img src="img/home.webp" alt="Pocket Glance home screen showing available balance, a streak and the monthly budget" loading="lazy"></div></div>
+        </article>
+        <article class="step">
+          <span class="kicker">Subscriptions</span>
+          <h3>See what your subscriptions really cost.</h3>
+          <p class="short">Streaming, phone, gym, insurance: every recurring bill in one place.</p>
+          <ul>
+            <li>Your total monthly and yearly subscription cost</li>
+            <li>A reminder before each renewal, so nothing surprises you</li>
+          </ul>
+          <div class="shot"><div class="phone"><img src="img/subs.webp" alt="Subscriptions screen with a yearly total and upcoming renewals" loading="lazy"></div></div>
+        </article>
+        <article class="step">
+          <span class="kicker">Quick add</span>
+          <h3>Log spending in seconds.</h3>
+          <p class="short">Amount, category, done.</p>
+          <ul>
+            <li>Log for today, yesterday or any date</li>
+            <li>Income as well as expenses</li>
+            <li>Your own categories and icons</li>
+          </ul>
+          <div class="shot"><div class="phone"><img src="img/add.webp" alt="Adding a transaction with amount and category" loading="lazy"></div></div>
+        </article>
+        <article class="step">
+          <span class="kicker">Insights</span>
+          <h3>See exactly where it went.</h3>
+          <p class="short">A clear breakdown, and whether you're trending up or down.</p>
+          <ul>
+            <li>Spending by category</li>
+            <li>Six-month trends</li>
+            <li>Daily, weekly and yearly analytics with Pro</li>
+          </ul>
+          <div class="shot"><div class="phone"><img src="img/analytics2.webp" alt="Insights screen with spending by category" loading="lazy"></div></div>
+        </article>
+        <article class="step">
+          <span class="kicker">Savings goals</span>
+          <h3>Save for what matters most.</h3>
+          <p class="short">A trip, a laptop, an emergency fund.</p>
+          <ul>
+            <li>Set a target and an optional date</li>
+            <li>Add contributions and watch your progress fill up</li>
+          </ul>
+          <div class="shot"><div class="phone"><img src="img/goals.webp" alt="Savings goals with progress toward each target" loading="lazy"></div></div>
+        </article>
+        <article class="step">
+          <span class="kicker">Widgets <em class="pro-tag">Pro</em></span>
+          <h3>Your budget on your home screen.</h3>
+          <p class="short">Budget left, next payment and goal progress, without opening the app.</p>
+          <div class="shot"><div class="phone"><img src="img/widgets.webp" alt="Android home screen with Pocket Glance budget, payment and goal widgets" loading="lazy"></div></div>
+        </article>
+      </div>
+      <div class="device" aria-hidden="true">
+        <div class="device-inner">
+          <div class="phone"><div class="screens">
+            <img class="is-on" src="img/home.webp" alt="">
+            <img src="img/subs.webp" alt="" loading="lazy">
+            <img src="img/add.webp" alt="" loading="lazy">
+            <img src="img/analytics2.webp" alt="" loading="lazy">
+            <img src="img/goals.webp" alt="" loading="lazy">
+            <img src="img/widgets.webp" alt="" loading="lazy">
+          </div></div>
+          <div class="dots"><span class="is-on"></span><span></span><span></span><span></span><span></span><span></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="wrap center-head up">
+      <span class="kicker">Light or dark</span>
+      <h2>Calm, <span class="gold">day and night.</span></h2>
+      <p>Paper for daylight, Ink for evenings. Both made to be read at a glance.</p>
+    </div>
+    <div class="gallery" aria-hidden="true">
+      <div class="layer g1" data-speed="0.22"><div class="phone"><img src="img/home.webp" alt="" loading="lazy"></div></div>
+      <div class="layer g2" data-speed="0.08"><div class="phone"><img src="img/home_dark.webp" alt="" loading="lazy"></div></div>
+      <div class="layer g3" data-speed="0.32"><div class="phone"><img src="img/widgets.webp" alt="" loading="lazy"></div></div>
+    </div>
+  </div>
+
+  <div class="wrap section" id="private">
+    <div class="plate">
+      <div class="glow" data-speed="-0.25"></div>
+      <span class="kicker">Private by design</span>
+      <h2>Your money stays <span class="gold">on your phone.</span></h2>
+      <p class="lede">We have no accounts and no servers that receive your transactions, so we cannot see your finances.</p>
+      <div class="facts">
+        <div class="up"><b>No sign-up</b><span>No account, no bank login, no access to your SMS or contacts.</span></div>
+        <div class="up d1"><b>App lock</b><span>Fingerprint, face or PIN. Android checks it; the app never receives it.</span></div>
+        <div class="up d2"><b>Your backups</b><span>To a file on your phone, or encrypted to your own Google Drive.</span></div>
+        <div class="up d3"><b>Your choice</b><span>Usage and crash reports can be switched off in Settings at any time.</span></div>
+      </div>
+      <a class="more" href="privacy.html">Read the Privacy Policy</a>
+    </div>
+  </div>
+
+  <div class="wrap section">
+    <div class="center-head up">
+      <span class="kicker">Made for everyone</span>
+      <h2>Your language. <span class="gold">Your currency.</span></h2>
+    </div>
+    <div class="stats">
+      <div class="stat up"><b class="gold">10</b><span>languages, from Español to 日本語</span></div>
+      <div class="stat up d1"><b class="gold">14</b><span>currencies, including USD, EUR, GBP, INR and JPY</span></div>
+      <div class="stat up d2"><b class="gold">0</b><span>ads, and no selling of your data</span></div>
+      <div class="stat up d3"><b class="gold">0</b><span>bank logins to set up or fix</span></div>
+    </div>
+    <div class="world up" lang="mul">
+      <span lang="en">English</span><span lang="es">Español</span><span lang="fr">Français</span><span lang="de">Deutsch</span><span lang="pt">Português</span><span lang="hi">हिन्दी</span><span lang="ar">العربية</span><span lang="ja">日本語</span><span lang="ko">한국어</span><span lang="zh-Hans">简体中文</span>
+    </div>
+  </div>
+
+  <div class="wrap section" id="pro">
+    <div class="center-head up">
+      <span class="kicker">Free and Pro</span>
+      <h2>Free to start. <span class="gold">Pro when you want more.</span></h2>
+    </div>
+    <div class="plans">
+      <div class="plan up">
+        <h3>Free</h3>
+        <p>Everything you need to budget, for as long as you like.</p>
+        <ul>
+          <li>Unlimited transactions</li>
+          <li>A monthly budget and insights</li>
+          <li>Streaks and evening reminders</li>
+          <li>App lock and local backup</li>
+          <li>1 subscription, 1 savings goal, 3 custom categories</li>
+        </ul>
+      </div>
+      <div class="plan pro up d1">
+        <h3>Pocket Glance <em class="gold">Pro</em></h3>
+        <p>For when budgeting becomes a habit.</p>
+        <ul>
+          <li>Unlimited subscriptions, goals and categories</li>
+          <li>Home-screen widgets</li>
+          <li>Daily, weekly and yearly analytics</li>
+          <li>Automatic, encrypted Google Drive backups</li>
+        </ul>
+      </div>
+    </div>
+    <p class="fine">Pro is a yearly subscription or a one-time lifetime purchase, handled by Google Play. See the <a class="text-link" href="terms.html">Terms</a> for details.</p>
+  </div>
+
+  <div class="wrap section" id="legal">
+    <div class="center-head up">
+      <span class="kicker">The fine print</span>
+      <h2>Plain words. No surprises.</h2>
+    </div>
+    <div class="cards">
+      <a class="card up" href="privacy.html"><b>Privacy Policy</b><span>What the app stores, what can leave your device, and your choices.</span><i>Read →</i></a>
+      <a class="card up d1" href="terms.html"><b>Terms &amp; Conditions</b><span>The agreement for using Pocket Glance and Pocket Glance Pro.</span><i>Read →</i></a>
+      <a class="card up d2" href="delete-data.html"><b>Delete your data</b><span>How to remove your data from your phone and your Google Drive.</span><i>Read →</i></a>
+    </div>
+  </div>
+
+  <div class="wrap closer">
+    <img class="icon up" src="img/icon-192.png" alt="" width="104" height="104">
+    <h2 class="up d1">Start with one <span class="gold">glance a day.</span></h2>
+    <p class="up d2">Free on Google Play. No account needed.</p>
+    <a class="btn btn-gold up d3" href="https://play.google.com/store/apps/details?id=com.nexttier.pocketglance">Get it on Google Play</a>
   </div>
 </main>
 
@@ -251,6 +564,7 @@ footer a:hover { color: var(--text); }
   </div>
 </footer>
 <script>
+  // Light / dark switch, the same as on the legal pages.
   (function () {
     var b = document.querySelector(".theme"), r = document.documentElement;
     if (!b) return;
@@ -261,6 +575,101 @@ footer a:hover { color: var(--text); }
       r.setAttribute("data-theme", next);
       try { localStorage.setItem("theme", next); } catch (e) {}
     });
+  })();
+
+  // Scroll motion: hero parallax, word-by-word statement, sticky feature story,
+  // layered gallery parallax and the privacy plate zoom. One rAF per scroll frame.
+  (function () {
+    var root = document.documentElement;
+    if (!root.classList.contains("motion")) return;
+    function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
+
+    // Fade-up on entry.
+    var ups = document.querySelectorAll(".up");
+    if ("IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function (es) {
+        es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
+      }, { rootMargin: "0px 0px -10% 0px" });
+      ups.forEach(function (el) { io.observe(el); });
+    } else {
+      ups.forEach(function (el) { el.classList.add("in"); });
+    }
+
+    // Split the statement into words; the last clause is tinted gold when lit.
+    var words = [], statement = document.getElementById("statement");
+    var para = statement && statement.querySelector("[data-words]");
+    if (para) {
+      var parts = para.textContent.trim().split(/\s+/), goldFrom = parts.length - 6;
+      para.textContent = "";
+      parts.forEach(function (w, i) {
+        var s = document.createElement("span");
+        s.className = "w" + (i >= goldFrom ? " g" : "");
+        s.textContent = w;
+        para.appendChild(s);
+        if (i < parts.length - 1) para.appendChild(document.createTextNode(" "));
+        words.push(s);
+      });
+    }
+
+    var layers = Array.prototype.slice.call(document.querySelectorAll("[data-speed]"));
+    var steps = Array.prototype.slice.call(document.querySelectorAll(".step"));
+    var screens = document.querySelectorAll(".device .screens img");
+    var dots = document.querySelectorAll(".dots span");
+    var plate = document.querySelector(".plate");
+    var active = 0, lit = -1, ticking = false;
+
+    function update() {
+      ticking = false;
+      var vh = window.innerHeight, y = window.scrollY;
+
+      // Hero: copy recedes, phones rise and spread.
+      root.style.setProperty("--hp", clamp(y / (vh * 0.85), 0, 1).toFixed(4));
+
+      // Layered parallax, measured from each layer's parent so the transform never feeds back.
+      layers.forEach(function (el) {
+        var r = el.parentElement.getBoundingClientRect();
+        if (r.bottom < -200 || r.top > vh + 200) return;
+        var d = r.top + r.height / 2 - vh / 2;
+        el.style.transform = "translate3d(0," + (-d * parseFloat(el.dataset.speed)).toFixed(1) + "px,0)";
+      });
+
+      // Statement: light words up across the sticky stretch.
+      if (words.length) {
+        var sr = statement.getBoundingClientRect();
+        var p = clamp((-sr.top + vh * 0.25) / (sr.height - vh * 0.75), 0, 1);
+        var n = Math.round(p * words.length);
+        if (n !== lit) {
+          words.forEach(function (w, i) { w.classList.toggle("lit", i < n); });
+          lit = n;
+        }
+      }
+
+      // Story: the step nearest the middle of the screen drives the sticky phone.
+      if (steps.length) {
+        var best = 0, bd = Infinity;
+        steps.forEach(function (s, i) {
+          var r = s.getBoundingClientRect(), d = Math.abs(r.top + r.height / 2 - vh / 2);
+          if (d < bd) { bd = d; best = i; }
+        });
+        if (best !== active) {
+          steps[active].classList.remove("is-on"); steps[best].classList.add("is-on");
+          if (screens[active]) { screens[active].classList.remove("is-on"); screens[best].classList.add("is-on"); }
+          if (dots[active]) { dots[active].classList.remove("is-on"); dots[best].classList.add("is-on"); }
+          active = best;
+        }
+      }
+
+      // Privacy plate grows to full size as it scrolls in.
+      if (plate) {
+        var pr = plate.getBoundingClientRect();
+        plate.style.setProperty("--pp", clamp((vh - pr.top) / (vh * 0.7), 0, 1).toFixed(4));
+      }
+    }
+
+    function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(update); } }
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    update();
   })();
 </script>
 </body>
