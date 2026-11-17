@@ -114,14 +114,20 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--gold); outline-
 nav { display: flex; flex-wrap: wrap; align-items: center; gap: 2px; margin: 0 -10px; }
 nav a { font: 400 13px/1 var(--ui); color: var(--bar-muted); text-decoration: none; padding: 8px 10px; border-radius: 999px; transition: color .2s, background-color .2s; }
 nav a:hover { color: var(--bar-text); }
-nav a.nav-cta { color: #fff; background: var(--accent); padding: 7px 14px; margin-left: 6px; font-weight: 500; }
-nav a.nav-cta:hover { background: #8F6118; }
+nav a.nav-cta { display: inline-flex; align-items: center; gap: 7px; color: #fff; background: var(--accent); padding: 7px 14px 7px 11px; margin-left: 6px; font-weight: 500; }
+nav a.nav-cta:hover { background: #8F6118; color: #fff; }
+nav a.nav-cta svg { flex: none; }
 .right { display: flex; align-items: center; gap: 14px; }
 .theme { appearance: none; border: 0; padding: 0; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; cursor: pointer; background: var(--bar-chip); color: var(--bar-text); transition: background-color .2s, transform .5s var(--ease); }
 .theme[hidden] { display: none; }
 .theme:hover { background: var(--bar-chip-hover); }
 :root[data-theme="light"] .theme { transform: rotate(180deg); }
-@media (max-width: 520px) { nav a.nav-hide { display: none; } }
+@media (max-width: 520px) {
+  nav a.nav-hide { display: none; }
+  /* Not enough room for the label: the button becomes the Play Store icon alone. */
+  nav a.nav-cta { width: 30px; height: 30px; padding: 0; justify-content: center; border-radius: 50%; }
+  nav a.nav-cta span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+}
 .progress { position: fixed; left: 0; top: 0; z-index: 31; height: 2px; width: 100%; background: var(--gold-grad); transform-origin: 0 50%; transform: scaleX(0); pointer-events: none; }
 :root:not(.motion) .progress { display: none; }
 
@@ -344,7 +350,7 @@ footer a:hover { color: var(--text); }
         <a class="nav-hide" href="#pro">Pro</a>
         <a href="privacy.html">Privacy</a>
         <a href="terms.html">Terms</a>
-        <a class="nav-cta" href="https://play.google.com/store/apps/details?id=com.nexttier.pocketglance">Download now</a>
+        <a class="nav-cta" href="https://play.google.com/store/apps/details?id=com.nexttier.pocketglance" title="Download on Google Play"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4.2 2.4c-.3.3-.4.7-.4 1.2v16.8c0 .5.1.9.4 1.2l9.5-9.6zm10.6 10.7 2.7 2.7-11.4 6.5c-.4.2-.9.3-1.2.1zm0-2.2-9.9-9.3c.3-.2.8-.1 1.2.1l11.4 6.5zm3.9 3.9-3-3 3-3 3.2 1.8c.9.5.9 1.9 0 2.4z"/></svg><span>Download now</span></a>
       </nav>
       <button class="theme" type="button" hidden aria-label="Switch between light and dark mode" title="Light / dark">
         <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.25" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 1.75a6.25 6.25 0 0 1 0 12.5z" fill="currentColor"/></svg>
