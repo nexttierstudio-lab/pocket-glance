@@ -165,7 +165,7 @@ nav a.nav-cta svg { flex: none; }
 .hero-copy > :nth-child(3) { animation-delay: .2s; }
 .hero-copy > :nth-child(4) { animation-delay: .3s; }
 .eyebrow { font: 600 13px/1 var(--ui); letter-spacing: 0.2em; text-transform: uppercase; color: var(--brand); margin: 0 0 20px; }
-h1 { font: 600 clamp(3rem, 10vw, 6.6rem)/0.98 var(--heading); letter-spacing: -0.02em; margin: 0 auto 26px; max-width: 11ch; text-wrap: balance; }
+h1 { font: 600 clamp(2.6rem, min(10vw, 10.5vh), 6.6rem)/0.98 var(--heading); letter-spacing: -0.02em; margin: 0 auto 26px; max-width: 11ch; text-wrap: balance; }
 h1 em { font-style: italic; font-weight: 500; }
 .lead { font: 400 clamp(1.1rem, 2.2vw, 1.4rem)/1.45 var(--ui); margin: 0 auto 30px; max-width: 30em; color: var(--muted); text-wrap: pretty; padding: 0 22px; }
 .actions { display: flex; flex-wrap: wrap; gap: 6px 18px; justify-content: center; align-items: center; }
@@ -673,7 +673,8 @@ footer a:hover { color: var(--text); }
       vw = root.clientWidth; vh = window.innerHeight;
       M.pw = cPh.offsetWidth; M.ph = cPh.offsetHeight;
       var copyBottom = copy.offsetTop + copy.offsetHeight;
-      M.y0 = Math.min(Math.max(copyBottom + 40, vh * 0.5), vh - M.ph * 0.42);
+      // Phones start below the buttons, never over them; on short screens they just peek in.
+      M.y0 = Math.max(copyBottom + 36, vh * 0.5);
       M.y1 = 52 + (vh - 52 - M.ph) / 2;
       M.zoom = Math.max(vw / (M.pw * 0.946), vh / (M.ph * 0.975)) * 1.08;
       M.spread = Math.min(M.pw * 0.82, vw * 0.3);
@@ -782,6 +783,7 @@ footer a:hover { color: var(--text); }
     window.addEventListener("scroll", function () { dirty = true; }, { passive: true });
     window.addEventListener("resize", measure);
     window.addEventListener("load", measure);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
     if (fine) window.addEventListener("pointermove", function (e) {
       tilt.tx = (e.clientY / vh - 0.5) * -10;
       tilt.ty = (e.clientX / vw - 0.5) * 16;
