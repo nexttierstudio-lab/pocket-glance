@@ -201,6 +201,18 @@ h1 em { font-style: italic; font-weight: 500; }
 [dir="rtl"] .stage { --ry: 20deg; --rz: -3deg; }
 .stage .phone { --pw: min(220px, calc(56 * var(--vw))); --gap: 12px; width: var(--pw); margin: 0 auto; transform-style: preserve-3d; transform: rotateY(var(--ry)) rotateX(var(--rx)) rotateZ(var(--rz)); }
 .stage .phone > img { filter: brightness(.55); }
+/* A real body: twelve copies of the outline stacked behind the screen make the metal edge, so the
+   tilt shows the phone's thickness. The middle one carries the side buttons. */
+.stage .phone { --shadow: none; box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.22); }
+.stage .phone .edge {
+  position: absolute; inset: 0; border-radius: 13.5% / 6.26%; pointer-events: none;
+  background: linear-gradient(100deg, #2a2725, #8d857e 40%, #4a4541 62%, #1c1a19);
+  transform: translateZ(calc(var(--i) * var(--pw) * -0.0072));
+}
+.stage .phone .edge:last-of-type { box-shadow: 0 50px 110px -30px rgba(0, 0, 0, 0.85); }
+.stage .phone .edge.btns::before, .stage .phone .edge.btns::after { content: ""; position: absolute; width: 1.4%; border-radius: 2px; background: linear-gradient(90deg, #6b645e, #2a2725); }
+.stage .phone .edge.btns::before { right: -1.2%; top: 24%; height: 10%; }
+.stage .phone .edge.btns::after { left: -1.2%; top: 19%; height: 16%; }
 .hot { position: absolute; z-index: 2; left: calc(2.7% + 94.6% * var(--x)); top: calc(1.2525% + 97.495% * var(--y)); width: calc(94.6% * var(--w)); height: calc(97.495% * var(--h)); transform-style: preserve-3d; }
 .hot .cut { position: absolute; inset: 0; overflow: hidden; border-radius: var(--r, 9px); transform: translateZ(var(--z, 60px)) scale(1.06); box-shadow: 0 0 0 1px rgba(225, 173, 102, 0.35), 0 40px 60px -20px rgba(0, 0, 0, 0.85); }
 .motion .hot .cut { animation: pop-out 1s var(--ease) both; animation-delay: var(--d, 1s); }
@@ -491,6 +503,7 @@ footer .legal-note { flex-basis: 100%; margin: 4px 0 0; }
     </div>
     <div class="stage">
       <div class="phone">
+        <span class="edge" style="--i:1" aria-hidden="true"></span><span class="edge" style="--i:2" aria-hidden="true"></span><span class="edge" style="--i:3" aria-hidden="true"></span><span class="edge" style="--i:4" aria-hidden="true"></span><span class="edge" style="--i:5" aria-hidden="true"></span><span class="edge btns" style="--i:6" aria-hidden="true"></span><span class="edge" style="--i:7" aria-hidden="true"></span><span class="edge" style="--i:8" aria-hidden="true"></span><span class="edge" style="--i:9" aria-hidden="true"></span><span class="edge" style="--i:10" aria-hidden="true"></span><span class="edge" style="--i:11" aria-hidden="true"></span><span class="edge" style="--i:12" aria-hidden="true"></span>
         <img class="themed" src="../img/home_dark.webp" data-light="../img/home.webp" alt="Pocket Glance की होम स्क्रीन, जिसमें बैलेंस, स्ट्रीक, मासिक बजट और जोड़ने का बटन है" width="720" height="1600">
         <span class="hot sl dn" style="--x:0.0417;--y:0.1469;--w:0.9167;--h:0.2563;--z:70px;--d:1s" aria-hidden="true"><span class="cut"><img class="themed" src="../img/home_dark.webp" data-light="../img/home.webp" alt=""></span><span class="lab"><i class="ln"></i><span class="box"><strong>आपका बैलेंस, एक नज़र में</strong><span>अभी आपके पास कितना है, इस महीने की आय और खर्च के साथ।</span></span></span></span>
         <span class="hot sr" style="--x:0.0417;--y:0.4206;--w:0.9167;--h:0.1019;--z:45px;--d:1.2s" aria-hidden="true"><span class="cut"><img class="themed" src="../img/home_dark.webp" data-light="../img/home.webp" alt=""></span><span class="lab"><i class="ln"></i><span class="box"><strong>स्ट्रीक जो आपको आगे बढ़ाए</strong><span>हर दिन थोड़ा दर्ज करें। आराम के दिन आपके लिए बचाए जाते हैं।</span></span></span></span>
