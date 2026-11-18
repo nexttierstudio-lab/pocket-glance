@@ -95,6 +95,10 @@
 :root[data-theme="light"] .only-dark { display: none; }
 
 * { box-sizing: border-box; }
+/* Bodoni Moda thins its hairlines and serifs as the type grows (optical size up to 96), until they
+   all but vanish in big headings. Pinning the optical size keeps them visible at every size.
+   !important because every `font:` shorthand on the page resets this property. */
+* { font-variation-settings: "opsz" 24 !important; }
 html { scroll-behavior: smooth; scroll-padding-top: 60px; }
 body {
   margin: 0; background: var(--page); color: var(--text);
