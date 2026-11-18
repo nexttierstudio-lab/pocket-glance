@@ -27,15 +27,15 @@
   <script>
     // Applies a saved light/dark choice before the page paints. Stored in this browser only.
     try { var t = localStorage.getItem("theme"); if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t); } catch (e) {}
-    // Scroll scenes are opt-in: only when scripts run and the visitor has not asked for reduced motion.
+    // Motion is opt-in: only when scripts run and the visitor has not asked for reduced motion.
     if (window.matchMedia && !matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("motion");
   </script>
   <style>
 /* Pocket Glance "Classical" theme, from the app's NTTokens.kt, shared with privacy.html and terms.html:
    Paper (light) and Ink (dark) palettes, Bodoni Moda headings, Inter UI text.
    The fonts are the app's own files, served from fonts/, so nothing loads from a third party.
-   Scroll scenes are driven by the script at the end of the page. Without it, or with reduced
-   motion, every section is laid out normally and nothing moves. */
+   Small touches (fade-ups, dust, count-ups) come from the script at the end of the page.
+   Without it, or with reduced motion, everything is simply shown and nothing moves. */
 @font-face { font-family: "Bodoni Moda"; src: url("../fonts/bodoni_moda.ttf") format("truetype"); font-weight: 400 900; font-style: normal; font-display: swap; }
 @font-face { font-family: "Bodoni Moda"; src: url("../fonts/bodoni_moda_italic.ttf") format("truetype"); font-weight: 400 900; font-style: italic; font-display: swap; }
 @font-face { font-family: "Inter"; src: url("../fonts/inter_regular.ttf") format("truetype"); font-weight: 400; font-display: swap; }
@@ -163,16 +163,16 @@ nav a.nav-cta svg { flex: none; }
 .phone .screens img { width: 100%; height: 100%; object-fit: cover; border-radius: inherit; }
 .phone::after { content: ""; position: absolute; inset: 1.2525% 2.7%; border-radius: 11.4% / 5.1%; pointer-events: none; background: linear-gradient(130deg, rgba(255,255,255,0.10), transparent 38%); }
 
-/* ---------- Scene 1: hero. Pinned while the phone slides up to the middle of the screen ---------- */
+/* ---------- Hero: headline, buttons, and three phones standing still underneath ---------- */
 .hero { position: relative; text-align: center; }
-.hero-pin { position: relative; overflow: hidden; padding-top: 96px; }
+.hero-pin { position: relative; overflow: hidden; padding-top: clamp(72px, 12vh, 120px); }
 .hero-pin::before {
   content: ""; position: absolute; left: 50%; top: 10%; width: 1200px; height: 1000px; margin-left: -600px;
   background: radial-gradient(closest-side, var(--glow), transparent 70%);
   animation: drift 16s ease-in-out infinite alternate; pointer-events: none;
 }
 #dust { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
-.hero-copy { position: relative; z-index: 3; will-change: transform, opacity; }
+.hero-copy { position: relative; z-index: 3; }
 .hero-copy > * { animation: rise 1s var(--ease) both; }
 .hero-copy > :nth-child(2) { animation-delay: .1s; }
 .hero-copy > :nth-child(3) { animation-delay: .2s; }
@@ -183,22 +183,14 @@ h1 em { font-style: italic; font-weight: 500; }
 .lead { font: 400 clamp(1.1rem, 2.2vw, 1.4rem)/1.45 var(--ui); margin: 0 auto 30px; max-width: 30em; color: var(--muted); text-wrap: pretty; padding: 0 22px; }
 .actions { display: flex; flex-wrap: wrap; gap: 6px 18px; justify-content: center; align-items: center; }
 .stage { position: relative; height: calc(var(--pw) * 1.75); margin-top: 56px; animation: rise-big 1.3s .25s var(--ease) both; }
-.stage .phone { position: absolute; left: 50%; top: 0; width: var(--pw); margin-left: calc(var(--pw) / -2); will-change: transform; }
+.stage .phone { position: absolute; left: 50%; top: 0; width: var(--pw); margin-left: calc(var(--pw) / -2); }
 .stage .center { z-index: 2; }
 .stage .left  { top: 70px; transform: translateX(calc(var(--pw) * -0.82)) scale(.86); }
 .stage .right { top: 70px; transform: translateX(calc(var(--pw) * 0.82)) scale(.86); }
-.cue { position: absolute; inset-inline-start: max(22px, calc(50vw - 520px)); bottom: 26px; z-index: 5; display: none; flex-direction: column; align-items: center; gap: 10px; font: 500 11px/1 var(--ui); letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
-.cue i { width: 1px; height: 38px; background: linear-gradient(var(--brand), transparent); animation: cue 2.2s var(--ease) infinite; transform-origin: top; }
-.motion .hero { height: 200vh; }
-.motion .hero-pin { position: sticky; top: 0; height: 100vh; padding-top: 0; }
-.motion .hero-copy { padding-top: clamp(84px, 14vh, 140px); }
-.motion .stage { position: absolute; inset: 0; height: auto; margin: 0; animation: fade-in 1.2s .2s var(--ease) both; }
-.motion .stage .phone { transform: none; top: 0; }
-@media (min-width: 700px) { .motion .cue { display: flex; } }
 
 /* ---------- Shared section type ---------- */
 main { padding-bottom: 40px; }
-.section { padding: 140px 0 0; }
+.section { padding-top: 140px; }
 .kicker { display: block; font: 600 13px/1 var(--ui); letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-bottom: 18px; }
 h2 { font: 600 clamp(2.3rem, 6vw, 4.2rem)/1.02 var(--heading); letter-spacing: -0.015em; margin: 0 0 22px; text-wrap: balance; }
 h3 { font: 600 clamp(1.9rem, 4vw, 3rem)/1.05 var(--heading); letter-spacing: -0.01em; margin: 0 0 18px; text-wrap: balance; }
@@ -216,49 +208,26 @@ p { margin: 0 0 14px; }
 .spot::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0; transition: opacity .4s var(--ease); background: radial-gradient(360px circle at var(--mx, 50%) var(--my, 50%), var(--spot), transparent 65%); }
 .spot:hover::after { opacity: 1; }
 
-/* ---------- Scene 3: story. Sticky phone, steps scroll past ---------- */
-.story { display: grid; gap: 0; }
-.step { padding: 72px 0; border-top: 1px solid var(--divider); }
-.step:first-child { border-top: 0; }
-.step .short { font: italic 500 clamp(1.15rem, 2vw, 1.4rem)/1.45 var(--heading); color: var(--muted); margin: 0 0 18px; max-width: 26em; }
-.step ul { list-style: none; padding: 0; margin: 0; max-width: 30em; }
-.step li { position: relative; padding-inline-start: 22px; margin: 9px 0; color: var(--muted); }
-.step li::before { content: ""; position: absolute; inset-inline-start: 0; top: 0.66em; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
-.step .shot { max-width: 260px; margin: 36px auto 0; }
-.pro-tag { display: inline-block; font: 600 11px/1 var(--ui); letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); border: 1px solid var(--accent); padding: 6px 10px; border-radius: 999px; vertical-align: middle; margin-left: 6px; font-style: normal; }
-.device { display: none; }
-@media (min-width: 860px) {
-  .motion .story { grid-template-columns: minmax(0, 1fr) 330px; gap: 80px; }
-  .motion .step { min-height: 92vh; display: flex; flex-direction: column; justify-content: center; border-top: 0; padding: 0; opacity: .2; transform: translateX(-10px); transition: opacity .6s var(--ease), transform .8s var(--ease); }
-  .motion .step.is-on { opacity: 1; transform: none; }
-  .motion .step .shot { display: none; }
-  .motion .device { display: block; }
-  .device-inner { position: sticky; top: max(64px, calc(50vh - 380px)); }
-  .device .screens img { position: absolute; inset: 0; opacity: 0; transform: scale(1.08); filter: blur(6px); transition: opacity .7s var(--ease), transform 1.1s var(--ease), filter .7s var(--ease); }
-  .device .screens img.is-on { opacity: 1; transform: none; filter: none; }
-  .device-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 22px; padding: 0 6px; }
-  .count { font: 500 13px/1 var(--ui); letter-spacing: 0.12em; color: var(--muted); font-variant-numeric: tabular-nums; }
-  .count b { color: var(--text); font-weight: 600; }
-  .dots { display: flex; gap: 7px; }
-  .dots span { width: 7px; height: 7px; border-radius: 999px; background: var(--faint); transition: width .5s var(--ease), background-color .5s; }
-  .dots span.is-on { width: 26px; background: var(--accent); }
-}
+/* ---------- Features: six cards, a screenshot peeking out of each ---------- */
+.features { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); }
+.feature { background: var(--tile); border-radius: 26px; padding: 0 28px 30px; }
+.feature .shot { height: 230px; overflow: hidden; display: flex; justify-content: center; padding-top: 30px; margin-bottom: 24px; -webkit-mask-image: linear-gradient(#000 65%, transparent); mask-image: linear-gradient(#000 65%, transparent); }
+.feature .shot .phone { width: 160px; flex: none; --shadow: none; }
+.feature .kicker { margin-bottom: 10px; }
+.feature h3 { font-size: 1.6rem; margin-bottom: 8px; }
+.feature p { color: var(--muted); font-size: 0.97rem; margin: 0; }
+.pro-tag { display: inline-block; font: 600 11px/1 var(--ui); letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); border: 1px solid var(--accent); padding: 5px 9px; border-radius: 999px; vertical-align: middle; margin-inline-start: 6px; font-style: normal; }
 
-/* ---------- Scene 4: sideways gallery. Phones stay upright; the ones away from the middle shrink and fade ---------- */
-.hs-pin { overflow-x: auto; padding: 40px 0; }
-.hs-track { display: flex; align-items: center; gap: 5vw; padding: 0 8vw; width: max-content; }
-.hs-intro { width: min(460px, 78vw); flex: none; }
-.hs-intro p { color: var(--muted); font-size: clamp(1.05rem, 1.8vw, 1.25rem); }
-.hs-item { margin: 0; flex: none; width: min(clamp(190px, 21vw, 270px), calc((100vh - 220px) / 2.156)); text-align: center; }
-.hs-item .phone { will-change: transform; }
-.hs-item figcaption { margin-top: 22px; }
-.hs-item figcaption b { display: block; font: 600 1.35rem/1.2 var(--heading); }
+/* ---------- Gallery: a row you swipe or scroll sideways ---------- */
+.hs-row { display: flex; gap: 28px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: max(22px, calc((100vw - 1036px) / 2)); padding: 10px max(22px, calc((100vw - 1036px) / 2)) 30px; scrollbar-width: thin; scrollbar-color: var(--faint) transparent; }
+.hs-item { margin: 0; flex: none; width: clamp(180px, 20vw, 230px); scroll-snap-align: start; text-align: center; }
+.hs-item .phone { --shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.6); }
+.hs-item figcaption { margin-top: 20px; }
+.hs-item figcaption b { display: block; font: 600 1.3rem/1.2 var(--heading); }
 .hs-item figcaption span { font-size: 0.9rem; color: var(--muted); }
-.motion .hs { padding-top: 0; margin-top: 80px; }
-.motion .hs-pin { position: sticky; top: 0; height: 100vh; overflow: hidden; display: flex; align-items: center; padding: 52px 0 0; }
-.motion .hs-track { will-change: transform; }
+.hs .center-head { margin-bottom: 40px; }
 
-/* ---------- Scene 5: privacy. The panel opens to full width and a lock draws itself ---------- */
+/* ---------- Privacy. The panel opens to full width and a lock draws itself ---------- */
 .plate-wrap { padding-top: 140px; }
 .plate {
   --pp: 0;
@@ -356,11 +325,11 @@ footer a:hover { color: var(--text); }
 :lang(ko) { word-break: keep-all; }
 :lang(hi) h1, :lang(ar) h1 { max-width: 13em; }
 /* No italics in scripts that have none */
-:lang(hi) em, :lang(ar) em, :lang(ja) em, :lang(ko) em, :lang(zh) em,
-:lang(hi) .short, :lang(ar) .short, :lang(ja) .short, :lang(ko) .short, :lang(zh) .short { font-style: normal; }
+:lang(hi) em, :lang(ar) em, :lang(ja) em, :lang(ko) em, :lang(zh) em { font-style: normal; }
+
 :lang(ja) .kicker, :lang(ko) .kicker, :lang(zh) .kicker, :lang(hi) .kicker, :lang(ja) .eyebrow, :lang(ko) .eyebrow, :lang(zh) .eyebrow, :lang(hi) .eyebrow { letter-spacing: 0.08em; }
 /* Arabic letters join, so they are never spaced out */
-:lang(ar) .kicker, :lang(ar) .eyebrow, :lang(ar) .cue, :lang(ar) h1, :lang(ar) h2, :lang(ar) h3 { letter-spacing: 0; }
+:lang(ar) .kicker, :lang(ar) .eyebrow, :lang(ar) h1, :lang(ar) h2, :lang(ar) h3 { letter-spacing: 0; }
 
 /* ---------- Right to left ---------- */
 [dir="rtl"] .progress { transform-origin: 100% 50%; }
@@ -368,19 +337,11 @@ footer a:hover { color: var(--text); }
 [dir="rtl"] .more:hover::after { transform: translateX(-4px); }
 [dir="rtl"] .card:hover i { transform: translateX(-5px); }
 [dir="rtl"] .facts { text-align: right; }
-/* The sideways gallery always runs left to right; its text still reads right to left. */
-[dir="rtl"] .hs-track { direction: ltr; }
-[dir="rtl"] .hs-intro, [dir="rtl"] .hs-item figcaption { direction: rtl; }
-@media (min-width: 860px) {
-  [dir="rtl"].motion .step { transform: translateX(10px); }
-  [dir="rtl"].motion .step.is-on { transform: none; }
-}
 
 @keyframes rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
 @keyframes rise-big { from { opacity: 0; transform: translateY(80px); } to { opacity: 1; transform: none; } }
 @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
 @keyframes drift { from { transform: translate3d(-6%, 0, 0) scale(1); } to { transform: translate3d(6%, 4%, 0) scale(1.12); } }
-@keyframes cue { 0% { transform: scaleY(0); opacity: 1; } 60% { transform: scaleY(1); opacity: 1; } 100% { transform: scaleY(1); opacity: 0; } }
 @keyframes ring { 0% { transform: scale(1); opacity: .7; } 100% { transform: scale(1.7); opacity: 0; } }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
@@ -432,7 +393,6 @@ footer a:hover { color: var(--text); }
       <div class="phone right"><img src="../img/goals.webp" alt=""></div>
       <div class="phone center"><img class="only-dark" src="../img/home_dark.webp" alt=""><img class="only-light" src="../img/home.webp" alt=""></div>
     </div>
-    <div class="cue" aria-hidden="true">Desliza<i></i></div>
   </div>
 </section>
 
@@ -444,103 +404,60 @@ footer a:hover { color: var(--text); }
       <p>Un presupuesto que se mantiene simple y tranquilo, para que de verdad lo sigas usando.</p>
     </div>
 
-    <div class="story">
-      <div class="steps">
-        <article class="step is-on">
-          <span class="kicker">De un vistazo</span>
-          <h3>Saldo, presupuesto y un gasto diario seguro.</h3>
-          <p class="short">Una pantalla tranquila te dice cómo va el mes.</p>
-          <ul>
-            <li>Saldo disponible, ingresos y gastos del mes</li>
-            <li>Cuánto te queda del presupuesto y un monto seguro para gastar por día</li>
-            <li>Una racha de registro con días de descanso, para que un día perdido no lo reinicie todo</li>
-          </ul>
-          <div class="shot"><div class="phone"><img src="../img/home.webp" alt="Pantalla de inicio de Pocket Glance con el saldo disponible, una racha y el presupuesto mensual" loading="lazy"></div></div>
-        </article>
-        <article class="step">
-          <span class="kicker">Suscripciones</span>
-          <h3>Descubre cuánto cuestan realmente tus suscripciones.</h3>
-          <p class="short">Streaming, teléfono, gimnasio, seguros: todos tus pagos recurrentes en un solo lugar.</p>
-          <ul>
-            <li>El costo total mensual y anual de tus suscripciones</li>
-            <li>Un recordatorio antes de cada renovación, para que nada te sorprenda</li>
-          </ul>
-          <div class="shot"><div class="phone"><img src="../img/subs.webp" alt="Pantalla de suscripciones con el total anual y las próximas renovaciones" loading="lazy"></div></div>
-        </article>
-        <article class="step">
-          <span class="kicker">Registro rápido</span>
-          <h3>Registra gastos en segundos.</h3>
-          <p class="short">Monto, categoría, listo.</p>
-          <ul>
-            <li>Registra para hoy, ayer o cualquier fecha</li>
-            <li>Ingresos además de gastos</li>
-            <li>Tus propias categorías e íconos</li>
-          </ul>
-          <div class="shot"><div class="phone"><img src="../img/add.webp" alt="Agregando una transacción con monto y categoría" loading="lazy"></div></div>
-        </article>
-        <article class="step">
-          <span class="kicker">Análisis</span>
-          <h3>Mira exactamente en qué se fue.</h3>
-          <p class="short">Un desglose claro, y si tus gastos suben o bajan.</p>
-          <ul>
-            <li>Gastos por categoría</li>
-            <li>Tendencias de seis meses</li>
-            <li>Análisis diarios, semanales y anuales con Pro</li>
-          </ul>
-          <div class="shot"><div class="phone"><img src="../img/analytics2.webp" alt="Pantalla de análisis con gastos por categoría" loading="lazy"></div></div>
-        </article>
-        <article class="step">
-          <span class="kicker">Metas de ahorro</span>
-          <h3>Ahorra para lo que más importa.</h3>
-          <p class="short">Un viaje, una laptop, un fondo de emergencia.</p>
-          <ul>
-            <li>Define un objetivo y una fecha opcional</li>
-            <li>Agrega aportes y mira cómo avanza tu progreso</li>
-          </ul>
-          <div class="shot"><div class="phone"><img src="../img/goals.webp" alt="Metas de ahorro con el progreso de cada objetivo" loading="lazy"></div></div>
-        </article>
-        <article class="step">
-          <span class="kicker">Widgets <em class="pro-tag">Pro</em></span>
-          <h3>Tu presupuesto en tu pantalla de inicio.</h3>
-          <p class="short">Presupuesto restante, próximo pago y progreso de tus metas, sin abrir la app.</p>
-          <div class="shot"><div class="phone"><img src="../img/widgets.webp" alt="Pantalla de inicio de Android con los widgets de presupuesto, pagos y metas de Pocket Glance" loading="lazy"></div></div>
-        </article>
-      </div>
-      <div class="device" aria-hidden="true">
-        <div class="device-inner">
-          <div class="phone"><div class="screens">
-            <img class="is-on" src="../img/home.webp" alt="">
-            <img src="../img/subs.webp" alt="" loading="lazy">
-            <img src="../img/add.webp" alt="" loading="lazy">
-            <img src="../img/analytics2.webp" alt="" loading="lazy">
-            <img src="../img/goals.webp" alt="" loading="lazy">
-            <img src="../img/widgets.webp" alt="" loading="lazy">
-          </div></div>
-          <div class="device-foot">
-            <span class="count"><b>01</b> / 06</span>
-            <span class="dots"><span class="is-on"></span><span></span><span></span><span></span><span></span><span></span></span>
-          </div>
-        </div>
-      </div>
+    <div class="features">
+      <article class="feature spot up">
+        <div class="shot"><div class="phone"><img src="../img/home.webp" alt="Pantalla de inicio de Pocket Glance con el saldo disponible, una racha y el presupuesto mensual" loading="lazy"></div></div>
+        <span class="kicker">De un vistazo</span>
+        <h3>Saldo, presupuesto y un gasto diario seguro.</h3>
+        <p>Una pantalla tranquila te dice cómo va el mes.</p>
+      </article>
+      <article class="feature spot up d1">
+        <div class="shot"><div class="phone"><img src="../img/subs.webp" alt="Pantalla de suscripciones con el total anual y las próximas renovaciones" loading="lazy"></div></div>
+        <span class="kicker">Suscripciones</span>
+        <h3>Descubre cuánto cuestan realmente tus suscripciones.</h3>
+        <p>Streaming, teléfono, gimnasio, seguros: todos tus pagos recurrentes en un solo lugar.</p>
+      </article>
+      <article class="feature spot up d2">
+        <div class="shot"><div class="phone"><img src="../img/add.webp" alt="Agregando una transacción con monto y categoría" loading="lazy"></div></div>
+        <span class="kicker">Registro rápido</span>
+        <h3>Registra gastos en segundos.</h3>
+        <p>Monto, categoría, listo.</p>
+      </article>
+      <article class="feature spot up">
+        <div class="shot"><div class="phone"><img src="../img/analytics2.webp" alt="Pantalla de análisis con gastos por categoría" loading="lazy"></div></div>
+        <span class="kicker">Análisis</span>
+        <h3>Mira exactamente en qué se fue.</h3>
+        <p>Un desglose claro, y si tus gastos suben o bajan.</p>
+      </article>
+      <article class="feature spot up d1">
+        <div class="shot"><div class="phone"><img src="../img/goals.webp" alt="Metas de ahorro con el progreso de cada objetivo" loading="lazy"></div></div>
+        <span class="kicker">Metas de ahorro</span>
+        <h3>Ahorra para lo que más importa.</h3>
+        <p>Un viaje, una laptop, un fondo de emergencia.</p>
+      </article>
+      <article class="feature spot up d2">
+        <div class="shot"><div class="phone"><img src="../img/widgets.webp" alt="Pantalla de inicio de Android con los widgets de presupuesto, pagos y metas de Pocket Glance" loading="lazy"></div></div>
+        <span class="kicker">Widgets <em class="pro-tag">Pro</em></span>
+        <h3>Tu presupuesto en tu pantalla de inicio.</h3>
+        <p>Presupuesto restante, próximo pago y progreso de tus metas, sin abrir la app.</p>
+      </article>
     </div>
   </div>
 
   <section class="hs section" id="gallery" aria-label="Pantallas de la app">
-    <div class="hs-pin">
-      <div class="hs-track">
-        <div class="hs-intro">
-          <span class="kicker">Cada pantalla</span>
-          <h2>Tranquila, <span class="gold">de día y de noche.</span></h2>
-          <p>Tema claro para el día, oscuro para la noche. Cada pantalla pensada para leerse de un vistazo.</p>
-        </div>
-        <figure class="hs-item"><div class="phone"><img src="../img/home.webp" alt="Pantalla de inicio con el tema claro" loading="lazy"></div><figcaption><b>Inicio</b><span>Claro</span></figcaption></figure>
-        <figure class="hs-item"><div class="phone"><img src="../img/home_dark.webp" alt="Pantalla de inicio con el tema oscuro" loading="lazy"></div><figcaption><b>Inicio</b><span>Oscuro</span></figcaption></figure>
-        <figure class="hs-item"><div class="phone"><img src="../img/subs.webp" alt="Suscripciones" loading="lazy"></div><figcaption><b>Suscripciones</b><span>Cada renovación, con anticipación</span></figcaption></figure>
-        <figure class="hs-item"><div class="phone"><img src="../img/add.webp" alt="Registro rápido" loading="lazy"></div><figcaption><b>Registro rápido</b><span>Monto, categoría, listo</span></figcaption></figure>
-        <figure class="hs-item"><div class="phone"><img src="../img/analytics2.webp" alt="Análisis" loading="lazy"></div><figcaption><b>Análisis</b><span>En qué se fue</span></figcaption></figure>
-        <figure class="hs-item"><div class="phone"><img src="../img/goals.webp" alt="Metas de ahorro" loading="lazy"></div><figcaption><b>Metas</b><span>Mira cómo se llenan</span></figcaption></figure>
-        <figure class="hs-item"><div class="phone"><img src="../img/widgets.webp" alt="Widgets de la pantalla de inicio" loading="lazy"></div><figcaption><b>Widgets</b><span>Incluidos en Pro</span></figcaption></figure>
-      </div>
+    <div class="wrap center-head up">
+      <span class="kicker">Cada pantalla</span>
+      <h2>Tranquila, <span class="gold">de día y de noche.</span></h2>
+      <p>Tema claro para el día, oscuro para la noche. Cada pantalla pensada para leerse de un vistazo.</p>
+    </div>
+    <div class="hs-row" tabindex="0">
+      <figure class="hs-item"><div class="phone"><img src="../img/home.webp" alt="Pantalla de inicio con el tema claro" loading="lazy"></div><figcaption><b>Inicio</b><span>Claro</span></figcaption></figure>
+      <figure class="hs-item"><div class="phone"><img src="../img/home_dark.webp" alt="Pantalla de inicio con el tema oscuro" loading="lazy"></div><figcaption><b>Inicio</b><span>Oscuro</span></figcaption></figure>
+      <figure class="hs-item"><div class="phone"><img src="../img/subs.webp" alt="Suscripciones" loading="lazy"></div><figcaption><b>Suscripciones</b><span>Cada renovación, con anticipación</span></figcaption></figure>
+      <figure class="hs-item"><div class="phone"><img src="../img/add.webp" alt="Registro rápido" loading="lazy"></div><figcaption><b>Registro rápido</b><span>Monto, categoría, listo</span></figcaption></figure>
+      <figure class="hs-item"><div class="phone"><img src="../img/analytics2.webp" alt="Análisis" loading="lazy"></div><figcaption><b>Análisis</b><span>En qué se fue</span></figcaption></figure>
+      <figure class="hs-item"><div class="phone"><img src="../img/goals.webp" alt="Metas de ahorro" loading="lazy"></div><figcaption><b>Metas</b><span>Mira cómo se llenan</span></figcaption></figure>
+      <figure class="hs-item"><div class="phone"><img src="../img/widgets.webp" alt="Widgets de la pantalla de inicio" loading="lazy"></div><figcaption><b>Widgets</b><span>Incluidos en Pro</span></figcaption></figure>
     </div>
   </section>
 
@@ -678,7 +595,7 @@ La Política de privacidad, los Términos y la página para eliminar datos está
     el.style.setProperty("--my", (e.clientY - r.top) + "px");
   }, { passive: true });
 
-  // Scroll scenes. One rAF loop: the hero (with its dust) animates every
+  // Motion. One rAF loop: the hero dust animates every
   // frame while it is on screen; everything else updates only when the page has scrolled.
   (function () {
     var root = document.documentElement;
@@ -687,7 +604,6 @@ La Política de privacidad, los Términos y la página para eliminar datos está
     function $$(s) { return Array.prototype.slice.call(document.querySelectorAll(s)); }
     function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
     function lerp(a, b, t) { return a + (b - a) * t; }
-    function ease(t) { return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2; }
 
     // Fade-up on entry, and the count-up numbers.
     function countUp(el) {
@@ -710,112 +626,49 @@ La Política de privacidad, los Términos y la página para eliminar datos está
     $$(".up").forEach(function (el) { io.observe(el); });
     $$(".stat b[data-to]").forEach(function (b) { b.textContent = b.dataset.from; });
 
-    var hero = $(".hero"), copy = $(".hero-copy"), cue = $(".cue");
-    var cPh = $(".stage .center"), lPh = $(".stage .left"), rPh = $(".stage .right");
-    var canvas = $("#dust"), ctx = canvas.getContext("2d");
-    var steps = $$(".step"), screens = $$(".device .screens img"), dots = $$(".dots span");
-    var count = $(".count b");
-    var hs = $(".hs"), track = $(".hs-track"), items = $$(".hs-item");
+    var pin = $(".hero-pin"), canvas = $("#dust"), ctx = canvas.getContext("2d");
     var plate = $(".plate"), bar = $(".progress");
-    var vw, vh, M = {}, active = 0, dirty = true;
+    var vh, cw, ch, dirty = true;
     var dpr = Math.min(window.devicePixelRatio || 1, 2), motes = [];
 
     function measure() {
-      vw = root.clientWidth; vh = window.innerHeight;
-      M.pw = cPh.offsetWidth; M.ph = cPh.offsetHeight;
-      var copyBottom = copy.offsetTop + copy.offsetHeight;
-      // Phones start below the buttons, never over them; on short screens they just peek in.
-      M.y0 = Math.max(copyBottom + 36, vh * 0.5);
-      M.y1 = 52 + (vh - 52 - M.ph) / 2;
-      M.spread = Math.min(M.pw * 0.82, vw * 0.3);
-      M.heroRange = hero.offsetHeight - vh;
-      // Sideways gallery: tall enough that scrolling down moves the whole track across.
-      M.trackW = track.scrollWidth;
-      hs.style.height = (Math.max(0, M.trackW - vw) + vh) + "px";
-      M.itemC = items.map(function (it) { return it.offsetLeft + it.offsetWidth / 2; });
-      // Dust canvas.
-      canvas.width = Math.round(vw * dpr); canvas.height = Math.round(vh * dpr);
+      vh = window.innerHeight;
+      // Dust canvas covers the hero.
+      cw = pin.offsetWidth; ch = pin.offsetHeight;
+      canvas.width = Math.round(cw * dpr); canvas.height = Math.round(ch * dpr);
       if (!motes.length) {
-        var n = vw < 700 ? 40 : 80;
+        var n = cw < 700 ? 40 : 80;
         for (var i = 0; i < n; i++) motes.push({ x: Math.random(), y: Math.random(), r: 0.5 + Math.random() * 1.8, s: 0.004 + Math.random() * 0.018, z: 0.3 + Math.random() * 0.7, ph: Math.random() * 6.28 });
       }
       dirty = true;
     }
 
-    function drawDust(t, fade) {
+    // Gold dust drifting up behind the hero, drawn only while the hero is on screen.
+    function drawDust(t) {
+      if (pin.getBoundingClientRect().bottom <= 0) return;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      ctx.clearRect(0, 0, vw, vh);
-      if (fade <= 0) return;
+      ctx.clearRect(0, 0, cw, ch);
       var rgb = getComputedStyle(root).getPropertyValue("--dust").trim();
       motes.forEach(function (m) {
         m.y -= m.s * 0.02 * m.z; if (m.y < -0.05) { m.y = 1.05; m.x = Math.random(); }
-        var x = (m.x + Math.sin(t * 0.0003 + m.ph) * 0.01) * vw;
-        var y = m.y * vh;
-        var a = (0.25 + 0.55 * (0.5 + 0.5 * Math.sin(t * 0.0015 + m.ph))) * m.z * fade;
+        var x = (m.x + Math.sin(t * 0.0003 + m.ph) * 0.01) * cw;
+        var y = m.y * ch;
+        var a = (0.25 + 0.55 * (0.5 + 0.5 * Math.sin(t * 0.0015 + m.ph))) * m.z;
         ctx.beginPath(); ctx.arc(x, y, m.r * m.z, 0, 6.2832);
         ctx.fillStyle = "rgba(" + rgb + "," + a.toFixed(3) + ")"; ctx.fill();
       });
     }
 
-    function heroFrame(t) {
-      var r = hero.getBoundingClientRect();
-      if (r.bottom <= 0) return false;
-      var p = clamp(-r.top / M.heroRange, 0, 1);
-      // The phones stay flat and upright: the middle one slides up to the centre of the
-      // screen while the side ones slide out and fade. No tilt, no zoom.
-      var a = ease(clamp(p / 0.8, 0, 1));
-      var y = lerp(M.y0, M.y1, a);
-      cPh.style.transform = "translate3d(0," + y.toFixed(1) + "px,0)";
-      var sx = M.spread + a * vw * 0.35, so = clamp(1 - a * 1.3, 0, 1);
-      lPh.style.transform = "translate3d(" + (-sx).toFixed(1) + "px," + (y + 64).toFixed(1) + "px,0) scale(.86)";
-      rPh.style.transform = "translate3d(" + sx.toFixed(1) + "px," + (y + 64).toFixed(1) + "px,0) scale(.86)";
-      lPh.style.opacity = rPh.style.opacity = so;
-      copy.style.opacity = clamp(1 - a * 1.6, 0, 1);
-      copy.style.transform = "translate3d(0," + (-a * 90).toFixed(1) + "px,0) scale(" + (1 - a * 0.06).toFixed(4) + ")";
-      copy.style.filter = a > 0.01 ? "blur(" + (a * 8).toFixed(1) + "px)" : "";
-      cue.style.opacity = clamp(1 - p * 8, 0, 1);
-      drawDust(t, 1);
-      return true;
-    }
-
-    function rest() {
-      var y = window.scrollY;
-      bar.style.transform = "scaleX(" + clamp(y / (document.documentElement.scrollHeight - vh), 0, 1).toFixed(4) + ")";
-
-      // Story: nearest step to the middle drives the sticky phone.
-      var best = 0, bd = Infinity;
-      steps.forEach(function (s, i) {
-        var r = s.getBoundingClientRect(), d = r.top + r.height / 2 - vh / 2;
-        if (Math.abs(d) < bd) { bd = Math.abs(d); best = i; }
-      });
-      if (best !== active) {
-        steps[active].classList.remove("is-on"); steps[best].classList.add("is-on");
-        screens[active].classList.remove("is-on"); screens[best].classList.add("is-on");
-        dots[active].classList.remove("is-on"); dots[best].classList.add("is-on");
-        count.textContent = ("0" + (best + 1)).slice(-2);
-        active = best;
-      }
-
-      // Sideways gallery.
-      var hr = hs.getBoundingClientRect();
-      if (hr.top < vh && hr.bottom > 0) {
-        var hp = clamp(-hr.top / (hr.height - vh), 0, 1), shift = hp * Math.max(0, M.trackW - vw);
-        track.style.transform = "translate3d(" + (-shift).toFixed(1) + "px,0,0)";
-        items.forEach(function (it, i) {
-          var d = clamp((M.itemC[i] - shift - vw / 2) / vw, -1, 1), ad = Math.abs(d);
-          it.firstElementChild.style.transform = "scale(" + (1 - ad * 0.16).toFixed(4) + ")";
-          it.style.opacity = (1 - ad * 0.55).toFixed(3);
-        });
-      }
-
+    function onScroll() {
+      bar.style.transform = "scaleX(" + clamp(window.scrollY / (document.documentElement.scrollHeight - vh), 0, 1).toFixed(4) + ")";
       // Privacy panel opens to full width.
       var pr = plate.getBoundingClientRect();
       plate.style.setProperty("--pp", clamp((vh - pr.top) / (vh * 0.8), 0, 1).toFixed(4));
     }
 
     function loop(t) {
-      var heroOn = heroFrame(t);
-      if (dirty) { rest(); dirty = false; }
+      drawDust(t);
+      if (dirty) { onScroll(); dirty = false; }
       requestAnimationFrame(loop);
     }
 
