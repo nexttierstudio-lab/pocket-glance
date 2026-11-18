@@ -184,19 +184,19 @@ nav a.nav-cta svg { flex: none; }
 .hero-copy > :nth-child(2) { animation-delay: .1s; }
 .hero-copy > :nth-child(3) { animation-delay: .2s; }
 .eyebrow { font: 600 13px/1 var(--ui); letter-spacing: 0.2em; text-transform: uppercase; color: var(--brand); margin: 0 0 20px; }
-h1 { font: 600 clamp(2.6rem, min(10vw, 10.5vh), 6.6rem)/0.98 var(--heading); letter-spacing: -0.02em; margin: 0 auto 26px; max-width: 11ch; text-wrap: balance; }
+h1 { font: 600 clamp(3rem, min(12vw, 13vh), 8.6rem)/0.94 var(--heading); letter-spacing: -0.03em; margin: 0 auto 30px; max-width: 11ch; text-wrap: balance; }
 h1 em { font-style: italic; font-weight: 500; }
-.lead { font: 400 clamp(1.1rem, 2.2vw, 1.4rem)/1.45 var(--ui); margin: 0 auto 30px; max-width: 30em; color: var(--muted); text-wrap: pretty; }
+.lead { font: 400 clamp(1.15rem, 2.2vw, 1.5rem)/1.45 var(--ui); margin: 0 auto 36px; max-width: 26em; color: var(--muted); text-wrap: pretty; }
 .actions { display: flex; flex-wrap: wrap; gap: 6px 18px; justify-content: center; align-items: center; }
 
 /* ---------- Shared section type ---------- */
 main { padding-bottom: 0; }
 .section { padding-top: var(--space-section); }
 .kicker { display: block; font: 600 13px/1 var(--ui); letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-bottom: 18px; }
-h2 { font: 600 clamp(2.3rem, 6vw, 4.2rem)/1.02 var(--heading); letter-spacing: -0.015em; margin: 0 0 22px; text-wrap: balance; }
+h2 { font: 600 clamp(2.5rem, 7vw, 5.4rem)/0.98 var(--heading); letter-spacing: -0.025em; margin: 0 0 22px; text-wrap: balance; }
 h3 { font: 600 clamp(1.9rem, 4vw, 3rem)/1.05 var(--heading); letter-spacing: -0.01em; margin: 0 0 18px; text-wrap: balance; }
 p { margin: 0 0 14px; }
-.center-head { text-align: center; max-width: 40em; margin: 0 auto var(--head-gap); }
+.center-head { text-align: center; max-width: 15em; margin: 0 auto var(--head-gap); }
 .center-head > :last-child { margin-bottom: 0; }
 .center-head p { color: var(--muted); font-size: clamp(1.05rem, 1.8vw, 1.25rem); }
 .motion .up { opacity: 0; transform: translate3d(0, 40px, 0); transition: opacity 1s var(--ease), transform 1s var(--ease); }
@@ -211,19 +211,28 @@ p { margin: 0 0 14px; }
 
 /* ---------- Features: six cards, a screenshot peeking out of each ---------- */
 .features { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); }
+@media (min-width: 900px) {
+  .features { grid-template-columns: repeat(3, 1fr); }
+  .feature.wide { grid-column: span 2; display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 0 var(--tile-pad-x); padding: 0 0 0 calc(var(--tile-pad-x) + 12px); }
+  .feature.wide:last-child { grid-column: 1 / -1; grid-template-columns: 1fr 1.4fr; }
+  .feature.wide .shot { --P: 310px; --H: 380px; order: 2; margin: 0; }
+  .feature.wide .txt { padding: var(--tile-pad-y) 0; }
+  .feature.wide h3 { font-size: clamp(2rem, 3vw, 2.7rem); margin-bottom: 14px; }
+  .feature.wide p { font-size: 1.1rem; max-width: 22em; }
+}
 .feature { background: var(--tile); border-radius: var(--tile-radius); padding: 0 var(--tile-pad-x) var(--tile-pad-y); overflow: hidden; transition: transform .45s var(--ease), box-shadow .45s var(--ease); }
 .feature:hover { transform: translateY(-5px); box-shadow: 0 22px 44px -20px rgba(0, 0, 0, 0.4); }
 .motion .feature.up.in:hover { transform: translateY(-5px); transition-delay: 0s; }
 /* A window onto the phone, centred on the part of the screen the feature is about.
    --x --y --w --h are that part's box as fractions of the 720x1600 capture. */
 .feature .shot {
-  --P: 260px; position: relative; height: 210px; margin: 0 calc(-1 * var(--tile-pad-x)) 24px; overflow: hidden;
+  --P: 260px; --H: 210px; position: relative; height: var(--H); margin: 0 calc(-1 * var(--tile-pad-x)) 24px; overflow: hidden;
   -webkit-mask-image: linear-gradient(transparent, #000 12%, #000 88%, transparent); mask-image: linear-gradient(transparent, #000 12%, #000 88%, transparent);
 }
 .feature .shot .phone {
   position: absolute; width: var(--P); --shadow: none;
   left: calc(50% - var(--P) * (0.027 + 0.946 * (var(--x) + var(--w) / 2)));
-  top: calc(105px - var(--P) * 2.156 * (0.012525 + 0.97495 * (var(--y) + var(--h) / 2)));
+  top: calc(var(--H) / 2 - var(--P) * 2.156 * (0.012525 + 0.97495 * (var(--y) + var(--h) / 2)));
 }
 .feature .shot .phone > img { transition: filter .5s var(--ease); }
 /* The feature's card, cut from the same capture and laid exactly over it. On hover (or, on
@@ -400,41 +409,53 @@ footer .legal-note { flex-basis: 100%; margin: 4px 0 0; }
     </div>
 
     <div class="features">
-      <article class="feature spot up">
+      <article class="feature wide spot up">
         <div class="shot" style="--x:0.0389;--y:0.5900;--w:0.9222;--h:0.1225"><div class="phone"><img src="../img/home.webp" alt="Pantalla de inicio de Pocket Glance con el saldo disponible, una racha y el presupuesto mensual" loading="lazy"><span class="pop" aria-hidden="true"><img src="../img/home.webp" alt="" loading="lazy"></span></div></div>
-        <span class="kicker">De un vistazo</span>
-        <h3>Saldo, presupuesto y un gasto diario seguro.</h3>
-        <p>Una pantalla tranquila te dice cómo va el mes.</p>
+        <div class="txt">
+          <span class="kicker">De un vistazo</span>
+          <h3>Saldo, presupuesto y un gasto diario seguro.</h3>
+          <p>Una pantalla tranquila te dice cómo va el mes.</p>
+        </div>
       </article>
       <article class="feature spot up d1">
         <div class="shot" style="--x:0.0389;--y:0.1113;--w:0.9222;--h:0.1713"><div class="phone"><img src="../img/subs.webp" alt="Pantalla de suscripciones con el total anual y las próximas renovaciones" loading="lazy"><span class="pop" aria-hidden="true"><img src="../img/subs.webp" alt="" loading="lazy"></span></div></div>
-        <span class="kicker">Suscripciones</span>
-        <h3>Descubre cuánto cuestan realmente tus suscripciones.</h3>
-        <p>Streaming, teléfono, gimnasio, seguros: todos tus pagos recurrentes en un solo lugar.</p>
+        <div class="txt">
+          <span class="kicker">Suscripciones</span>
+          <h3>Descubre cuánto cuestan realmente tus suscripciones.</h3>
+          <p>Streaming, teléfono, gimnasio, seguros: todos tus pagos recurrentes en un solo lugar.</p>
+        </div>
       </article>
       <article class="feature spot up d2">
         <div class="shot" style="--x:0.1111;--y:0.1750;--w:0.7778;--h:0.1525"><div class="phone"><img src="../img/add.webp" alt="Agregando una transacción con monto y categoría" loading="lazy"><span class="pop" aria-hidden="true"><img src="../img/add.webp" alt="" loading="lazy"></span></div></div>
-        <span class="kicker">Registro rápido</span>
-        <h3>Registra gastos en segundos.</h3>
-        <p>Monto, categoría, listo.</p>
+        <div class="txt">
+          <span class="kicker">Registro rápido</span>
+          <h3>Registra gastos en segundos.</h3>
+          <p>Monto, categoría, listo.</p>
+        </div>
       </article>
       <article class="feature spot up">
         <div class="shot" style="--x:0.0389;--y:0.1125;--w:0.9222;--h:0.1775"><div class="phone"><img src="../img/analytics2.webp" alt="Pantalla de análisis con gastos por categoría" loading="lazy"><span class="pop" aria-hidden="true"><img src="../img/analytics2.webp" alt="" loading="lazy"></span></div></div>
-        <span class="kicker">Análisis</span>
-        <h3>Mira exactamente en qué se fue.</h3>
-        <p>Un desglose claro, y si tus gastos suben o bajan.</p>
+        <div class="txt">
+          <span class="kicker">Análisis</span>
+          <h3>Mira exactamente en qué se fue.</h3>
+          <p>Un desglose claro, y si tus gastos suben o bajan.</p>
+        </div>
       </article>
       <article class="feature spot up d1">
         <div class="shot" style="--x:0.0389;--y:0.1113;--w:0.9222;--h:0.1975"><div class="phone"><img src="../img/goals.webp" alt="Metas de ahorro con el progreso de cada objetivo" loading="lazy"><span class="pop" aria-hidden="true"><img src="../img/goals.webp" alt="" loading="lazy"></span></div></div>
-        <span class="kicker">Metas de ahorro</span>
-        <h3>Ahorra para lo que más importa.</h3>
-        <p>Un viaje, una laptop, un fondo de emergencia.</p>
+        <div class="txt">
+          <span class="kicker">Metas de ahorro</span>
+          <h3>Ahorra para lo que más importa.</h3>
+          <p>Un viaje, una laptop, un fondo de emergencia.</p>
+        </div>
       </article>
-      <article class="feature spot up d2">
+      <article class="feature wide spot up d2">
         <div class="shot" style="--r:16px;--x:0.5194;--y:0.4025;--w:0.4361;--h:0.2313"><div class="phone"><img src="../img/widgets.webp" alt="Pantalla de inicio de Android con los widgets de presupuesto, pagos y metas de Pocket Glance" loading="lazy"><span class="pop" aria-hidden="true"><img src="../img/widgets.webp" alt="" loading="lazy"></span></div></div>
-        <span class="kicker">Widgets <em class="pro-tag">Pro</em></span>
-        <h3>Tu presupuesto en tu pantalla de inicio.</h3>
-        <p>Presupuesto restante, próximo pago y progreso de tus metas, sin abrir la app.</p>
+        <div class="txt">
+          <span class="kicker">Widgets <em class="pro-tag">Pro</em></span>
+          <h3>Tu presupuesto en tu pantalla de inicio.</h3>
+          <p>Presupuesto restante, próximo pago y progreso de tus metas, sin abrir la app.</p>
+        </div>
       </article>
     </div>
   </div>
