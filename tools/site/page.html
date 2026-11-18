@@ -259,14 +259,15 @@ h1 em { font-style: italic; font-weight: 500; }
   .stage .phone { --pw: clamp(170px, min(calc(23 * var(--vw)), calc((100 * var(--vh) - var(--bar-h, 53px) - 150px) / 2.35)), 340px); --gap: clamp(20px, calc(3 * var(--vw)), 40px); }
   /* Every info card on the side of the words: left here, right in Arabic. */
   .lab { --bw: clamp(190px, calc(18 * var(--vw)), 250px); --v: 40px; }
-  [dir="ltr"] .hot .lab { left: 0; --len: calc(var(--pw) * (0.027 + 0.946 * var(--x)) + var(--gap)); }
+  /* The line meets the middle of the info card, so it runs far enough out to keep the card clear of the phone. */
+  [dir="ltr"] .hot .lab { left: 0; --len: calc(var(--pw) * (0.027 + 0.946 * var(--x)) + var(--bw) / 2 + 16px); }
   [dir="ltr"] .hot .ln { right: 0; left: auto; }
   [dir="ltr"] .hot .ln::after { left: 0; right: auto; }
-  [dir="ltr"] .hot .box { right: var(--len); left: auto; }
-  [dir="rtl"] .hot .lab { left: 100%; --len: calc(var(--pw) * (0.973 - 0.946 * (var(--x) + var(--w))) + var(--gap)); }
+  [dir="ltr"] .hot .box { left: calc(-1 * var(--len) - var(--bw) / 2); right: auto; }
+  [dir="rtl"] .hot .lab { left: 100%; --len: calc(var(--pw) * (0.973 - 0.946 * (var(--x) + var(--w))) + var(--bw) / 2 + 16px); }
   [dir="rtl"] .hot .ln { left: 0; right: auto; }
   [dir="rtl"] .hot .ln::after { right: 0; left: auto; }
-  [dir="rtl"] .hot .box { left: var(--len); right: auto; }
+  [dir="rtl"] .hot .box { left: calc(var(--len) - var(--bw) / 2); right: auto; }
 }
 
 /* ---------- Shared section type ---------- */
