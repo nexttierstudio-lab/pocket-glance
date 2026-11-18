@@ -199,44 +199,56 @@ h1 em { font-style: italic; font-weight: 500; }
 .stage { position: relative; z-index: 3; margin: 56px auto 0; padding: 0 var(--gutter); perspective: 1600px; animation: rise-big 1.2s var(--ease) .3s both; }
 .stage { --ry: -20deg; --rx: 10deg; --rz: 3deg; }
 [dir="rtl"] .stage { --ry: 20deg; --rz: -3deg; }
-.stage .phone { --pw: min(220px, calc(56 * var(--vw))); --gap: 12px; width: var(--pw); margin: 0 auto; transform-style: preserve-3d; transform: rotateY(var(--ry)) rotateX(var(--rx)) rotateZ(var(--rz)); }
+.stage .phone { --pw: min(220px, calc(56 * var(--vw))); width: var(--pw); margin: 0 auto; transform-style: preserve-3d; transform: rotateY(var(--ry)) rotateX(var(--rx)) rotateZ(var(--rz)); }
 .stage .phone > img { filter: brightness(.55); }
+/* A real body: twelve copies of the outline stacked behind the screen make the metal edge, so the
+   tilt shows the phone's thickness. The middle one carries the side buttons. */
+.stage .phone { --shadow: none; box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.22); }
+.stage .phone .edge {
+  position: absolute; inset: 0; border-radius: 13.5% / 6.26%; pointer-events: none;
+  background: linear-gradient(100deg, #2a2725, #8d857e 40%, #4a4541 62%, #1c1a19);
+  transform: translateZ(calc(var(--i) * var(--pw) * -0.0072));
+}
+.stage .phone .edge:last-of-type { box-shadow: 0 50px 110px -30px rgba(0, 0, 0, 0.85); }
+.stage .phone .edge.btns::before, .stage .phone .edge.btns::after { content: ""; position: absolute; width: 1.4%; border-radius: 2px; background: linear-gradient(90deg, #6b645e, #2a2725); }
+.stage .phone .edge.btns::before { right: -1.2%; top: 24%; height: 10%; }
+.stage .phone .edge.btns::after { left: -1.2%; top: 19%; height: 16%; }
 .hot { position: absolute; z-index: 2; left: calc(2.7% + 94.6% * var(--x)); top: calc(1.2525% + 97.495% * var(--y)); width: calc(94.6% * var(--w)); height: calc(97.495% * var(--h)); transform-style: preserve-3d; }
 .hot .cut { position: absolute; inset: 0; overflow: hidden; border-radius: var(--r, 9px); transform: translateZ(var(--z, 60px)) scale(1.06); box-shadow: 0 0 0 1px rgba(225, 173, 102, 0.35), 0 40px 60px -20px rgba(0, 0, 0, 0.85); }
 .motion .hot .cut { animation: pop-out 1s var(--ease) both; animation-delay: var(--d, 1s); }
 /* Pointing at a card shows its info card outside the phone, joined to the card by an
-   L-shaped gold line: out sideways past the phone's edge (+ --gap), then up (or down, .dn)
-   by --v. Line and card sit in the popped card's plane; the info card turns to face the reader. */
-.hot:hover { z-index: 5; }
+   L-shaped gold line: out sideways past the phone's edge, then up (or down, .dn) by --v.
+   Only with a mouse to point with, beside the side-by-side phone, and only when the card
+   fits on screen without covering any of the hero's words (the script marks .no-room).
+   On phones, tablets and narrow windows the picture speaks for itself. */
+.lab { display: none; }
+@media (min-width: 768px) and (hover: hover) and (pointer: fine) {
+  .lab { display: block; }
+  .hot:hover { z-index: 5; }
+  .hot.no-room .lab { display: none; }
+}
 .lab { position: absolute; top: 50%; width: 0; height: 0; pointer-events: none; transform: translateZ(var(--z, 60px)); transform-style: preserve-3d; visibility: hidden; transition: visibility .3s; --v: 34px; --bw: 180px; }
 .hot:hover .lab { visibility: visible; }
-/* Opacity goes on the line and the card, not on .lab: a see-through 3D group is drawn flat. */
-.lab .ln, .lab .box { opacity: 0; transition: opacity .3s var(--ease); }
-.hot:hover .lab .ln, .hot:hover .lab .box { opacity: 1; }
+/* .flat is pinned to the card's edge and undoes the phone's tilt, so the L-shaped line and the
+   info card inside it are drawn flat to the screen: true right angles, nothing slanted.
+   It holds no 3D of its own, so fading it in keeps it flat from the first frame. */
+.lab .flat {
+  position: absolute; left: 0; top: 0; width: 0; height: 0; transform-origin: 0 0;
+  transform: rotateZ(calc(-1 * var(--rz))) rotateX(calc(-1 * var(--rx))) rotateY(calc(-1 * var(--ry)));
+  opacity: 0; transition: opacity .3s var(--ease);
+}
+.hot:hover .lab .flat { opacity: 1; }
 .lab .ln { position: absolute; top: 0; height: 1.5px; width: var(--len); background: var(--accent); }
 .lab .ln::after { content: ""; position: absolute; bottom: 0; width: 1.5px; height: var(--v); background: var(--accent); }
 .hot.dn .lab .ln::after { bottom: auto; top: 0; }
 .lab .box {
   position: absolute; bottom: var(--v); width: var(--bw); padding: 12px 14px; border-radius: 14px; text-align: start;
   background: var(--page); color: var(--text); box-shadow: inset 0 0 0 1px var(--accent), 0 24px 44px -18px rgba(0, 0, 0, 0.8);
-  --oy: 100%; transform-origin: var(--ox) var(--oy);
-  /* On narrow screens it lies over the phone, so it is lifted above every card. */
-  transform: translateZ(60px) rotateZ(calc(-1 * var(--rz))) rotateX(calc(-1 * var(--rx))) rotateY(calc(-1 * var(--ry)));
 }
-.hot.dn .lab .box { bottom: auto; top: var(--v); --oy: 0%; }
+.hot.dn .lab .box { bottom: auto; top: var(--v); }
 [dir="rtl"] .lab .box { direction: rtl; }
 .box strong { display: block; font: 600 0.95rem/1.25 var(--ui); margin-bottom: 3px; }
 .box span { display: block; color: var(--muted); font-size: 0.84rem; line-height: 1.4; }
-/* Which side of the phone: .sl left, .sr right (on wide screens, the side of the words).
-   Narrow screens have no room beside the phone, so the info card turns back over it. */
-.hot.sl .lab { left: 0; --len: calc(var(--pw) * (0.027 + 0.946 * var(--x)) + var(--gap)); }
-.hot.sl .ln { right: 0; left: auto; }
-.hot.sl .ln::after { left: 0; right: auto; }
-.hot.sl .box { left: calc(-1 * var(--len)); right: auto; --ox: 0%; }
-.hot.sr .lab { left: 100%; --len: calc(var(--pw) * (0.973 - 0.946 * (var(--x) + var(--w))) + var(--gap)); }
-.hot.sr .ln { left: 0; right: auto; }
-.hot.sr .ln::after { right: 0; left: auto; }
-.hot.sr .box { left: calc(var(--len) - var(--bw)); right: auto; --ox: 100%; }
 .hot .cut img { position: absolute; max-width: none; width: calc(100% / var(--w)); height: calc(100% / var(--h)); left: calc(-100% * var(--x) / var(--w)); top: calc(-100% * var(--y) / var(--h)); }
 @media (min-width: 768px) {
   /* Side by side: the words on one side, the phone on the other, tilted further toward them.
@@ -250,19 +262,18 @@ h1 em { font-style: italic; font-weight: 500; }
   .stage { margin: 0; padding: 0 clamp(12px, calc(4 * var(--vw)), 60px); }
   .stage { --ry: -30deg; --rx: 12deg; --rz: 5deg; }
   [dir="rtl"] .stage { --ry: 30deg; --rz: -5deg; }
-  .stage .phone { --pw: clamp(170px, min(calc(23 * var(--vw)), calc((100 * var(--vh) - var(--bar-h, 53px) - 150px) / 2.35)), 340px); --gap: clamp(20px, calc(3 * var(--vw)), 40px); }
+  .stage .phone { --pw: clamp(170px, min(calc(23 * var(--vw)), calc((100 * var(--vh) - var(--bar-h, 53px) - 150px) / 2.35)), 340px); }
   /* Every info card on the side of the words: left here, right in Arabic. */
   .lab { --bw: clamp(190px, calc(18 * var(--vw)), 250px); --v: 40px; }
-  /* Out beside the phone nothing overlaps it, so it stays in the card's plane and touches its line. */
-  .lab .box { transform: rotateZ(calc(-1 * var(--rz))) rotateX(calc(-1 * var(--rx))) rotateY(calc(-1 * var(--ry))); }
-  [dir="ltr"] .hot .lab { left: 0; --len: calc(var(--pw) * (0.027 + 0.946 * var(--x)) + var(--gap)); }
+  /* The line meets the middle of the info card, so it runs far enough out to keep the card clear of the phone. */
+  [dir="ltr"] .hot .lab { left: 0; --len: calc(var(--pw) * (0.027 + 0.946 * var(--x)) + var(--bw) / 2 + 16px); }
   [dir="ltr"] .hot .ln { right: 0; left: auto; }
   [dir="ltr"] .hot .ln::after { left: 0; right: auto; }
-  [dir="ltr"] .hot .box { right: var(--len); left: auto; --ox: 100%; }
-  [dir="rtl"] .hot .lab { left: 100%; --len: calc(var(--pw) * (0.973 - 0.946 * (var(--x) + var(--w))) + var(--gap)); }
+  [dir="ltr"] .hot .box { left: calc(-1 * var(--len) - var(--bw) / 2); right: auto; }
+  [dir="rtl"] .hot .lab { left: 100%; --len: calc(var(--pw) * (0.973 - 0.946 * (var(--x) + var(--w))) + var(--bw) / 2 + 16px); }
   [dir="rtl"] .hot .ln { left: 0; right: auto; }
   [dir="rtl"] .hot .ln::after { right: 0; left: auto; }
-  [dir="rtl"] .hot .box { left: var(--len); right: auto; --ox: 0%; }
+  [dir="rtl"] .hot .box { left: calc(var(--len) - var(--bw) / 2); right: auto; }
 }
 
 /* ---------- Shared section type ---------- */
@@ -491,11 +502,12 @@ footer .legal-note { flex-basis: 100%; margin: 4px 0 0; }
     </div>
     <div class="stage">
       <div class="phone">
+        <span class="edge" style="--i:1" aria-hidden="true"></span><span class="edge" style="--i:2" aria-hidden="true"></span><span class="edge" style="--i:3" aria-hidden="true"></span><span class="edge" style="--i:4" aria-hidden="true"></span><span class="edge" style="--i:5" aria-hidden="true"></span><span class="edge btns" style="--i:6" aria-hidden="true"></span><span class="edge" style="--i:7" aria-hidden="true"></span><span class="edge" style="--i:8" aria-hidden="true"></span><span class="edge" style="--i:9" aria-hidden="true"></span><span class="edge" style="--i:10" aria-hidden="true"></span><span class="edge" style="--i:11" aria-hidden="true"></span><span class="edge" style="--i:12" aria-hidden="true"></span>
         <img class="themed" src="img/home_dark.webp" data-light="img/home.webp" alt="Pocket Glance home screen with the balance, a streak, the monthly budget and the add button" width="720" height="1600">
-        <span class="hot sl dn" style="--x:0.0417;--y:0.1469;--w:0.9167;--h:0.2563;--z:70px;--d:1s" aria-hidden="true"><span class="cut"><img class="themed" src="img/home_dark.webp" data-light="img/home.webp" alt=""></span><span class="lab"><i class="ln"></i><span class="box"><strong>Your balance at a glance</strong><span>What you have now, with this month's income and spending.</span></span></span></span>
-        <span class="hot sr" style="--x:0.0417;--y:0.4206;--w:0.9167;--h:0.1019;--z:45px;--d:1.2s" aria-hidden="true"><span class="cut"><img class="themed" src="img/home_dark.webp" data-light="img/home.webp" alt=""></span><span class="lab"><i class="ln"></i><span class="box"><strong>A streak that keeps you going</strong><span>Log a little each day. Rest days are saved for you.</span></span></span></span>
-        <span class="hot sl" style="--x:0.0417;--y:0.5875;--w:0.9167;--h:0.1263;--z:60px;--d:1.4s" aria-hidden="true"><span class="cut"><img class="themed" src="img/home_dark.webp" data-light="img/home.webp" alt=""></span><span class="lab"><i class="ln"></i><span class="box"><strong>A safe daily spend</strong><span>The budget left this month, and how much you can spend each day.</span></span></span></span>
-        <span class="hot sr" style="--x:0.7958;--y:0.8819;--w:0.1694;--h:0.0763;--r:50%;--z:60px;--d:1.6s" aria-hidden="true"><span class="cut"><img class="themed" src="img/home_dark.webp" data-light="img/home.webp" alt=""></span><span class="lab"><i class="ln"></i><span class="box"><strong>Add in seconds</strong><span>One tap to log an expense or income.</span></span></span></span>
+        <span class="hot sl dn" style="--x:0.0417;--y:0.1469;--w:0.9167;--h:0.2563;--z:70px;--d:1s" aria-hidden="true"><span class="cut"><img class="themed" src="img/home_dark.webp" data-light="img/home.webp" alt=""></span><span class="lab"><span class="flat"><i class="ln"></i><span class="box"><strong>Your balance at a glance</strong><span>What you have now, with this month's income and spending.</span></span></span></span></span>
+        <span class="hot sr" style="--x:0.0417;--y:0.4206;--w:0.9167;--h:0.1019;--z:45px;--d:1.2s" aria-hidden="true"><span class="cut"><img class="themed" src="img/home_dark.webp" data-light="img/home.webp" alt=""></span><span class="lab"><span class="flat"><i class="ln"></i><span class="box"><strong>A streak that keeps you going</strong><span>Log a little each day. Rest days are saved for you.</span></span></span></span></span>
+        <span class="hot sl" style="--x:0.0417;--y:0.5875;--w:0.9167;--h:0.1263;--z:60px;--d:1.4s" aria-hidden="true"><span class="cut"><img class="themed" src="img/home_dark.webp" data-light="img/home.webp" alt=""></span><span class="lab"><span class="flat"><i class="ln"></i><span class="box"><strong>A safe daily spend</strong><span>The budget left this month, and how much you can spend each day.</span></span></span></span></span>
+        <span class="hot sr" style="--x:0.7958;--y:0.8819;--w:0.1694;--h:0.0763;--r:50%;--z:60px;--d:1.6s" aria-hidden="true"><span class="cut"><img class="themed" src="img/home_dark.webp" data-light="img/home.webp" alt=""></span><span class="lab"><span class="flat"><i class="ln"></i><span class="box"><strong>Add in seconds</strong><span>One tap to log an expense or income.</span></span></span></span></span>
       </div>
     </div>
   </div>
@@ -672,6 +684,35 @@ The Privacy Policy, Terms and data deletion pages are in English.  </div>
       });
     }
     themeShots();
+  })();
+
+  // Hero info cards: before one shows, check it fits on screen and covers none of the hero's
+  // words or buttons; if it would, it stays hidden (.no-room) and the picture speaks for itself.
+  (function () {
+    var bits = document.querySelectorAll(".hero-copy > *");
+    function overlaps(a, b) { return a.left < b.right && b.left < a.right && a.top < b.bottom && b.top < a.bottom; }
+    function wordRects() {
+      var out = [];
+      bits.forEach(function (el) {
+        var r = document.createRange();
+        r.selectNodeContents(el);
+        Array.prototype.forEach.call(r.getClientRects(), function (x) { out.push(x); });
+        el.querySelectorAll("a").forEach(function (a) { out.push(a.getBoundingClientRect()); });
+      });
+      return out;
+    }
+    document.querySelectorAll(".stage .hot").forEach(function (h) {
+      var box = h.querySelector(".box");
+      if (!box) return;
+      h.addEventListener("pointerenter", function () {
+        h.classList.remove("no-room");
+        var b = box.getBoundingClientRect();
+        if (!b.width) return;
+        var top = document.querySelector(".bar").getBoundingClientRect().bottom;
+        var off = b.left < 0 || b.right > window.innerWidth || b.top < top || b.bottom > window.innerHeight;
+        h.classList.toggle("no-room", off || wordRects().some(function (w) { return overlaps(b, w); }));
+      });
+    });
   })();
 
   // Pointer spotlight on tiles. Harmless without motion, so it always runs.
