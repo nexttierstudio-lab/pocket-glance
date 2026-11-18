@@ -27,15 +27,15 @@
   <script>
     // Applies a saved light/dark choice before the page paints. Stored in this browser only.
     try { var t = localStorage.getItem("theme"); if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t); } catch (e) {}
-    // Scroll scenes are opt-in: only when scripts run and the visitor has not asked for reduced motion.
+    // Motion is opt-in: only when scripts run and the visitor has not asked for reduced motion.
     if (window.matchMedia && !matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("motion");
   </script>
   <style>
 /* Pocket Glance "Classical" theme, from the app's NTTokens.kt, shared with privacy.html and terms.html:
    Paper (light) and Ink (dark) palettes, Bodoni Moda headings, Inter UI text.
    The fonts are the app's own files, served from fonts/, so nothing loads from a third party.
-   Scroll scenes are driven by the script at the end of the page. Without it, or with reduced
-   motion, every section is laid out normally and nothing moves. */
+   Small touches (fade-ups, dust, count-ups) come from the script at the end of the page.
+   Without it, or with reduced motion, everything is simply shown and nothing moves. */
 @font-face { font-family: "Bodoni Moda"; src: url("../fonts/bodoni_moda.ttf") format("truetype"); font-weight: 400 900; font-style: normal; font-display: swap; }
 @font-face { font-family: "Bodoni Moda"; src: url("../fonts/bodoni_moda_italic.ttf") format("truetype"); font-weight: 400 900; font-style: italic; font-display: swap; }
 @font-face { font-family: "Inter"; src: url("../fonts/inter_regular.ttf") format("truetype"); font-weight: 400; font-display: swap; }
@@ -69,7 +69,13 @@
   --heading: "Bodoni Moda", "Bodoni 72", Didot, Georgia, serif;
   --ui: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
-  --pw: min(300px, 62vw, calc((100vh - 130px) / 2.156));
+  /* Spacing scale, used everywhere on the page so sections and tiles line up. */
+  --gutter: 22px;
+  --space-section: clamp(96px, 12vw, 140px);
+  --head-gap: 56px;
+  --tile-radius: 26px;
+  --tile-pad-y: 32px;
+  --tile-pad-x: 28px;
 }
 /* Dark is the default. Light applies only when the visitor picks it with the switch. */
 :root:not([data-theme="light"]) {
@@ -100,6 +106,10 @@
 :root[data-theme="light"] .only-dark { display: none; }
 
 * { box-sizing: border-box; }
+/* Bodoni Moda thins its hairlines and serifs as the type grows (optical size up to 96), until they
+   all but vanish in big headings. Pinning the optical size keeps them visible at every size.
+   !important because every `font:` shorthand on the page resets this property. */
+* { font-variation-settings: "opsz" 24 !important; }
 html { scroll-behavior: smooth; scroll-padding-top: 60px; }
 body {
   margin: 0; background: var(--page); color: var(--text);
@@ -108,7 +118,7 @@ body {
   transition: background-color .35s var(--ease), color .35s var(--ease);
 }
 img { display: block; max-width: 100%; }
-.wrap { max-width: 1080px; margin: 0 auto; padding: 0 22px; }
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 var(--gutter); }
 a:focus-visible, button:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 6px; }
 .gold { background: var(--gold-grad); -webkit-background-clip: text; background-clip: text; color: transparent; padding: 0 0.1em; margin: 0 -0.1em; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
 .text-link { color: var(--link); text-decoration: none; background: linear-gradient(var(--accent), var(--accent)) 0 100% / 100% 1px no-repeat; transition: background-size .3s var(--ease); }
@@ -145,10 +155,10 @@ nav a.nav-cta svg { flex: none; }
 :root:not(.motion) .progress { display: none; }
 
 /* ---------- Buttons ---------- */
-.btn { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; font: 500 16px/1 var(--ui); padding: 16px 26px; border-radius: 999px; transition: transform .35s var(--ease), box-shadow .35s var(--ease), background-color .2s; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; height: 50px; text-decoration: none; font: 500 16px/1 var(--ui); padding: 0 26px; border-radius: 999px; transition: transform .35s var(--ease), box-shadow .35s var(--ease), background-color .2s; }
 .btn-gold { background: var(--accent); color: #fff; box-shadow: 0 14px 34px -14px rgba(160, 111, 36, 0.9); }
 .btn-gold:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 20px 40px -14px rgba(160, 111, 36, 0.95); }
-.more { font: 500 16px/1 var(--ui); color: var(--link); text-decoration: none; display: inline-flex; align-items: center; gap: 4px; padding: 16px 8px; }
+.more { font: 500 16px/1 var(--ui); height: 50px; color: var(--link); text-decoration: none; display: inline-flex; align-items: center; gap: 4px; padding: 0 8px; }
 .more::after { content: "›"; font-size: 1.3em; line-height: 0; transition: transform .3s var(--ease); }
 .more:hover::after { transform: translateX(4px); }
 
@@ -163,65 +173,39 @@ nav a.nav-cta svg { flex: none; }
 .phone .screens img { width: 100%; height: 100%; object-fit: cover; border-radius: inherit; }
 .phone::after { content: ""; position: absolute; inset: 1.2525% 2.7%; border-radius: 11.4% / 5.1%; pointer-events: none; background: linear-gradient(130deg, rgba(255,255,255,0.10), transparent 38%); }
 
-/* ---------- Scene 1: hero. Pinned while the phone stands up and you dive into its screen ---------- */
+/* ---------- Hero: headline and buttons over drifting gold dust ---------- */
 .hero { position: relative; text-align: center; }
-.hero-pin { position: relative; overflow: hidden; padding-top: 96px; }
+/* Fills the first screen under the bar (svh: the height with the phone browser's toolbars showing). */
+.hero-pin { position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: center; min-height: calc(100vh - var(--bar-h, 53px)); min-height: calc(100svh - var(--bar-h, 53px)); padding: 64px 0; }
 .hero-pin::before {
   content: ""; position: absolute; left: 50%; top: 10%; width: 1200px; height: 1000px; margin-left: -600px;
   background: radial-gradient(closest-side, var(--glow), transparent 70%);
   animation: drift 16s ease-in-out infinite alternate; pointer-events: none;
 }
 #dust { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
-.hero-copy { position: relative; z-index: 3; will-change: transform, opacity; }
+.hero-copy { position: relative; z-index: 3; padding: 0 var(--gutter); }
 .hero-copy > * { animation: rise 1s var(--ease) both; }
 .hero-copy > :nth-child(2) { animation-delay: .1s; }
 .hero-copy > :nth-child(3) { animation-delay: .2s; }
-.hero-copy > :nth-child(4) { animation-delay: .3s; }
 .eyebrow { font: 600 13px/1 var(--ui); letter-spacing: 0.2em; text-transform: uppercase; color: var(--brand); margin: 0 0 20px; }
-h1 { font: 600 clamp(2.6rem, min(10vw, 10.5vh), 6.6rem)/0.98 var(--heading); letter-spacing: -0.02em; margin: 0 auto 26px; max-width: 11ch; text-wrap: balance; }
+h1 { font: 600 clamp(3rem, min(12vw, 13vh), 8.6rem)/0.94 var(--heading); letter-spacing: -0.03em; margin: 0 auto 30px; max-width: 11ch; text-wrap: balance; }
 h1 em { font-style: italic; font-weight: 500; }
-.lead { font: 400 clamp(1.1rem, 2.2vw, 1.4rem)/1.45 var(--ui); margin: 0 auto 30px; max-width: 30em; color: var(--muted); text-wrap: pretty; padding: 0 22px; }
+.lead { font: 400 clamp(1.15rem, 2.2vw, 1.5rem)/1.45 var(--ui); margin: 0 auto 36px; max-width: 26em; color: var(--muted); text-wrap: pretty; }
 .actions { display: flex; flex-wrap: wrap; gap: 6px 18px; justify-content: center; align-items: center; }
-.stage { position: relative; height: calc(var(--pw) * 1.75); margin-top: 56px; animation: rise-big 1.3s .25s var(--ease) both; }
-.stage .phone { position: absolute; left: 50%; top: 0; width: var(--pw); margin-left: calc(var(--pw) / -2); will-change: transform; }
-.stage .center { z-index: 2; }
-.stage .left  { top: 70px; transform: translateX(calc(var(--pw) * -0.82)) rotate(-7deg) scale(.86); }
-.stage .right { top: 70px; transform: translateX(calc(var(--pw) * 0.82)) rotate(7deg) scale(.86); }
-.hero-veil { position: absolute; inset: 0; z-index: 4; background: var(--page); opacity: 0; pointer-events: none; }
-.cue { position: absolute; inset-inline-start: max(22px, calc(50vw - 520px)); bottom: 26px; z-index: 5; display: none; flex-direction: column; align-items: center; gap: 10px; font: 500 11px/1 var(--ui); letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
-.cue i { width: 1px; height: 38px; background: linear-gradient(var(--brand), transparent); animation: cue 2.2s var(--ease) infinite; transform-origin: top; }
-.motion .hero { height: 320vh; }
-.motion .hero-pin { position: sticky; top: 0; height: 100vh; padding-top: 0; }
-.motion .hero-copy { padding-top: clamp(84px, 14vh, 140px); }
-.motion .stage { position: absolute; inset: 0; height: auto; margin: 0; animation: fade-in 1.2s .2s var(--ease) both; }
-.motion .stage .phone { transform: none; top: 0; }
-@media (min-width: 700px) { .motion .cue { display: flex; } }
-
-/* ---------- Scene 2: statement. Words light up as you scroll ---------- */
-.statement { position: relative; height: 240vh; }
-.statement-inner { position: sticky; top: 0; height: 100vh; display: grid; place-items: center; }
-.statement p { font: 600 clamp(2rem, 5.4vw, 4rem)/1.12 var(--heading); letter-spacing: -0.01em; max-width: 17ch; margin: 0 auto; text-align: center; text-wrap: balance; }
-.statement .w { display: inline-block; transition: color .35s var(--ease), transform .5s var(--ease), filter .5s var(--ease); }
-.statement em { font-style: normal; color: var(--brand); }
-.motion .statement .w { color: var(--faint); transform: translateY(0.12em); filter: blur(2px); }
-.motion .statement .w.lit { color: var(--text); transform: none; filter: none; }
-.motion .statement .w.lit.g { color: var(--brand); }
-:root:not(.motion) .statement { height: auto; padding: 140px 0 0; }
-:root:not(.motion) .statement-inner { position: static; height: auto; }
 
 /* ---------- Shared section type ---------- */
-main { padding-bottom: 40px; }
-.section { padding: 140px 0 0; }
+main { padding-bottom: 0; }
+.section { padding-top: var(--space-section); }
 .kicker { display: block; font: 600 13px/1 var(--ui); letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-bottom: 18px; }
-h2 { font: 600 clamp(2.3rem, 6vw, 4.2rem)/1.02 var(--heading); letter-spacing: -0.015em; margin: 0 0 22px; text-wrap: balance; }
+h2 { font: 600 clamp(2.4rem, 6vw, 4.6rem)/1 var(--heading); letter-spacing: -0.025em; margin: 0 0 22px; text-wrap: balance; }
 h3 { font: 600 clamp(1.9rem, 4vw, 3rem)/1.05 var(--heading); letter-spacing: -0.01em; margin: 0 0 18px; text-wrap: balance; }
 p { margin: 0 0 14px; }
-.center-head { text-align: center; max-width: 40em; margin: 0 auto 56px; }
+.center-head { text-align: center; max-width: 920px; margin: 0 auto var(--head-gap); }
+.center-head > :last-child { margin-bottom: 0; }
 .center-head p { color: var(--muted); font-size: clamp(1.05rem, 1.8vw, 1.25rem); }
 .motion .up { opacity: 0; transform: translate3d(0, 40px, 0); transition: opacity 1s var(--ease), transform 1s var(--ease); }
 .motion .up.in { opacity: 1; transform: none; }
 .motion .up.d1 { transition-delay: .08s; } .motion .up.d2 { transition-delay: .16s; } .motion .up.d3 { transition-delay: .24s; }
-.motion .card.up.in:hover { transform: translateY(-5px); transition-delay: 0s; }
 .motion .btn-gold.up.in:hover { transform: translateY(-2px) scale(1.02); transition-delay: 0s; }
 
 /* Pointer spotlight on tiles */
@@ -229,55 +213,58 @@ p { margin: 0 0 14px; }
 .spot::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0; transition: opacity .4s var(--ease); background: radial-gradient(360px circle at var(--mx, 50%) var(--my, 50%), var(--spot), transparent 65%); }
 .spot:hover::after { opacity: 1; }
 
-/* ---------- Scene 3: story. Sticky phone, steps scroll past ---------- */
-.story { display: grid; gap: 0; }
-.step { padding: 72px 0; border-top: 1px solid var(--divider); }
-.step:first-child { border-top: 0; }
-.step .short { font: italic 500 clamp(1.15rem, 2vw, 1.4rem)/1.45 var(--heading); color: var(--muted); margin: 0 0 18px; max-width: 26em; }
-.step ul { list-style: none; padding: 0; margin: 0; max-width: 30em; }
-.step li { position: relative; padding-inline-start: 22px; margin: 9px 0; color: var(--muted); }
-.step li::before { content: ""; position: absolute; inset-inline-start: 0; top: 0.66em; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
-.step .shot { max-width: 260px; margin: 36px auto 0; }
-.pro-tag { display: inline-block; font: 600 11px/1 var(--ui); letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); border: 1px solid var(--accent); padding: 6px 10px; border-radius: 999px; vertical-align: middle; margin-left: 6px; font-style: normal; }
-.device { display: none; }
-@media (min-width: 860px) {
-  .motion .story { grid-template-columns: minmax(0, 1fr) 330px; gap: 80px; }
-  .motion .step { min-height: 92vh; display: flex; flex-direction: column; justify-content: center; border-top: 0; padding: 0; opacity: .2; transform: translateX(-10px); transition: opacity .6s var(--ease), transform .8s var(--ease); }
-  .motion .step.is-on { opacity: 1; transform: none; }
-  .motion .step .shot { display: none; }
-  .motion .device { display: block; }
-  .device-inner { position: sticky; top: max(64px, calc(50vh - 380px)); perspective: 1400px; }
-  .device .phone { will-change: transform; }
-  .device .screens img { position: absolute; inset: 0; opacity: 0; transform: scale(1.08); filter: blur(6px); transition: opacity .7s var(--ease), transform 1.1s var(--ease), filter .7s var(--ease); }
-  .device .screens img.is-on { opacity: 1; transform: none; filter: none; }
-  .device-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 22px; padding: 0 6px; }
-  .count { font: 500 13px/1 var(--ui); letter-spacing: 0.12em; color: var(--muted); font-variant-numeric: tabular-nums; }
-  .count b { color: var(--text); font-weight: 600; }
-  .dots { display: flex; gap: 7px; }
-  .dots span { width: 7px; height: 7px; border-radius: 999px; background: var(--faint); transition: width .5s var(--ease), background-color .5s; }
-  .dots span.is-on { width: 26px; background: var(--accent); }
+/* ---------- Features: six cards, a screenshot peeking out of each ---------- */
+.features { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); }
+@media (min-width: 900px) {
+  .features { grid-template-columns: repeat(3, 1fr); }
+  .feature.wide { grid-column: span 2; display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 0 var(--tile-pad-x); padding: 0 0 0 calc(var(--tile-pad-x) + 12px); }
+  .feature.wide:last-child { grid-column: 1 / -1; grid-template-columns: 1fr 1.4fr; }
+  .feature.wide .shot { --P: 310px; --H: 380px; order: 2; margin: 0; }
+  .feature.wide .txt { padding: var(--tile-pad-y) 0; }
+  .feature.wide h3 { font-size: clamp(2rem, 3vw, 2.7rem); margin-bottom: 14px; }
+  .feature.wide p { font-size: 1.1rem; max-width: 22em; }
 }
+.feature { background: var(--tile); border-radius: var(--tile-radius); padding: 0 var(--tile-pad-x) var(--tile-pad-y); overflow: hidden; transition: transform .45s var(--ease), box-shadow .45s var(--ease); }
+.feature:hover { transform: translateY(-5px); box-shadow: 0 22px 44px -20px rgba(0, 0, 0, 0.4); }
+.motion .feature.up.in:hover { transform: translateY(-5px); transition-delay: 0s; }
+/* A window onto the phone, centred on the part of the screen the feature is about.
+   --x --y --w --h are that part's box as fractions of the 720x1600 capture. */
+.feature .shot {
+  --P: 260px; --H: 210px; position: relative; height: var(--H); margin: 0 calc(-1 * var(--tile-pad-x)) 24px; overflow: hidden;
+  -webkit-mask-image: linear-gradient(transparent, #000 12%, #000 88%, transparent); mask-image: linear-gradient(transparent, #000 12%, #000 88%, transparent);
+}
+.feature .shot .phone {
+  position: absolute; width: var(--P); --shadow: none;
+  left: calc(50% - var(--P) * (0.027 + 0.946 * (var(--x) + var(--w) / 2)));
+  top: calc(var(--H) / 2 - var(--P) * 2.156 * (0.012525 + 0.97495 * (var(--y) + var(--h) / 2)));
+}
+.feature .shot .phone > img { transition: filter .5s var(--ease); }
+/* The feature's card, cut from the same capture and laid exactly over it. On hover (or, on
+   touch screens, once the card scrolls into view) it lifts out of the phone toward you. */
+.pop {
+  position: absolute; z-index: 2; overflow: hidden; border-radius: var(--r, 9px); pointer-events: none;
+  left: calc(2.7% + 94.6% * var(--x)); top: calc(1.2525% + 97.495% * var(--y));
+  width: calc(94.6% * var(--w)); height: calc(97.495% * var(--h));
+  transition: transform .55s var(--ease), box-shadow .55s var(--ease);
+}
+.pop img { position: absolute; max-width: none; width: calc(100% / var(--w)); height: calc(100% / var(--h)); left: calc(-100% * var(--x) / var(--w)); top: calc(-100% * var(--y) / var(--h)); }
+.feature:hover .pop, .feature:focus-within .pop { transform: translateY(-6px) scale(1.1); box-shadow: 0 20px 34px -14px rgba(0, 0, 0, 0.6); }
+.feature:hover .shot .phone > img { filter: brightness(.7); }
+@media (hover: none) {
+  .motion .feature.in .pop { transform: translateY(-6px) scale(1.1); box-shadow: 0 20px 34px -14px rgba(0, 0, 0, 0.6); transition-delay: .6s; }
+  .motion .feature.in .shot .phone > img { filter: brightness(.7); transition-delay: .6s; }
+}
+.feature .kicker { margin-bottom: 10px; }
+.feature h3 { font-size: 1.6rem; margin-bottom: 8px; }
+.feature p { color: var(--muted); font-size: 0.97rem; margin: 0; }
+.pro-tag { display: inline-block; font: 600 11px/1 var(--ui); letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); border: 1px solid var(--accent); padding: 5px 9px; border-radius: 999px; vertical-align: middle; margin-inline-start: 6px; font-style: normal; }
 
-/* ---------- Scene 4: sideways gallery with a coverflow tilt ---------- */
-.hs-pin { overflow-x: auto; padding: 40px 0; }
-.hs-track { display: flex; align-items: center; gap: 5vw; padding: 0 8vw; width: max-content; }
-.hs-intro { width: min(460px, 78vw); flex: none; }
-.hs-intro p { color: var(--muted); font-size: clamp(1.05rem, 1.8vw, 1.25rem); }
-.hs-item { margin: 0; flex: none; width: min(clamp(190px, 21vw, 270px), calc((100vh - 220px) / 2.156)); perspective: 1200px; text-align: center; }
-.hs-item .phone { will-change: transform; transform-style: preserve-3d; }
-.hs-item figcaption { margin-top: 22px; }
-.hs-item figcaption b { display: block; font: 600 1.35rem/1.2 var(--heading); }
-.hs-item figcaption span { font-size: 0.9rem; color: var(--muted); }
-.motion .hs { padding-top: 0; margin-top: 80px; }
-.motion .hs-pin { position: sticky; top: 0; height: 100vh; overflow: hidden; display: flex; align-items: center; padding: 52px 0 0; }
-.motion .hs-track { will-change: transform; }
-
-/* ---------- Scene 5: privacy. The panel opens to full width and a lock draws itself ---------- */
-.plate-wrap { padding-top: 140px; }
+/* ---------- Privacy, with the numbers. The panel opens to full width and a lock draws itself ---------- */
+.plate-wrap { padding-top: var(--space-section); }
 .plate {
   --pp: 0;
   position: relative; overflow: hidden; background: #1C1A19; color: var(--plate-text);
-  padding: 130px 0; text-align: center;
+  padding: var(--space-section) 0; text-align: center;
   clip-path: inset(0 calc((1 - var(--pp)) * max(22px, (100vw - 1036px) / 2)) round calc((1 - var(--pp)) * 36px));
 }
 :root:not([data-theme="light"]) .plate { background: #1E1C1B; }
@@ -287,53 +274,36 @@ p { margin: 0 0 14px; }
 .lock * { stroke-dasharray: 1; stroke-dashoffset: calc(1 - var(--pp)); }
 :root:not(.motion) .lock * { stroke-dashoffset: 0; }
 .plate .kicker { color: var(--gold); }
-.plate h2 { max-width: 12ch; margin: 0 auto 22px; }
+.plate h2 { max-width: 16ch; margin: 0 auto var(--head-gap); }
 .plate h2 .gold { background: linear-gradient(100deg, #F3D3A2, #E1AD66 50%, #C48A3A); -webkit-background-clip: text; background-clip: text; color: transparent; }
-.plate .lede { font: 400 clamp(1.05rem, 1.8vw, 1.25rem)/1.5 var(--ui); color: rgba(246, 244, 242, 0.72); max-width: 32em; margin: 0 auto 56px; }
-.facts { display: grid; gap: 1px; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); background: rgba(246, 244, 242, 0.1); border-radius: 20px; overflow: hidden; text-align: start; max-width: 920px; margin: 0 auto 44px; }
-.facts div { background: #1C1A19; padding: 28px 24px; }
+.facts { display: grid; gap: 1px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); background: rgba(246, 244, 242, 0.1); border-radius: var(--tile-radius); overflow: hidden; text-align: start; max-width: 920px; margin: 0 auto 44px; }
+.facts div { background: #1C1A19; padding: var(--tile-pad-y) var(--tile-pad-x); }
 :root:not([data-theme="light"]) .facts div { background: #1E1C1B; }
 .facts b { display: block; font: 600 1.35rem/1.2 var(--heading); margin-bottom: 8px; color: var(--gold); }
+.facts b.num { font-size: clamp(2.8rem, 5vw, 3.6rem); line-height: 1; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
 .facts span { font-size: 0.93rem; line-height: 1.5; color: rgba(246, 244, 242, 0.7); }
 .plate .more { color: var(--gold); }
 .plate .spot::after { background: radial-gradient(300px circle at var(--mx, 50%) var(--my, 50%), rgba(225, 173, 102, 0.14), transparent 65%); }
 
-/* ---------- Numbers ---------- */
-.stats { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
-.stat { background: var(--tile); border-radius: 26px; padding: 34px 28px 30px; }
-.stat b { display: block; font: 600 clamp(4rem, 8vw, 5.6rem)/0.9 var(--heading); letter-spacing: -0.03em; margin-bottom: 14px; font-variant-numeric: tabular-nums; }
-.stat span { display: block; color: var(--muted); font-size: 0.98rem; }
-.world { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; max-width: 760px; margin: 40px auto 0; }
-.world span { border: 1px solid var(--divider); border-radius: 999px; padding: 8px 15px; font-size: 0.92rem; color: var(--muted); }
-
 /* ---------- Free and Pro ---------- */
-.plans { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); max-width: 940px; margin: 0 auto; }
-.plan { background: var(--tile); border-radius: 26px; padding: 40px 34px; }
+.plans { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); max-width: 920px; margin: 0 auto; }
+.plan { background: var(--tile); border-radius: var(--tile-radius); padding: var(--tile-pad-y) var(--tile-pad-x); }
 .plan.pro { background: transparent; }
 .plan.pro::before { content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1px; background: var(--gold-grad); -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; }
-.plan h3 { font-size: 2.2rem; margin-bottom: 8px; }
+.plan h3 { font-size: 2.2rem; margin-bottom: 16px; }
 .plan > p { color: var(--muted); font-size: 0.97rem; margin-bottom: 24px; }
 .plan ul { list-style: none; padding: 0; margin: 0; }
 .plan li { padding-block: 12px; padding-inline: 30px 0; border-top: 1px solid var(--divider); position: relative; font-size: 0.97rem; }
 .plan li::before { content: ""; position: absolute; inset-inline-start: 2px; top: 18px; width: 12px; height: 7px; border-left: 2px solid var(--accent); border-bottom: 2px solid var(--accent); transform: rotate(-45deg); }
 .fine { text-align: center; color: var(--muted); font-size: 0.86rem; max-width: 40em; margin: 26px auto 0; }
 
-/* ---------- Legal cards ---------- */
-.cards { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
-.card { display: block; background: var(--tile); border-radius: 26px; padding: 32px 30px; min-height: 190px; text-decoration: none; color: var(--text); transition: transform .45s var(--ease), box-shadow .45s var(--ease), background-color .35s var(--ease); }
-.card:hover { transform: translateY(-5px); box-shadow: 0 22px 44px -20px rgba(0, 0, 0, 0.4); }
-.card b { display: block; font: 600 1.65rem/1.15 var(--heading); margin-bottom: 10px; }
-.card span { color: var(--muted); font-size: 0.97rem; display: block; }
-.card i { display: inline-block; margin-top: 18px; font-style: normal; font-weight: 500; font-size: 0.92rem; color: var(--link); transition: transform .45s var(--ease); }
-.card:hover i { transform: translateX(5px); }
-
 /* ---------- Closer ---------- */
-.closer { text-align: center; padding: 170px 0 90px; position: relative; }
+.closer { text-align: center; padding: var(--space-section) 0; position: relative; }
 .icon-wrap { position: relative; width: 104px; height: 104px; margin: 0 auto 34px; }
-.icon-wrap img { width: 104px; height: 104px; border-radius: 26px; box-shadow: var(--shadow); position: relative; }
+.icon-wrap img { width: 104px; height: 104px; border-radius: var(--tile-radius); box-shadow: var(--shadow); position: relative; }
 .icon-wrap::before, .icon-wrap::after { content: ""; position: absolute; inset: -2px; border-radius: 30px; border: 1px solid var(--accent); opacity: 0; animation: ring 3.6s var(--ease) infinite; }
 .icon-wrap::after { animation-delay: 1.8s; }
-.closer h2 { max-width: 12ch; margin: 0 auto 18px; }
+.closer h2 { max-width: 16ch; margin: 0 auto 18px; }
 .closer p { color: var(--muted); margin-bottom: 30px; font-size: 1.15rem; }
 
 footer { border-top: 1px solid var(--divider); color: var(--muted); font-size: 0.8rem; padding: 22px 0 40px; }
@@ -352,7 +322,7 @@ footer a:hover { color: var(--text); }
 .lang a:hover { background: var(--bar-chip); }
 .lang a[aria-current="true"] { color: var(--brand); font-weight: 600; }
 .lang a[aria-current="true"]::after { content: "✓"; }
-.legal-note { text-align: center; color: var(--muted); font-size: 0.86rem; margin: 22px auto 0; }
+footer .legal-note { flex-basis: 100%; margin: 4px 0 0; }
 
 /* ---------- Scripts other than Latin ----------
    Bodoni Moda and Inter only cover Latin, so each script falls back to a matching
@@ -369,34 +339,23 @@ footer a:hover { color: var(--text); }
 :lang(ja) { word-break: auto-phrase; }
 :lang(ko) { word-break: keep-all; }
 :lang(hi) h1, :lang(ar) h1 { max-width: 13em; }
-:lang(ja) .statement p, :lang(ko) .statement p, :lang(zh) .statement p { max-width: 13em; line-height: 1.35; }
-:lang(hi) .statement p, :lang(ar) .statement p { line-height: 1.45; }
 /* No italics in scripts that have none */
-:lang(hi) em, :lang(ar) em, :lang(ja) em, :lang(ko) em, :lang(zh) em,
-:lang(hi) .short, :lang(ar) .short, :lang(ja) .short, :lang(ko) .short, :lang(zh) .short { font-style: normal; }
+:lang(hi) em, :lang(ar) em, :lang(ja) em, :lang(ko) em, :lang(zh) em { font-style: normal; }
+
 :lang(ja) .kicker, :lang(ko) .kicker, :lang(zh) .kicker, :lang(hi) .kicker, :lang(ja) .eyebrow, :lang(ko) .eyebrow, :lang(zh) .eyebrow, :lang(hi) .eyebrow { letter-spacing: 0.08em; }
 /* Arabic letters join, so they are never spaced out */
-:lang(ar) .kicker, :lang(ar) .eyebrow, :lang(ar) .cue, :lang(ar) h1, :lang(ar) h2, :lang(ar) h3 { letter-spacing: 0; }
+:lang(ar) .kicker, :lang(ar) .eyebrow, :lang(ar) h1, :lang(ar) h2, :lang(ar) h3 { letter-spacing: 0; }
 
 /* ---------- Right to left ---------- */
 [dir="rtl"] .progress { transform-origin: 100% 50%; }
 [dir="rtl"] .more::after { content: "‹"; }
 [dir="rtl"] .more:hover::after { transform: translateX(-4px); }
-[dir="rtl"] .card:hover i { transform: translateX(-5px); }
 [dir="rtl"] .facts { text-align: right; }
-/* The sideways gallery always runs left to right; its text still reads right to left. */
-[dir="rtl"] .hs-track { direction: ltr; }
-[dir="rtl"] .hs-intro, [dir="rtl"] .hs-item figcaption { direction: rtl; }
-@media (min-width: 860px) {
-  [dir="rtl"].motion .step { transform: translateX(10px); }
-  [dir="rtl"].motion .step.is-on { transform: none; }
-}
 
 @keyframes rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
 @keyframes rise-big { from { opacity: 0; transform: translateY(80px); } to { opacity: 1; transform: none; } }
 @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
 @keyframes drift { from { transform: translate3d(-6%, 0, 0) scale(1); } to { transform: translate3d(6%, 4%, 0) scale(1.12); } }
-@keyframes cue { 0% { transform: scaleY(0); opacity: 1; } 60% { transform: scaleY(1); opacity: 1; } 100% { transform: scaleY(1); opacity: 0; } }
 @keyframes ring { 0% { transform: scale(1); opacity: .7; } 100% { transform: scale(1.7); opacity: 0; } }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
@@ -443,129 +402,67 @@ footer a:hover { color: var(--text); }
         <a class="more" href="#features">Découvrir l'appli</a>
       </div>
     </div>
-    <div class="stage" aria-hidden="true">
-      <div class="phone left"><img src="../img/subs.webp" alt=""></div>
-      <div class="phone right"><img src="../img/goals.webp" alt=""></div>
-      <div class="phone center"><img class="only-dark" src="../img/home_dark.webp" alt=""><img class="only-light" src="../img/home.webp" alt=""></div>
-    </div>
-    <div class="hero-veil"></div>
-    <div class="cue" aria-hidden="true">Défiler<i></i></div>
   </div>
 </section>
 
 <main>
-  <div class="statement" id="statement">
-    <div class="statement-inner wrap">
-      <p data-words>Votre solde. Votre budget. Vos objectifs. Tout <em class="g">sur votre téléphone, et nulle part ailleurs.</em></p>
-    </div>
-  </div>
-
   <div class="wrap section" id="features">
     <div class="center-head up">
       <span class="kicker">Ce qu'elle fait</span>
       <h2>Tout ce qu'il vous faut. <span class="gold">Rien de superflu.</span></h2>
-      <p>Un budget qui reste simple et calme, pour que vous le teniez vraiment.</p>
     </div>
 
-    <div class="story">
-      <div class="steps">
-        <article class="step is-on">
+    <div class="features">
+      <article class="feature wide spot up">
+        <div class="shot" style="--x:0.0389;--y:0.5900;--w:0.9222;--h:0.1225"><div class="phone"><img src="../img/home.webp" alt="Écran d'accueil de Pocket Glance avec le solde disponible, une série et le budget mensuel" loading="lazy"><span class="pop" aria-hidden="true"><img src="../img/home.webp" alt="" loading="lazy"></span></div></div>
+        <div class="txt">
           <span class="kicker">D'un coup d'œil</span>
           <h3>Solde, budget et dépense quotidienne sûre.</h3>
-          <p class="short">Un écran calme vous dit où en est le mois.</p>
-          <ul>
-            <li>Solde disponible, revenus et dépenses du mois</li>
-            <li>Ce qu'il reste de votre budget, et un montant à ne pas dépasser par jour</li>
-            <li>Une série de saisies avec des jours de repos, pour qu'un jour manqué ne remette pas tout à zéro</li>
-          </ul>
-          <div class="shot"><div class="phone"><img src="../img/home.webp" alt="Écran d'accueil de Pocket Glance avec le solde disponible, une série et le budget mensuel" loading="lazy"></div></div>
-        </article>
-        <article class="step">
+          <p>Un écran calme vous dit où en est le mois.</p>
+        </div>
+      </article>
+      <article class="feature spot up d1">
+        <div class="shot" style="--x:0.0389;--y:0.1113;--w:0.9222;--h:0.1713"><div class="phone"><img src="../img/subs.webp" alt="Écran des abonnements avec le total annuel et les prochains renouvellements" loading="lazy"><span class="pop" aria-hidden="true"><img src="../img/subs.webp" alt="" loading="lazy"></span></div></div>
+        <div class="txt">
           <span class="kicker">Abonnements</span>
           <h3>Découvrez ce que coûtent vraiment vos abonnements.</h3>
-          <p class="short">Streaming, téléphone, salle de sport, assurances : tous vos paiements récurrents au même endroit.</p>
-          <ul>
-            <li>Le coût total mensuel et annuel de vos abonnements</li>
-            <li>Un rappel avant chaque renouvellement, pour éviter les mauvaises surprises</li>
-          </ul>
-          <div class="shot"><div class="phone"><img src="../img/subs.webp" alt="Écran des abonnements avec le total annuel et les prochains renouvellements" loading="lazy"></div></div>
-        </article>
-        <article class="step">
+          <p>Streaming, téléphone, salle de sport, assurances : tous vos paiements récurrents au même endroit.</p>
+        </div>
+      </article>
+      <article class="feature spot up d2">
+        <div class="shot" style="--x:0.1111;--y:0.1750;--w:0.7778;--h:0.1525"><div class="phone"><img src="../img/add.webp" alt="Ajout d'une transaction avec montant et catégorie" loading="lazy"><span class="pop" aria-hidden="true"><img src="../img/add.webp" alt="" loading="lazy"></span></div></div>
+        <div class="txt">
           <span class="kicker">Saisie rapide</span>
           <h3>Notez vos dépenses en quelques secondes.</h3>
-          <p class="short">Montant, catégorie, c'est fait.</p>
-          <ul>
-            <li>Pour aujourd'hui, hier ou n'importe quelle date</li>
-            <li>Les revenus comme les dépenses</li>
-            <li>Vos propres catégories et icônes</li>
-          </ul>
-          <div class="shot"><div class="phone"><img src="../img/add.webp" alt="Ajout d'une transaction avec montant et catégorie" loading="lazy"></div></div>
-        </article>
-        <article class="step">
+          <p>Montant, catégorie, c'est fait.</p>
+        </div>
+      </article>
+      <article class="feature spot up">
+        <div class="shot" style="--x:0.0389;--y:0.1125;--w:0.9222;--h:0.1775"><div class="phone"><img src="../img/analytics2.webp" alt="Écran d'analyses avec les dépenses par catégorie" loading="lazy"><span class="pop" aria-hidden="true"><img src="../img/analytics2.webp" alt="" loading="lazy"></span></div></div>
+        <div class="txt">
           <span class="kicker">Analyses</span>
           <h3>Voyez exactement où est passé l'argent.</h3>
-          <p class="short">Une répartition claire, et si vos dépenses montent ou baissent.</p>
-          <ul>
-            <li>Dépenses par catégorie</li>
-            <li>Tendances sur six mois</li>
-            <li>Analyses quotidiennes, hebdomadaires et annuelles avec Pro</li>
-          </ul>
-          <div class="shot"><div class="phone"><img src="../img/analytics2.webp" alt="Écran d'analyses avec les dépenses par catégorie" loading="lazy"></div></div>
-        </article>
-        <article class="step">
+          <p>Une répartition claire, et si vos dépenses montent ou baissent.</p>
+        </div>
+      </article>
+      <article class="feature spot up d1">
+        <div class="shot" style="--x:0.0389;--y:0.1113;--w:0.9222;--h:0.1975"><div class="phone"><img src="../img/goals.webp" alt="Objectifs d'épargne avec la progression de chacun" loading="lazy"><span class="pop" aria-hidden="true"><img src="../img/goals.webp" alt="" loading="lazy"></span></div></div>
+        <div class="txt">
           <span class="kicker">Objectifs d'épargne</span>
           <h3>Épargnez pour ce qui compte le plus.</h3>
-          <p class="short">Un voyage, un ordinateur, un fonds d'urgence.</p>
-          <ul>
-            <li>Fixez un objectif et une date facultative</li>
-            <li>Ajoutez des versements et regardez votre progression grandir</li>
-          </ul>
-          <div class="shot"><div class="phone"><img src="../img/goals.webp" alt="Objectifs d'épargne avec la progression de chacun" loading="lazy"></div></div>
-        </article>
-        <article class="step">
+          <p>Un voyage, un ordinateur, un fonds d'urgence.</p>
+        </div>
+      </article>
+      <article class="feature wide spot up d2">
+        <div class="shot" style="--r:16px;--x:0.5194;--y:0.4025;--w:0.4361;--h:0.2313"><div class="phone"><img src="../img/widgets.webp" alt="Écran d'accueil Android avec les widgets budget, paiements et objectifs de Pocket Glance" loading="lazy"><span class="pop" aria-hidden="true"><img src="../img/widgets.webp" alt="" loading="lazy"></span></div></div>
+        <div class="txt">
           <span class="kicker">Widgets <em class="pro-tag">Pro</em></span>
           <h3>Votre budget sur votre écran d'accueil.</h3>
-          <p class="short">Budget restant, prochain paiement et progression de vos objectifs, sans ouvrir l'appli.</p>
-          <div class="shot"><div class="phone"><img src="../img/widgets.webp" alt="Écran d'accueil Android avec les widgets budget, paiements et objectifs de Pocket Glance" loading="lazy"></div></div>
-        </article>
-      </div>
-      <div class="device" aria-hidden="true">
-        <div class="device-inner">
-          <div class="phone"><div class="screens">
-            <img class="is-on" src="../img/home.webp" alt="">
-            <img src="../img/subs.webp" alt="" loading="lazy">
-            <img src="../img/add.webp" alt="" loading="lazy">
-            <img src="../img/analytics2.webp" alt="" loading="lazy">
-            <img src="../img/goals.webp" alt="" loading="lazy">
-            <img src="../img/widgets.webp" alt="" loading="lazy">
-          </div></div>
-          <div class="device-foot">
-            <span class="count"><b>01</b> / 06</span>
-            <span class="dots"><span class="is-on"></span><span></span><span></span><span></span><span></span><span></span></span>
-          </div>
+          <p>Budget restant, prochain paiement et progression de vos objectifs, sans ouvrir l'appli.</p>
         </div>
-      </div>
+      </article>
     </div>
   </div>
-
-  <section class="hs section" id="gallery" aria-label="Écrans de l'appli">
-    <div class="hs-pin">
-      <div class="hs-track">
-        <div class="hs-intro">
-          <span class="kicker">Chaque écran</span>
-          <h2>Calme, <span class="gold">de jour comme de nuit.</span></h2>
-          <p>Thème clair pour la journée, sombre pour le soir. Chaque écran se lit d'un coup d'œil.</p>
-        </div>
-        <figure class="hs-item"><div class="phone"><img src="../img/home.webp" alt="Écran d'accueil en thème clair" loading="lazy"></div><figcaption><b>Accueil</b><span>Clair</span></figcaption></figure>
-        <figure class="hs-item"><div class="phone"><img src="../img/home_dark.webp" alt="Écran d'accueil en thème sombre" loading="lazy"></div><figcaption><b>Accueil</b><span>Sombre</span></figcaption></figure>
-        <figure class="hs-item"><div class="phone"><img src="../img/subs.webp" alt="Abonnements" loading="lazy"></div><figcaption><b>Abonnements</b><span>Chaque renouvellement, à l'avance</span></figcaption></figure>
-        <figure class="hs-item"><div class="phone"><img src="../img/add.webp" alt="Saisie rapide" loading="lazy"></div><figcaption><b>Saisie rapide</b><span>Montant, catégorie, c'est fait</span></figcaption></figure>
-        <figure class="hs-item"><div class="phone"><img src="../img/analytics2.webp" alt="Analyses" loading="lazy"></div><figcaption><b>Analyses</b><span>Où est passé l'argent</span></figcaption></figure>
-        <figure class="hs-item"><div class="phone"><img src="../img/goals.webp" alt="Objectifs d'épargne" loading="lazy"></div><figcaption><b>Objectifs</b><span>Regardez-les se remplir</span></figcaption></figure>
-        <figure class="hs-item"><div class="phone"><img src="../img/widgets.webp" alt="Widgets d'écran d'accueil" loading="lazy"></div><figcaption><b>Widgets</b><span>Inclus dans Pro</span></figcaption></figure>
-      </div>
-    </div>
-  </section>
 
   <div class="plate-wrap" id="private">
     <div class="plate">
@@ -574,31 +471,16 @@ footer a:hover { color: var(--text); }
         <svg class="lock" viewBox="0 0 64 64" aria-hidden="true"><path pathLength="1" d="M21 29v-8a11 11 0 0 1 22 0v8"/><rect pathLength="1" x="13" y="29" width="38" height="27" rx="7"/><path pathLength="1" d="M32 39v7"/></svg>
         <span class="kicker">Privé par conception</span>
         <h2>Votre argent reste <span class="gold">sur votre téléphone.</span></h2>
-        <p class="lede">Nous n'avons ni comptes ni serveurs qui reçoivent vos transactions : nous ne pouvons donc pas voir vos finances.</p>
         <div class="facts">
-          <div class="up spot"><b>Aucune inscription</b><span>Aucun compte, aucune connexion bancaire, aucun accès à vos SMS ou contacts.</span></div>
-          <div class="up d1 spot"><b>Verrouillage de l'appli</b><span>Empreinte, visage ou code PIN. Android le vérifie ; l'appli ne le reçoit jamais.</span></div>
-          <div class="up d2 spot"><b>Vos sauvegardes</b><span>Dans un fichier sur votre téléphone, ou chiffrées sur votre propre Google Drive.</span></div>
-          <div class="up d3 spot"><b>À vous de choisir</b><span>Les rapports d'utilisation et de plantage peuvent être désactivés à tout moment dans les Paramètres.</span></div>
+          <div class="up spot"><b class="num" data-to="0" data-from="100">0</b><span>connexion bancaire à configurer ou à réparer</span></div>
+          <div class="up d1 spot"><b class="num" data-to="0" data-from="100">0</b><span>publicité, et aucune revente de vos données</span></div>
+          <div class="up d2 spot"><b>Verrouillage de l'appli</b><span>Empreinte, visage ou code PIN. Android le vérifie ; l'appli ne le reçoit jamais.</span></div>
+          <div class="up spot"><b>Vos sauvegardes</b><span>Dans un fichier sur votre téléphone, ou chiffrées sur votre propre Google Drive.</span></div>
+          <div class="up d1 spot"><b class="num" data-to="10" data-from="0">10</b><span>langues, de l'Español au 日本語</span></div>
+          <div class="up d2 spot"><b class="num" data-to="14" data-from="0">14</b><span>devises, dont USD, EUR, GBP, INR et JPY</span></div>
         </div>
         <a class="more" href="../privacy.html">Lire la Politique de confidentialité</a>
       </div>
-    </div>
-  </div>
-
-  <div class="wrap section">
-    <div class="center-head up">
-      <span class="kicker">Conçu pour tous</span>
-      <h2>Votre langue. <span class="gold">Votre devise.</span></h2>
-    </div>
-    <div class="stats">
-      <div class="stat spot up"><b class="gold" data-to="10" data-from="0">10</b><span>langues, de l'Español au 日本語</span></div>
-      <div class="stat spot up d1"><b class="gold" data-to="14" data-from="0">14</b><span>devises, dont USD, EUR, GBP, INR et JPY</span></div>
-      <div class="stat spot up d2"><b class="gold" data-to="0" data-from="100">0</b><span>publicité, et aucune revente de vos données</span></div>
-      <div class="stat spot up d3"><b class="gold" data-to="0" data-from="100">0</b><span>connexion bancaire à configurer ou à réparer</span></div>
-    </div>
-    <div class="world up" lang="mul">
-      <span lang="en">English</span><span lang="es">Español</span><span lang="fr">Français</span><span lang="de">Deutsch</span><span lang="pt">Português</span><span lang="hi">हिन्दी</span><span lang="ar">العربية</span><span lang="ja">日本語</span><span lang="ko">한국어</span><span lang="zh-Hans">简体中文</span>
     </div>
   </div>
 
@@ -610,7 +492,6 @@ footer a:hover { color: var(--text); }
     <div class="plans">
       <div class="plan spot up">
         <h3>Gratuit</h3>
-        <p>Tout ce qu'il faut pour gérer votre budget, aussi longtemps que vous le voulez.</p>
         <ul>
           <li>Transactions illimitées</li>
           <li>Un budget mensuel et des analyses</li>
@@ -621,7 +502,6 @@ footer a:hover { color: var(--text); }
       </div>
       <div class="plan pro spot up d1">
         <h3>Pocket Glance <em class="gold">Pro</em></h3>
-        <p>Quand le budget devient une habitude.</p>
         <ul>
           <li>Abonnements, objectifs et catégories illimités</li>
           <li>Widgets d'écran d'accueil</li>
@@ -633,31 +513,19 @@ footer a:hover { color: var(--text); }
     <p class="fine">Pro est un abonnement annuel ou un achat unique à vie, géré par Google Play. Consultez les <a class="text-link" href="../terms.html">Conditions</a> pour en savoir plus.</p>
   </div>
 
-  <div class="wrap section" id="legal">
-    <div class="center-head up">
-      <span class="kicker">Les petites lignes</span>
-      <h2>Des mots simples. Aucune surprise.</h2>
-    </div>
-    <div class="cards">
-      <a class="card spot up" href="../privacy.html"><b>Politique de confidentialité</b><span>Ce que l'appli enregistre, ce qui peut quitter votre appareil, et vos choix.</span><i>Lire →</i></a>
-      <a class="card spot up d1" href="../terms.html"><b>Conditions générales</b><span>Le contrat d'utilisation de Pocket Glance et Pocket Glance Pro.</span><i>Lire →</i></a>
-      <a class="card spot up d2" href="../delete-data.html"><b>Supprimer vos données</b><span>Comment effacer vos données de votre téléphone et de votre Google Drive.</span><i>Lire →</i></a>
-    </div>
-La Politique de confidentialité, les Conditions et la page de suppression des données sont en anglais.  </div>
-
   <div class="wrap closer">
     <div class="icon-wrap up"><img src="../img/icon-192.png" alt="" width="104" height="104"></div>
     <h2 class="up d1">Commencez par <span class="gold">un coup d'œil par jour.</span></h2>
     <p class="up d2">Gratuit sur Google Play. Aucun compte requis.</p>
-    <a class="btn btn-gold up d3" href="https://play.google.com/store/apps/details?id=com.nexttier.pocketglance">Télécharger sur Google Play</a>
+    <a class="btn btn-gold up d3" href="https://play.google.com/store/apps/details?id=com.nexttier.pocketglance"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4.2 2.4c-.3.3-.4.7-.4 1.2v16.8c0 .5.1.9.4 1.2l9.5-9.6zm10.6 10.7 2.7 2.7-11.4 6.5c-.4.2-.9.3-1.2.1zm0-2.2-9.9-9.3c.3-.2.8-.1 1.2.1l11.4 6.5zm3.9 3.9-3-3 3-3 3.2 1.8c.9.5.9 1.9 0 2.4z"/></svg>Télécharger sur Google Play</a>
   </div>
 </main>
 
 <footer>
   <div class="wrap">
-    <span>© 2026 NextTier · Pocket Glance</span>
-    <span><a href="../privacy.html">Confidentialité</a> · <a href="../terms.html">Conditions</a> · <a href="../delete-data.html">Supprimer vos données</a> · <a href="mailto:nexttierstudio@gmail.com">nexttierstudio@gmail.com</a></span>
-  </div>
+    <span>© 2026 NextTier Studio · Pocket Glance</span>
+    <span><a href="../privacy.html">Politique de confidentialité</a> · <a href="../terms.html">Conditions générales</a> · <a href="../delete-data.html">Supprimer vos données</a> · <a href="mailto:nexttierstudio@gmail.com">nexttierstudio@gmail.com</a></span>
+La Politique de confidentialité, les Conditions et la page de suppression des données sont en anglais.  </div>
 </footer>
 <script>
   // Language: remember the one picked from the menu; the English page sends a returning
@@ -677,6 +545,14 @@ La Politique de confidentialité, les Conditions et la page de suppression des d
       var link = saved && saved !== "en" && document.querySelector('.lang a[data-lang="' + saved + '"]');
       if (link) location.replace(link.href + location.hash);
     } catch (e) {}
+  })();
+
+  // The hero fills the screen under the bar, whose height changes when its links wrap on phones.
+  (function () {
+    var bar = document.querySelector(".bar");
+    function fit() { document.documentElement.style.setProperty("--bar-h", bar.offsetHeight + "px"); }
+    fit();
+    window.addEventListener("resize", fit);
   })();
 
   // Light / dark switch, the same as on the legal pages.
@@ -701,7 +577,7 @@ La Politique de confidentialité, les Conditions et la page de suppression des d
     el.style.setProperty("--my", (e.clientY - r.top) + "px");
   }, { passive: true });
 
-  // Scroll scenes. One rAF loop: the hero (with its dust and pointer tilt) animates every
+  // Motion. One rAF loop: the hero dust animates every
   // frame while it is on screen; everything else updates only when the page has scrolled.
   (function () {
     var root = document.documentElement;
@@ -710,7 +586,6 @@ La Politique de confidentialité, les Conditions et la page de suppression des d
     function $$(s) { return Array.prototype.slice.call(document.querySelectorAll(s)); }
     function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
     function lerp(a, b, t) { return a + (b - a) * t; }
-    function ease(t) { return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2; }
 
     // Fade-up on entry, and the count-up numbers.
     function countUp(el) {
@@ -731,159 +606,51 @@ La Politique de confidentialité, les Conditions et la page de suppression des d
       });
     }, { rootMargin: "0px 0px -10% 0px" });
     $$(".up").forEach(function (el) { io.observe(el); });
-    $$(".stat b[data-to]").forEach(function (b) { b.textContent = b.dataset.from; });
+    $$(".facts b[data-to]").forEach(function (b) { b.textContent = b.dataset.from; });
 
-    // Statement words. Intl.Segmenter splits languages written without spaces
-    // (Japanese, Chinese) into words; punctuation sticks to the word before it.
-    var statement = $("#statement"), para = statement.querySelector("[data-words]"), words = [];
-    var seg = window.Intl && Intl.Segmenter ? new Intl.Segmenter(root.lang, { granularity: "word" }) : null;
-    function pieces(text) {
-      if (seg) {
-        var out = [];
-        Array.from(seg.segment(text)).forEach(function (s) {
-          if (/^\s+$/.test(s.segment)) out.push(" ");
-          else if (!s.isWordLike && out.length && out[out.length - 1] !== " ") out[out.length - 1] += s.segment;
-          else out.push(s.segment);
-        });
-        return out;
-      }
-      return text.split(/(\s+)/).map(function (t) { return /^\s+$/.test(t) ? " " : t; });
-    }
-    var frag = document.createDocumentFragment();
-    Array.prototype.slice.call(para.childNodes).forEach(function (node) {
-      var gold = node.nodeType === 1;
-      pieces(node.textContent).forEach(function (t) {
-        if (!t) return;
-        if (t === " ") { frag.appendChild(document.createTextNode(" ")); return; }
-        var s = document.createElement("span");
-        s.className = "w" + (gold ? " g" : "");
-        s.textContent = t;
-        frag.appendChild(s);
-        words.push(s);
-      });
-    });
-    para.textContent = "";
-    para.appendChild(frag);
-
-    var hero = $(".hero"), copy = $(".hero-copy"), veil = $(".hero-veil"), cue = $(".cue");
-    var cPh = $(".stage .center"), lPh = $(".stage .left"), rPh = $(".stage .right");
-    var canvas = $("#dust"), ctx = canvas.getContext("2d");
-    var steps = $$(".step"), screens = $$(".device .screens img"), dots = $$(".dots span");
-    var count = $(".count b"), devPhone = $(".device .phone");
-    var hs = $(".hs"), track = $(".hs-track"), items = $$(".hs-item");
+    var pin = $(".hero-pin"), canvas = $("#dust"), ctx = canvas.getContext("2d");
     var plate = $(".plate"), bar = $(".progress");
-    var vw, vh, M = {}, active = 0, lit = -1, dirty = true;
-    var tilt = { x: 0, y: 0, tx: 0, ty: 0 }, fine = matchMedia("(pointer: fine)").matches;
+    var vh, cw, ch, dirty = true;
     var dpr = Math.min(window.devicePixelRatio || 1, 2), motes = [];
 
     function measure() {
-      vw = root.clientWidth; vh = window.innerHeight;
-      M.pw = cPh.offsetWidth; M.ph = cPh.offsetHeight;
-      var copyBottom = copy.offsetTop + copy.offsetHeight;
-      // Phones start below the buttons, never over them; on short screens they just peek in.
-      M.y0 = Math.max(copyBottom + 36, vh * 0.5);
-      M.y1 = 52 + (vh - 52 - M.ph) / 2;
-      M.zoom = Math.max(vw / (M.pw * 0.946), vh / (M.ph * 0.975)) * 1.08;
-      M.spread = Math.min(M.pw * 0.82, vw * 0.3);
-      M.heroRange = hero.offsetHeight - vh;
-      // Sideways gallery: tall enough that scrolling down moves the whole track across.
-      M.trackW = track.scrollWidth;
-      hs.style.height = (Math.max(0, M.trackW - vw) + vh) + "px";
-      M.itemC = items.map(function (it) { return it.offsetLeft + it.offsetWidth / 2; });
-      // Dust canvas.
-      canvas.width = Math.round(vw * dpr); canvas.height = Math.round(vh * dpr);
+      vh = window.innerHeight;
+      // Dust canvas covers the hero.
+      cw = pin.offsetWidth; ch = pin.offsetHeight;
+      canvas.width = Math.round(cw * dpr); canvas.height = Math.round(ch * dpr);
       if (!motes.length) {
-        var n = vw < 700 ? 40 : 80;
+        var n = cw < 700 ? 40 : 80;
         for (var i = 0; i < n; i++) motes.push({ x: Math.random(), y: Math.random(), r: 0.5 + Math.random() * 1.8, s: 0.004 + Math.random() * 0.018, z: 0.3 + Math.random() * 0.7, ph: Math.random() * 6.28 });
       }
       dirty = true;
     }
 
-    function drawDust(t, fade) {
+    // Gold dust drifting up behind the hero, drawn only while the hero is on screen.
+    function drawDust(t) {
+      if (pin.getBoundingClientRect().bottom <= 0) return;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      ctx.clearRect(0, 0, vw, vh);
-      if (fade <= 0) return;
+      ctx.clearRect(0, 0, cw, ch);
       var rgb = getComputedStyle(root).getPropertyValue("--dust").trim();
       motes.forEach(function (m) {
         m.y -= m.s * 0.02 * m.z; if (m.y < -0.05) { m.y = 1.05; m.x = Math.random(); }
-        var x = (m.x + Math.sin(t * 0.0003 + m.ph) * 0.01 + tilt.y * 0.0015 * m.z) * vw;
-        var y = (m.y - tilt.x * 0.0015 * m.z) * vh;
-        var a = (0.25 + 0.55 * (0.5 + 0.5 * Math.sin(t * 0.0015 + m.ph))) * m.z * fade;
+        var x = (m.x + Math.sin(t * 0.0003 + m.ph) * 0.01) * cw;
+        var y = m.y * ch;
+        var a = (0.25 + 0.55 * (0.5 + 0.5 * Math.sin(t * 0.0015 + m.ph))) * m.z;
         ctx.beginPath(); ctx.arc(x, y, m.r * m.z, 0, 6.2832);
         ctx.fillStyle = "rgba(" + rgb + "," + a.toFixed(3) + ")"; ctx.fill();
       });
     }
 
-    function heroFrame(t) {
-      var r = hero.getBoundingClientRect();
-      if (r.bottom <= 0) return false;
-      var p = clamp(-r.top / M.heroRange, 0, 1);
-      var a = ease(clamp(p / 0.4, 0, 1)), b = clamp((p - 0.45) / 0.55, 0, 1);
-      tilt.x += (tilt.tx - tilt.x) * 0.07; tilt.y += (tilt.ty - tilt.y) * 0.07;
-      var y = lerp(M.y0, M.y1, a), keep = 1 - b;
-      var rx = 22 * (1 - a) + tilt.x * keep, ry = tilt.y * keep, s = 1 + (M.zoom - 1) * b * b;
-      cPh.style.transform = "translate3d(0," + y.toFixed(1) + "px,0) perspective(1400px) rotateX(" + rx.toFixed(2) + "deg) rotateY(" + ry.toFixed(2) + "deg) scale(" + s.toFixed(4) + ")";
-      var sx = M.spread + a * vw * 0.35, so = clamp(1 - a * 1.3, 0, 1);
-      lPh.style.transform = "translate3d(" + (-sx).toFixed(1) + "px," + (y + 64).toFixed(1) + "px,0) perspective(1400px) rotateY(" + (24 * a + ry * 0.6).toFixed(2) + "deg) rotateZ(" + (-7 - 8 * a).toFixed(2) + "deg) scale(.86)";
-      rPh.style.transform = "translate3d(" + sx.toFixed(1) + "px," + (y + 64).toFixed(1) + "px,0) perspective(1400px) rotateY(" + (-24 * a + ry * 0.6).toFixed(2) + "deg) rotateZ(" + (7 + 8 * a).toFixed(2) + "deg) scale(.86)";
-      lPh.style.opacity = rPh.style.opacity = so;
-      copy.style.opacity = clamp(1 - a * 1.6, 0, 1);
-      copy.style.transform = "translate3d(0," + (-a * 90).toFixed(1) + "px,0) scale(" + (1 - a * 0.06).toFixed(4) + ")";
-      copy.style.filter = a > 0.01 ? "blur(" + (a * 8).toFixed(1) + "px)" : "";
-      veil.style.opacity = clamp((b - 0.72) / 0.28, 0, 1);
-      cue.style.opacity = clamp(1 - p * 8, 0, 1);
-      drawDust(t, 1 - b);
-      return true;
-    }
-
-    function rest() {
-      var y = window.scrollY;
-      bar.style.transform = "scaleX(" + clamp(y / (document.documentElement.scrollHeight - vh), 0, 1).toFixed(4) + ")";
-
-      // Statement.
-      var sr = statement.getBoundingClientRect();
-      var n = Math.round(clamp((-sr.top + vh * 0.25) / (sr.height - vh * 0.75), 0, 1) * words.length);
-      if (n !== lit) { words.forEach(function (w, i) { w.classList.toggle("lit", i < n); }); lit = n; }
-
-      // Story: nearest step to the middle drives the sticky phone; the phone leans as you scroll.
-      var best = 0, bd = Infinity, bestD = 0;
-      steps.forEach(function (s, i) {
-        var r = s.getBoundingClientRect(), d = r.top + r.height / 2 - vh / 2;
-        if (Math.abs(d) < bd) { bd = Math.abs(d); best = i; bestD = d; }
-      });
-      if (best !== active) {
-        steps[active].classList.remove("is-on"); steps[best].classList.add("is-on");
-        screens[active].classList.remove("is-on"); screens[best].classList.add("is-on");
-        dots[active].classList.remove("is-on"); dots[best].classList.add("is-on");
-        count.textContent = ("0" + (best + 1)).slice(-2);
-        active = best;
-      }
-      if (devPhone.offsetParent) {
-        var lean = clamp(bestD / vh, -0.6, 0.6);
-        devPhone.style.transform = "rotateY(" + (lean * -16).toFixed(2) + "deg) rotateX(" + (lean * 8).toFixed(2) + "deg)";
-      }
-
-      // Sideways gallery with a coverflow tilt.
-      var hr = hs.getBoundingClientRect();
-      if (hr.top < vh && hr.bottom > 0) {
-        var hp = clamp(-hr.top / (hr.height - vh), 0, 1), shift = hp * Math.max(0, M.trackW - vw);
-        track.style.transform = "translate3d(" + (-shift).toFixed(1) + "px,0,0)";
-        items.forEach(function (it, i) {
-          var d = clamp((M.itemC[i] - shift - vw / 2) / vw, -1, 1), ad = Math.abs(d);
-          it.firstElementChild.style.transform = "rotateY(" + (d * -38).toFixed(2) + "deg) scale(" + (1 - ad * 0.16).toFixed(4) + ")";
-          it.style.opacity = (1 - ad * 0.55).toFixed(3);
-        });
-      }
-
+    function onScroll() {
+      bar.style.transform = "scaleX(" + clamp(window.scrollY / (document.documentElement.scrollHeight - vh), 0, 1).toFixed(4) + ")";
       // Privacy panel opens to full width.
       var pr = plate.getBoundingClientRect();
       plate.style.setProperty("--pp", clamp((vh - pr.top) / (vh * 0.8), 0, 1).toFixed(4));
     }
 
     function loop(t) {
-      var heroOn = heroFrame(t);
-      if (dirty) { rest(); dirty = false; }
-      if (!heroOn && tilt.x !== 0) { tilt.x = tilt.y = 0; }
+      drawDust(t);
+      if (dirty) { onScroll(); dirty = false; }
       requestAnimationFrame(loop);
     }
 
@@ -891,10 +658,6 @@ La Politique de confidentialité, les Conditions et la page de suppression des d
     window.addEventListener("resize", measure);
     window.addEventListener("load", measure);
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
-    if (fine) window.addEventListener("pointermove", function (e) {
-      tilt.tx = (e.clientY / vh - 0.5) * -10;
-      tilt.ty = (e.clientX / vw - 0.5) * 16;
-    }, { passive: true });
     measure();
     requestAnimationFrame(loop);
   })();
