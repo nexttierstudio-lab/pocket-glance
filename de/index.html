@@ -211,21 +211,28 @@ p { margin: 0 0 14px; }
 /* ---------- Features: six cards, a screenshot peeking out of each ---------- */
 .features { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); }
 .feature { background: var(--tile); border-radius: 26px; padding: 0 28px 30px; }
-.feature .shot { height: 230px; overflow: hidden; display: flex; justify-content: center; padding-top: 30px; margin-bottom: 24px; -webkit-mask-image: linear-gradient(#000 65%, transparent); mask-image: linear-gradient(#000 65%, transparent); }
-.feature .shot .phone { width: 160px; flex: none; --shadow: none; }
+.feature .shot { display: flex; justify-content: center; padding-top: 30px; margin-bottom: 26px; }
+.feature .shot .phone { width: 150px; flex: none; --shadow: 0 24px 40px -24px rgba(0, 0, 0, 0.55); }
+.feature .shot .phone > img { transition: filter .5s var(--ease); }
+/* The screen's key card, cut from the same capture and laid exactly over it. On hover (or, on
+   touch screens, once the card scrolls into view) it lifts out of the phone toward you. */
+.pop {
+  position: absolute; z-index: 2; overflow: hidden; border-radius: var(--r, 5px); pointer-events: none;
+  left: calc(2.7% + 94.6% * var(--x)); top: calc(1.2525% + 97.495% * var(--y));
+  width: calc(94.6% * var(--w)); height: calc(97.495% * var(--h));
+  transition: transform .55s var(--ease), box-shadow .55s var(--ease);
+}
+.pop img { position: absolute; max-width: none; width: calc(100% / var(--w)); height: calc(100% / var(--h)); left: calc(-100% * var(--x) / var(--w)); top: calc(-100% * var(--y) / var(--h)); }
+.feature:hover .pop, .feature:focus-within .pop { transform: scale(1.3); box-shadow: 0 18px 36px -12px rgba(0, 0, 0, 0.55); }
+.feature:hover .shot .phone > img { filter: brightness(.72); }
+@media (hover: none) {
+  .motion .feature.in .pop { transform: scale(1.3); box-shadow: 0 18px 36px -12px rgba(0, 0, 0, 0.55); transition-delay: .6s; }
+  .motion .feature.in .shot .phone > img { filter: brightness(.72); transition-delay: .6s; }
+}
 .feature .kicker { margin-bottom: 10px; }
 .feature h3 { font-size: 1.6rem; margin-bottom: 8px; }
 .feature p { color: var(--muted); font-size: 0.97rem; margin: 0; }
 .pro-tag { display: inline-block; font: 600 11px/1 var(--ui); letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); border: 1px solid var(--accent); padding: 5px 9px; border-radius: 999px; vertical-align: middle; margin-inline-start: 6px; font-style: normal; }
-
-/* ---------- Gallery: a row you swipe or scroll sideways ---------- */
-.hs-row { display: flex; gap: 28px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: max(22px, calc((100vw - 1036px) / 2)); padding: 10px max(22px, calc((100vw - 1036px) / 2)) 30px; scrollbar-width: thin; scrollbar-color: var(--faint) transparent; }
-.hs-item { margin: 0; flex: none; width: clamp(180px, 20vw, 230px); scroll-snap-align: start; text-align: center; }
-.hs-item .phone { --shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.6); }
-.hs-item figcaption { margin-top: 20px; }
-.hs-item figcaption b { display: block; font: 600 1.3rem/1.2 var(--heading); }
-.hs-item figcaption span { font-size: 0.9rem; color: var(--muted); }
-.hs .center-head { margin-bottom: 40px; }
 
 /* ---------- Privacy. The panel opens to full width and a lock draws itself ---------- */
 .plate-wrap { padding-top: 140px; }
@@ -406,60 +413,43 @@ footer a:hover { color: var(--text); }
 
     <div class="features">
       <article class="feature spot up">
-        <div class="shot"><div class="phone"><img src="../img/home.webp" alt="Startbildschirm von Pocket Glance mit verfügbarem Guthaben, einer Serie und dem Monatsbudget" loading="lazy"></div></div>
+        <div class="shot"><div class="phone"><img src="../img/home.webp" alt="Startbildschirm von Pocket Glance mit verfügbarem Guthaben, einer Serie und dem Monatsbudget" loading="lazy"><span class="pop" style="--x:0.0389;--y:0.5900;--w:0.9222;--h:0.1225" aria-hidden="true"><img src="../img/home.webp" alt="" loading="lazy"></span></div></div>
         <span class="kicker">Auf einen Blick</span>
         <h3>Guthaben, Budget und ein sicherer Tagesbetrag.</h3>
         <p>Ein ruhiger Bildschirm zeigt dir, wo der Monat steht.</p>
       </article>
       <article class="feature spot up d1">
-        <div class="shot"><div class="phone"><img src="../img/subs.webp" alt="Abo-Übersicht mit Jahressumme und anstehenden Verlängerungen" loading="lazy"></div></div>
+        <div class="shot"><div class="phone"><img src="../img/subs.webp" alt="Abo-Übersicht mit Jahressumme und anstehenden Verlängerungen" loading="lazy"><span class="pop" style="--x:0.0389;--y:0.1113;--w:0.9222;--h:0.1713" aria-hidden="true"><img src="../img/subs.webp" alt="" loading="lazy"></span></div></div>
         <span class="kicker">Abos</span>
         <h3>Sieh, was deine Abos wirklich kosten.</h3>
         <p>Streaming, Handy, Fitnessstudio, Versicherungen: alle wiederkehrenden Zahlungen an einem Ort.</p>
       </article>
       <article class="feature spot up d2">
-        <div class="shot"><div class="phone"><img src="../img/add.webp" alt="Eine Transaktion mit Betrag und Kategorie hinzufügen" loading="lazy"></div></div>
+        <div class="shot"><div class="phone"><img src="../img/add.webp" alt="Eine Transaktion mit Betrag und Kategorie hinzufügen" loading="lazy"><span class="pop" style="--x:0.1111;--y:0.1750;--w:0.7778;--h:0.1525" aria-hidden="true"><img src="../img/add.webp" alt="" loading="lazy"></span></div></div>
         <span class="kicker">Schnell erfassen</span>
         <h3>Ausgaben in Sekunden erfassen.</h3>
         <p>Betrag, Kategorie, fertig.</p>
       </article>
       <article class="feature spot up">
-        <div class="shot"><div class="phone"><img src="../img/analytics2.webp" alt="Analysen mit Ausgaben nach Kategorie" loading="lazy"></div></div>
+        <div class="shot"><div class="phone"><img src="../img/analytics2.webp" alt="Analysen mit Ausgaben nach Kategorie" loading="lazy"><span class="pop" style="--x:0.0389;--y:0.1125;--w:0.9222;--h:0.1775" aria-hidden="true"><img src="../img/analytics2.webp" alt="" loading="lazy"></span></div></div>
         <span class="kicker">Analysen</span>
         <h3>Sieh genau, wohin es floss.</h3>
         <p>Eine klare Aufschlüsselung, und ob deine Ausgaben steigen oder sinken.</p>
       </article>
       <article class="feature spot up d1">
-        <div class="shot"><div class="phone"><img src="../img/goals.webp" alt="Sparziele mit dem Fortschritt jedes Ziels" loading="lazy"></div></div>
+        <div class="shot"><div class="phone"><img src="../img/goals.webp" alt="Sparziele mit dem Fortschritt jedes Ziels" loading="lazy"><span class="pop" style="--x:0.0389;--y:0.1113;--w:0.9222;--h:0.1975" aria-hidden="true"><img src="../img/goals.webp" alt="" loading="lazy"></span></div></div>
         <span class="kicker">Sparziele</span>
         <h3>Spar für das, was dir wichtig ist.</h3>
         <p>Eine Reise, ein Laptop, ein Notgroschen.</p>
       </article>
       <article class="feature spot up d2">
-        <div class="shot"><div class="phone"><img src="../img/widgets.webp" alt="Android-Startbildschirm mit den Budget-, Zahlungs- und Ziel-Widgets von Pocket Glance" loading="lazy"></div></div>
+        <div class="shot"><div class="phone"><img src="../img/widgets.webp" alt="Android-Startbildschirm mit den Budget-, Zahlungs- und Ziel-Widgets von Pocket Glance" loading="lazy"><span class="pop" style="--r:9px;--x:0.5194;--y:0.4025;--w:0.4361;--h:0.2313" aria-hidden="true"><img src="../img/widgets.webp" alt="" loading="lazy"></span></div></div>
         <span class="kicker">Widgets <em class="pro-tag">Pro</em></span>
         <h3>Dein Budget auf dem Startbildschirm.</h3>
         <p>Restbudget, nächste Zahlung und Zielfortschritt, ohne die App zu öffnen.</p>
       </article>
     </div>
   </div>
-
-  <section class="hs section" id="gallery" aria-label="Bildschirme der App">
-    <div class="wrap center-head up">
-      <span class="kicker">Jeder Bildschirm</span>
-      <h2>Ruhig, <span class="gold">bei Tag und bei Nacht.</span></h2>
-      <p>Hell für den Tag, dunkel für den Abend. Jeder Bildschirm ist auf einen Blick lesbar.</p>
-    </div>
-    <div class="hs-row" tabindex="0">
-      <figure class="hs-item"><div class="phone"><img src="../img/home.webp" alt="Startbildschirm im hellen Design" loading="lazy"></div><figcaption><b>Start</b><span>Hell</span></figcaption></figure>
-      <figure class="hs-item"><div class="phone"><img src="../img/home_dark.webp" alt="Startbildschirm im dunklen Design" loading="lazy"></div><figcaption><b>Start</b><span>Dunkel</span></figcaption></figure>
-      <figure class="hs-item"><div class="phone"><img src="../img/subs.webp" alt="Abos" loading="lazy"></div><figcaption><b>Abos</b><span>Jede Verlängerung, rechtzeitig</span></figcaption></figure>
-      <figure class="hs-item"><div class="phone"><img src="../img/add.webp" alt="Schnell erfassen" loading="lazy"></div><figcaption><b>Schnell erfassen</b><span>Betrag, Kategorie, fertig</span></figcaption></figure>
-      <figure class="hs-item"><div class="phone"><img src="../img/analytics2.webp" alt="Analysen" loading="lazy"></div><figcaption><b>Analysen</b><span>Wohin es floss</span></figcaption></figure>
-      <figure class="hs-item"><div class="phone"><img src="../img/goals.webp" alt="Sparziele" loading="lazy"></div><figcaption><b>Ziele</b><span>Sieh zu, wie sie sich füllen</span></figcaption></figure>
-      <figure class="hs-item"><div class="phone"><img src="../img/widgets.webp" alt="Startbildschirm-Widgets" loading="lazy"></div><figcaption><b>Widgets</b><span>Teil von Pro</span></figcaption></figure>
-    </div>
-  </section>
 
   <div class="plate-wrap" id="private">
     <div class="plate">

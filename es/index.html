@@ -211,21 +211,28 @@ p { margin: 0 0 14px; }
 /* ---------- Features: six cards, a screenshot peeking out of each ---------- */
 .features { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); }
 .feature { background: var(--tile); border-radius: 26px; padding: 0 28px 30px; }
-.feature .shot { height: 230px; overflow: hidden; display: flex; justify-content: center; padding-top: 30px; margin-bottom: 24px; -webkit-mask-image: linear-gradient(#000 65%, transparent); mask-image: linear-gradient(#000 65%, transparent); }
-.feature .shot .phone { width: 160px; flex: none; --shadow: none; }
+.feature .shot { display: flex; justify-content: center; padding-top: 30px; margin-bottom: 26px; }
+.feature .shot .phone { width: 150px; flex: none; --shadow: 0 24px 40px -24px rgba(0, 0, 0, 0.55); }
+.feature .shot .phone > img { transition: filter .5s var(--ease); }
+/* The screen's key card, cut from the same capture and laid exactly over it. On hover (or, on
+   touch screens, once the card scrolls into view) it lifts out of the phone toward you. */
+.pop {
+  position: absolute; z-index: 2; overflow: hidden; border-radius: var(--r, 5px); pointer-events: none;
+  left: calc(2.7% + 94.6% * var(--x)); top: calc(1.2525% + 97.495% * var(--y));
+  width: calc(94.6% * var(--w)); height: calc(97.495% * var(--h));
+  transition: transform .55s var(--ease), box-shadow .55s var(--ease);
+}
+.pop img { position: absolute; max-width: none; width: calc(100% / var(--w)); height: calc(100% / var(--h)); left: calc(-100% * var(--x) / var(--w)); top: calc(-100% * var(--y) / var(--h)); }
+.feature:hover .pop, .feature:focus-within .pop { transform: scale(1.3); box-shadow: 0 18px 36px -12px rgba(0, 0, 0, 0.55); }
+.feature:hover .shot .phone > img { filter: brightness(.72); }
+@media (hover: none) {
+  .motion .feature.in .pop { transform: scale(1.3); box-shadow: 0 18px 36px -12px rgba(0, 0, 0, 0.55); transition-delay: .6s; }
+  .motion .feature.in .shot .phone > img { filter: brightness(.72); transition-delay: .6s; }
+}
 .feature .kicker { margin-bottom: 10px; }
 .feature h3 { font-size: 1.6rem; margin-bottom: 8px; }
 .feature p { color: var(--muted); font-size: 0.97rem; margin: 0; }
 .pro-tag { display: inline-block; font: 600 11px/1 var(--ui); letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); border: 1px solid var(--accent); padding: 5px 9px; border-radius: 999px; vertical-align: middle; margin-inline-start: 6px; font-style: normal; }
-
-/* ---------- Gallery: a row you swipe or scroll sideways ---------- */
-.hs-row { display: flex; gap: 28px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: max(22px, calc((100vw - 1036px) / 2)); padding: 10px max(22px, calc((100vw - 1036px) / 2)) 30px; scrollbar-width: thin; scrollbar-color: var(--faint) transparent; }
-.hs-item { margin: 0; flex: none; width: clamp(180px, 20vw, 230px); scroll-snap-align: start; text-align: center; }
-.hs-item .phone { --shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.6); }
-.hs-item figcaption { margin-top: 20px; }
-.hs-item figcaption b { display: block; font: 600 1.3rem/1.2 var(--heading); }
-.hs-item figcaption span { font-size: 0.9rem; color: var(--muted); }
-.hs .center-head { margin-bottom: 40px; }
 
 /* ---------- Privacy. The panel opens to full width and a lock draws itself ---------- */
 .plate-wrap { padding-top: 140px; }
@@ -406,60 +413,43 @@ footer a:hover { color: var(--text); }
 
     <div class="features">
       <article class="feature spot up">
-        <div class="shot"><div class="phone"><img src="../img/home.webp" alt="Pantalla de inicio de Pocket Glance con el saldo disponible, una racha y el presupuesto mensual" loading="lazy"></div></div>
+        <div class="shot"><div class="phone"><img src="../img/home.webp" alt="Pantalla de inicio de Pocket Glance con el saldo disponible, una racha y el presupuesto mensual" loading="lazy"><span class="pop" style="--x:0.0389;--y:0.5900;--w:0.9222;--h:0.1225" aria-hidden="true"><img src="../img/home.webp" alt="" loading="lazy"></span></div></div>
         <span class="kicker">De un vistazo</span>
         <h3>Saldo, presupuesto y un gasto diario seguro.</h3>
         <p>Una pantalla tranquila te dice cómo va el mes.</p>
       </article>
       <article class="feature spot up d1">
-        <div class="shot"><div class="phone"><img src="../img/subs.webp" alt="Pantalla de suscripciones con el total anual y las próximas renovaciones" loading="lazy"></div></div>
+        <div class="shot"><div class="phone"><img src="../img/subs.webp" alt="Pantalla de suscripciones con el total anual y las próximas renovaciones" loading="lazy"><span class="pop" style="--x:0.0389;--y:0.1113;--w:0.9222;--h:0.1713" aria-hidden="true"><img src="../img/subs.webp" alt="" loading="lazy"></span></div></div>
         <span class="kicker">Suscripciones</span>
         <h3>Descubre cuánto cuestan realmente tus suscripciones.</h3>
         <p>Streaming, teléfono, gimnasio, seguros: todos tus pagos recurrentes en un solo lugar.</p>
       </article>
       <article class="feature spot up d2">
-        <div class="shot"><div class="phone"><img src="../img/add.webp" alt="Agregando una transacción con monto y categoría" loading="lazy"></div></div>
+        <div class="shot"><div class="phone"><img src="../img/add.webp" alt="Agregando una transacción con monto y categoría" loading="lazy"><span class="pop" style="--x:0.1111;--y:0.1750;--w:0.7778;--h:0.1525" aria-hidden="true"><img src="../img/add.webp" alt="" loading="lazy"></span></div></div>
         <span class="kicker">Registro rápido</span>
         <h3>Registra gastos en segundos.</h3>
         <p>Monto, categoría, listo.</p>
       </article>
       <article class="feature spot up">
-        <div class="shot"><div class="phone"><img src="../img/analytics2.webp" alt="Pantalla de análisis con gastos por categoría" loading="lazy"></div></div>
+        <div class="shot"><div class="phone"><img src="../img/analytics2.webp" alt="Pantalla de análisis con gastos por categoría" loading="lazy"><span class="pop" style="--x:0.0389;--y:0.1125;--w:0.9222;--h:0.1775" aria-hidden="true"><img src="../img/analytics2.webp" alt="" loading="lazy"></span></div></div>
         <span class="kicker">Análisis</span>
         <h3>Mira exactamente en qué se fue.</h3>
         <p>Un desglose claro, y si tus gastos suben o bajan.</p>
       </article>
       <article class="feature spot up d1">
-        <div class="shot"><div class="phone"><img src="../img/goals.webp" alt="Metas de ahorro con el progreso de cada objetivo" loading="lazy"></div></div>
+        <div class="shot"><div class="phone"><img src="../img/goals.webp" alt="Metas de ahorro con el progreso de cada objetivo" loading="lazy"><span class="pop" style="--x:0.0389;--y:0.1113;--w:0.9222;--h:0.1975" aria-hidden="true"><img src="../img/goals.webp" alt="" loading="lazy"></span></div></div>
         <span class="kicker">Metas de ahorro</span>
         <h3>Ahorra para lo que más importa.</h3>
         <p>Un viaje, una laptop, un fondo de emergencia.</p>
       </article>
       <article class="feature spot up d2">
-        <div class="shot"><div class="phone"><img src="../img/widgets.webp" alt="Pantalla de inicio de Android con los widgets de presupuesto, pagos y metas de Pocket Glance" loading="lazy"></div></div>
+        <div class="shot"><div class="phone"><img src="../img/widgets.webp" alt="Pantalla de inicio de Android con los widgets de presupuesto, pagos y metas de Pocket Glance" loading="lazy"><span class="pop" style="--r:9px;--x:0.5194;--y:0.4025;--w:0.4361;--h:0.2313" aria-hidden="true"><img src="../img/widgets.webp" alt="" loading="lazy"></span></div></div>
         <span class="kicker">Widgets <em class="pro-tag">Pro</em></span>
         <h3>Tu presupuesto en tu pantalla de inicio.</h3>
         <p>Presupuesto restante, próximo pago y progreso de tus metas, sin abrir la app.</p>
       </article>
     </div>
   </div>
-
-  <section class="hs section" id="gallery" aria-label="Pantallas de la app">
-    <div class="wrap center-head up">
-      <span class="kicker">Cada pantalla</span>
-      <h2>Tranquila, <span class="gold">de día y de noche.</span></h2>
-      <p>Tema claro para el día, oscuro para la noche. Cada pantalla pensada para leerse de un vistazo.</p>
-    </div>
-    <div class="hs-row" tabindex="0">
-      <figure class="hs-item"><div class="phone"><img src="../img/home.webp" alt="Pantalla de inicio con el tema claro" loading="lazy"></div><figcaption><b>Inicio</b><span>Claro</span></figcaption></figure>
-      <figure class="hs-item"><div class="phone"><img src="../img/home_dark.webp" alt="Pantalla de inicio con el tema oscuro" loading="lazy"></div><figcaption><b>Inicio</b><span>Oscuro</span></figcaption></figure>
-      <figure class="hs-item"><div class="phone"><img src="../img/subs.webp" alt="Suscripciones" loading="lazy"></div><figcaption><b>Suscripciones</b><span>Cada renovación, con anticipación</span></figcaption></figure>
-      <figure class="hs-item"><div class="phone"><img src="../img/add.webp" alt="Registro rápido" loading="lazy"></div><figcaption><b>Registro rápido</b><span>Monto, categoría, listo</span></figcaption></figure>
-      <figure class="hs-item"><div class="phone"><img src="../img/analytics2.webp" alt="Análisis" loading="lazy"></div><figcaption><b>Análisis</b><span>En qué se fue</span></figcaption></figure>
-      <figure class="hs-item"><div class="phone"><img src="../img/goals.webp" alt="Metas de ahorro" loading="lazy"></div><figcaption><b>Metas</b><span>Mira cómo se llenan</span></figcaption></figure>
-      <figure class="hs-item"><div class="phone"><img src="../img/widgets.webp" alt="Widgets de la pantalla de inicio" loading="lazy"></div><figcaption><b>Widgets</b><span>Incluidos en Pro</span></figcaption></figure>
-    </div>
-  </section>
 
   <div class="plate-wrap" id="private">
     <div class="plate">
