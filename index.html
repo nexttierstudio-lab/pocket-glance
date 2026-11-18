@@ -171,7 +171,8 @@ nav a.nav-cta svg { flex: none; }
 
 /* ---------- Hero: headline and buttons over drifting gold dust ---------- */
 .hero { position: relative; text-align: center; }
-.hero-pin { position: relative; overflow: hidden; padding: clamp(96px, 16vh, 170px) 0 clamp(72px, 12vh, 130px); }
+/* Fills the first screen under the bar (svh: the height with the phone browser's toolbars showing). */
+.hero-pin { position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: center; min-height: calc(100vh - var(--bar-h, 53px)); min-height: calc(100svh - var(--bar-h, 53px)); padding: 64px 0; }
 .hero-pin::before {
   content: ""; position: absolute; left: 50%; top: 10%; width: 1200px; height: 1000px; margin-left: -600px;
   background: radial-gradient(closest-side, var(--glow), transparent 70%);
@@ -519,6 +520,14 @@ The Privacy Policy, Terms and data deletion pages are in English.  </div>
       var link = saved && saved !== "en" && document.querySelector('.lang a[data-lang="' + saved + '"]');
       if (link) location.replace(link.href + location.hash);
     } catch (e) {}
+  })();
+
+  // The hero fills the screen under the bar, whose height changes when its links wrap on phones.
+  (function () {
+    var bar = document.querySelector(".bar");
+    function fit() { document.documentElement.style.setProperty("--bar-h", bar.offsetHeight + "px"); }
+    fit();
+    window.addEventListener("resize", fit);
   })();
 
   // Light / dark switch, the same as on the legal pages.
