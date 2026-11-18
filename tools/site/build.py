@@ -81,8 +81,6 @@ def main():
             "site": SITE_URL,
             "alternates": alternates + f'\n  <link rel="canonical" href="{SITE_URL}{folder(code)}">',
             "lang_menu": menu,
-            # Japanese and Chinese run words together, so no space before the gold phrase.
-            "statement_sep": "" if code in ("ja", "zh") else " ",
             "legal_note": "" if code == "en" else f'    <p class="legal-note">{s["legal_note"]}</p>\n',
         }
         page = re.sub(r"\{\{(\w+)\}\}", lambda m: s[m.group(1)] if m.group(1) in s else m.group(0), template)

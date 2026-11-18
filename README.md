@@ -46,11 +46,21 @@ To refresh the screenshots after new captures, from this folder (needs Python wi
 python tools/make-screens.py ../Finorvia/docs/launch/play-store/src/raw
 ```
 
-## Preview
+## Preview on your computer
+
+Before publishing, build every language and serve the site locally (needs Python 3):
 
 ```bash
-python -m http.server 8765
+python tools/serve.py
 ```
+
+Then open <http://localhost:8765/>. The script rebuilds the homepage first, so you always see your
+latest edits to `tools/site/`. Options: `--port 9000` for another port, `--no-build` to serve what is
+already built, `--open` to open the browser for you. Stop it with Ctrl+C. It only listens on this
+computer, and since every link is relative, pages behave as they will on GitHub Pages.
+
+Check the homepage, a couple of language folders (for example `/es/` and the right-to-left `/ar/`),
+and the Privacy, Terms and Delete data pages, then commit and push.
 
 The fonts in `fonts/` are Bodoni Moda and Inter, both licensed under the
 [SIL Open Font License 1.1](https://openfontlicense.org/open-font-license-official-text/).

@@ -75,6 +75,10 @@
 }
 :root[data-theme="light"] { color-scheme: light; }
 * { box-sizing: border-box; }
+/* Bodoni Moda thins its hairlines and serifs as the type grows (optical size up to 96), until they
+   all but vanish in big headings. Pinning the optical size keeps them visible at every size.
+   !important because every `font:` shorthand on the page resets this property. */
+* { font-variation-settings: "opsz" 24 !important; }
 html { scroll-behavior: smooth; scroll-padding-top: 72px; }
 body {
   margin: 0; background: var(--page); color: var(--text);
@@ -233,7 +237,7 @@ footer a:hover { color: var(--text); }
     <p class="eyebrow">Pocket Glance</p>
     <h1>Delete your data</h1>
     <p class="lead">Pocket Glance has no accounts and no servers holding your records. Your data is on your phone and, if you use backup, in your own Google Drive. You can delete all of it yourself, without sending us a request.</p>
-    <p class="meta">Pocket Glance by NextTier</p>
+    <p class="meta">Pocket Glance by NextTier Studio</p>
   </div>
 </div>
 
@@ -271,7 +275,7 @@ footer a:hover { color: var(--text); }
 
 <footer>
   <div class="wrap">
-    <span>© 2026 NextTier · Pocket Glance</span>
+    <span>© 2026 NextTier Studio · Pocket Glance</span>
     <span><a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="delete-data.html">Delete your data</a> · <a href="mailto:nexttierstudio@gmail.com">nexttierstudio@gmail.com</a></span>
   </div>
 </footer>
