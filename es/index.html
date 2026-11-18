@@ -199,7 +199,7 @@ h1 em { font-style: italic; font-weight: 500; }
 .stage { position: relative; z-index: 3; margin: 56px auto 0; padding: 0 var(--gutter); perspective: 1600px; animation: rise-big 1.2s var(--ease) .3s both; }
 .stage { --ry: -20deg; --rx: 10deg; --rz: 3deg; }
 [dir="rtl"] .stage { --ry: 20deg; --rz: -3deg; }
-.stage .phone { width: clamp(230px, 62vw, 300px); margin: 0 auto; transform-style: preserve-3d; transform: rotateY(var(--ry)) rotateX(var(--rx)) rotateZ(var(--rz)); }
+.stage .phone { --pw: min(220px, 56vw); --gap: 12px; width: var(--pw); margin: 0 auto; transform-style: preserve-3d; transform: rotateY(var(--ry)) rotateX(var(--rx)) rotateZ(var(--rz)); }
 .stage .phone > img { filter: brightness(.55); }
 .hot { position: absolute; z-index: 2; left: calc(2.7% + 94.6% * var(--x)); top: calc(1.2525% + 97.495% * var(--y)); width: calc(94.6% * var(--w)); height: calc(97.495% * var(--h)); transform-style: preserve-3d; }
 .hot .cut { position: absolute; inset: 0; overflow: hidden; border-radius: var(--r, 9px); transform: translateZ(var(--z, 60px)) scale(1.06); box-shadow: 0 0 0 1px rgba(225, 173, 102, 0.35), 0 40px 60px -20px rgba(0, 0, 0, 0.85); }
@@ -216,6 +216,15 @@ h1 em { font-style: italic; font-weight: 500; }
 .hot:hover .tip { opacity: 1; visibility: visible; }
 .tip strong { display: block; font: 600 0.98rem/1.25 var(--ui); margin-bottom: 3px; }
 .tip span { display: block; color: var(--muted); font-size: 0.86rem; line-height: 1.4; }
+/* Names outside the screen, each joined to its card by a thin gold line that runs to the
+   phone's edge plus --gap. They sit in the card's plane; the words turn to face the reader. */
+.lab { position: absolute; top: 50%; display: flex; align-items: center; direction: ltr; pointer-events: none; transform: translateY(-50%) translateZ(var(--z, 60px)); transform-style: preserve-3d; }
+.hot.sl .lab { right: 100%; flex-direction: row; --len: calc(var(--pw) * (0.027 + 0.946 * var(--x)) + var(--gap)); }
+.hot.sr .lab { left: 100%; flex-direction: row-reverse; --len: calc(var(--pw) * (0.973 - 0.946 * (var(--x) + var(--w))) + var(--gap)); }
+.lab .ln { flex: none; width: var(--len); height: 1px; background: var(--accent); opacity: .8; }
+.lab .t { padding: 0 8px; font: 600 12px/1.2 var(--ui); color: var(--brand); max-width: 84px; transform: rotateZ(calc(-1 * var(--rz))) rotateX(calc(-1 * var(--rx))) rotateY(calc(-1 * var(--ry))); }
+[dir="rtl"] .lab .t { direction: rtl; }
+.motion .lab { animation: fade-in .8s var(--ease) both; animation-delay: calc(var(--d, 1s) + .4s); }
 .hot .cut img { position: absolute; max-width: none; width: calc(100% / var(--w)); height: calc(100% / var(--h)); left: calc(-100% * var(--x) / var(--w)); top: calc(-100% * var(--y) / var(--h)); }
 @media (min-width: 1100px) {
   /* Side by side: the words on one side, the phone on the other, tilted further toward them. */
@@ -227,7 +236,11 @@ h1 em { font-style: italic; font-weight: 500; }
   .stage { margin: 0; padding: 0 60px; }
   .stage { --ry: -30deg; --rx: 12deg; --rz: 5deg; }
   [dir="rtl"] .stage { --ry: 30deg; --rz: -5deg; }
-  .stage .phone { width: clamp(280px, 23vw, 330px); }
+  .stage .phone { --pw: clamp(280px, 23vw, 330px); --gap: 40px; }
+  /* Every name on the side of the words: left here, right in Arabic. */
+  [dir="ltr"] .hot .lab { right: 100%; left: auto; flex-direction: row; --len: calc(var(--pw) * (0.027 + 0.946 * var(--x)) + var(--gap)); }
+  [dir="rtl"] .hot .lab { left: 100%; right: auto; flex-direction: row-reverse; --len: calc(var(--pw) * (0.973 - 0.946 * (var(--x) + var(--w))) + var(--gap)); }
+  .lab .t { font-size: 14px; max-width: none; white-space: nowrap; }
 }
 
 /* ---------- Shared section type ---------- */
@@ -443,10 +456,10 @@ footer .legal-note { flex-basis: 100%; margin: 4px 0 0; }
     <div class="stage">
       <div class="phone">
         <img class="themed" src="../img/home_dark.webp" data-light="../img/home.webp" alt="Pantalla de inicio de Pocket Glance con el saldo, una racha, el presupuesto mensual y el botón para añadir" width="720" height="1600">
-        <span class="hot" style="--x:0.0417;--y:0.1469;--w:0.9167;--h:0.2563;--z:70px;--d:1s" aria-hidden="true"><span class="cut"><img class="themed" src="../img/home_dark.webp" data-light="../img/home.webp" alt=""></span><span class="tip"><strong>Tu saldo de un vistazo</strong><span>Lo que tienes ahora, con los ingresos y gastos de este mes.</span></span></span>
-        <span class="hot" style="--x:0.0417;--y:0.4206;--w:0.9167;--h:0.1019;--z:45px;--d:1.2s" aria-hidden="true"><span class="cut"><img class="themed" src="../img/home_dark.webp" data-light="../img/home.webp" alt=""></span><span class="tip"><strong>Una racha que te motiva</strong><span>Registra un poco cada día. Tus días de descanso quedan guardados.</span></span></span>
-        <span class="hot" style="--x:0.0417;--y:0.5875;--w:0.9167;--h:0.1263;--z:60px;--d:1.4s" aria-hidden="true"><span class="cut"><img class="themed" src="../img/home_dark.webp" data-light="../img/home.webp" alt=""></span><span class="tip"><strong>Un gasto diario seguro</strong><span>El presupuesto que te queda este mes y cuánto puedes gastar cada día.</span></span></span>
-        <span class="hot end" style="--x:0.7958;--y:0.8819;--w:0.1694;--h:0.0763;--r:50%;--z:60px;--d:1.6s" aria-hidden="true"><span class="cut"><img class="themed" src="../img/home_dark.webp" data-light="../img/home.webp" alt=""></span><span class="tip"><strong>Añade en segundos</strong><span>Un toque para registrar un gasto o un ingreso.</span></span></span>
+        <span class="hot sl" style="--x:0.0417;--y:0.1469;--w:0.9167;--h:0.2563;--z:70px;--d:1s" aria-hidden="true"><span class="cut"><img class="themed" src="../img/home_dark.webp" data-light="../img/home.webp" alt=""></span><span class="tip"><strong>Tu saldo de un vistazo</strong><span>Lo que tienes ahora, con los ingresos y gastos de este mes.</span></span><span class="lab"><span class="t">Saldo</span><i class="ln"></i></span></span>
+        <span class="hot sr" style="--x:0.0417;--y:0.4206;--w:0.9167;--h:0.1019;--z:45px;--d:1.2s" aria-hidden="true"><span class="cut"><img class="themed" src="../img/home_dark.webp" data-light="../img/home.webp" alt=""></span><span class="tip"><strong>Una racha que te motiva</strong><span>Registra un poco cada día. Tus días de descanso quedan guardados.</span></span><span class="lab"><span class="t">Racha</span><i class="ln"></i></span></span>
+        <span class="hot sl" style="--x:0.0417;--y:0.5875;--w:0.9167;--h:0.1263;--z:60px;--d:1.4s" aria-hidden="true"><span class="cut"><img class="themed" src="../img/home_dark.webp" data-light="../img/home.webp" alt=""></span><span class="tip"><strong>Un gasto diario seguro</strong><span>El presupuesto que te queda este mes y cuánto puedes gastar cada día.</span></span><span class="lab"><span class="t">Presupuesto</span><i class="ln"></i></span></span>
+        <span class="hot sr end" style="--x:0.7958;--y:0.8819;--w:0.1694;--h:0.0763;--r:50%;--z:60px;--d:1.6s" aria-hidden="true"><span class="cut"><img class="themed" src="../img/home_dark.webp" data-light="../img/home.webp" alt=""></span><span class="tip"><strong>Añade en segundos</strong><span>Un toque para registrar un gasto o un ingreso.</span></span><span class="lab"><span class="t">Añadir</span><i class="ln"></i></span></span>
       </div>
     </div>
   </div>
