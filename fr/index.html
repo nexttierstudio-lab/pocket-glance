@@ -222,20 +222,25 @@ h1 em { font-style: italic; font-weight: 500; }
 .hot:hover { z-index: 5; }
 .lab { position: absolute; top: 50%; width: 0; height: 0; pointer-events: none; transform: translateZ(var(--z, 60px)); transform-style: preserve-3d; visibility: hidden; transition: visibility .3s; --v: 34px; --bw: 180px; }
 .hot:hover .lab { visibility: visible; }
-/* Opacity goes on the line and the card, not on .lab: a see-through 3D group is drawn flat. */
-.lab .ln, .lab .box { opacity: 0; transition: opacity .3s var(--ease); }
-.hot:hover .lab .ln, .hot:hover .lab .box { opacity: 1; }
+/* .flat is pinned to the card's edge and undoes the phone's tilt, so the L-shaped line and the
+   info card inside it are drawn flat to the screen: true right angles, nothing slanted.
+   It holds no 3D of its own, so fading it in keeps it flat from the first frame. */
+.lab .flat {
+  position: absolute; left: 0; top: 0; width: 0; height: 0; transform-origin: 0 0;
+  transform: rotateZ(calc(-1 * var(--rz))) rotateX(calc(-1 * var(--rx))) rotateY(calc(-1 * var(--ry)));
+  opacity: 0; transition: opacity .3s var(--ease);
+}
+.hot:hover .lab .flat { opacity: 1; }
+/* On narrow screens the info card lies over the phone, so it is lifted above every card. */
+@media (max-width: 767px) { .lab .flat { transform: translateZ(60px) rotateZ(calc(-1 * var(--rz))) rotateX(calc(-1 * var(--rx))) rotateY(calc(-1 * var(--ry))); } }
 .lab .ln { position: absolute; top: 0; height: 1.5px; width: var(--len); background: var(--accent); }
 .lab .ln::after { content: ""; position: absolute; bottom: 0; width: 1.5px; height: var(--v); background: var(--accent); }
 .hot.dn .lab .ln::after { bottom: auto; top: 0; }
 .lab .box {
   position: absolute; bottom: var(--v); width: var(--bw); padding: 12px 14px; border-radius: 14px; text-align: start;
   background: var(--page); color: var(--text); box-shadow: inset 0 0 0 1px var(--accent), 0 24px 44px -18px rgba(0, 0, 0, 0.8);
-  --oy: 100%; transform-origin: var(--ox) var(--oy);
-  /* On narrow screens it lies over the phone, so it is lifted above every card. */
-  transform: translateZ(60px) rotateZ(calc(-1 * var(--rz))) rotateX(calc(-1 * var(--rx))) rotateY(calc(-1 * var(--ry)));
 }
-.hot.dn .lab .box { bottom: auto; top: var(--v); --oy: 0%; }
+.hot.dn .lab .box { bottom: auto; top: var(--v); }
 [dir="rtl"] .lab .box { direction: rtl; }
 .box strong { display: block; font: 600 0.95rem/1.25 var(--ui); margin-bottom: 3px; }
 .box span { display: block; color: var(--muted); font-size: 0.84rem; line-height: 1.4; }
@@ -244,11 +249,11 @@ h1 em { font-style: italic; font-weight: 500; }
 .hot.sl .lab { left: 0; --len: calc(var(--pw) * (0.027 + 0.946 * var(--x)) + var(--gap)); }
 .hot.sl .ln { right: 0; left: auto; }
 .hot.sl .ln::after { left: 0; right: auto; }
-.hot.sl .box { left: calc(-1 * var(--len)); right: auto; --ox: 0%; }
+.hot.sl .box { left: calc(-1 * var(--len)); right: auto; }
 .hot.sr .lab { left: 100%; --len: calc(var(--pw) * (0.973 - 0.946 * (var(--x) + var(--w))) + var(--gap)); }
 .hot.sr .ln { left: 0; right: auto; }
 .hot.sr .ln::after { right: 0; left: auto; }
-.hot.sr .box { left: calc(var(--len) - var(--bw)); right: auto; --ox: 100%; }
+.hot.sr .box { left: calc(var(--len) - var(--bw)); right: auto; }
 .hot .cut img { position: absolute; max-width: none; width: calc(100% / var(--w)); height: calc(100% / var(--h)); left: calc(-100% * var(--x) / var(--w)); top: calc(-100% * var(--y) / var(--h)); }
 @media (min-width: 768px) {
   /* Side by side: the words on one side, the phone on the other, tilted further toward them.
@@ -265,16 +270,14 @@ h1 em { font-style: italic; font-weight: 500; }
   .stage .phone { --pw: clamp(170px, min(calc(23 * var(--vw)), calc((100 * var(--vh) - var(--bar-h, 53px) - 150px) / 2.35)), 340px); --gap: clamp(20px, calc(3 * var(--vw)), 40px); }
   /* Every info card on the side of the words: left here, right in Arabic. */
   .lab { --bw: clamp(190px, calc(18 * var(--vw)), 250px); --v: 40px; }
-  /* Out beside the phone nothing overlaps it, so it stays in the card's plane and touches its line. */
-  .lab .box { transform: rotateZ(calc(-1 * var(--rz))) rotateX(calc(-1 * var(--rx))) rotateY(calc(-1 * var(--ry))); }
   [dir="ltr"] .hot .lab { left: 0; --len: calc(var(--pw) * (0.027 + 0.946 * var(--x)) + var(--gap)); }
   [dir="ltr"] .hot .ln { right: 0; left: auto; }
   [dir="ltr"] .hot .ln::after { left: 0; right: auto; }
-  [dir="ltr"] .hot .box { right: var(--len); left: auto; --ox: 100%; }
+  [dir="ltr"] .hot .box { right: var(--len); left: auto; }
   [dir="rtl"] .hot .lab { left: 100%; --len: calc(var(--pw) * (0.973 - 0.946 * (var(--x) + var(--w))) + var(--gap)); }
   [dir="rtl"] .hot .ln { left: 0; right: auto; }
   [dir="rtl"] .hot .ln::after { right: 0; left: auto; }
-  [dir="rtl"] .hot .box { left: var(--len); right: auto; --ox: 0%; }
+  [dir="rtl"] .hot .box { left: var(--len); right: auto; }
 }
 
 /* ---------- Shared section type ---------- */
@@ -505,10 +508,10 @@ footer .legal-note { flex-basis: 100%; margin: 4px 0 0; }
       <div class="phone">
         <span class="edge" style="--i:1" aria-hidden="true"></span><span class="edge" style="--i:2" aria-hidden="true"></span><span class="edge" style="--i:3" aria-hidden="true"></span><span class="edge" style="--i:4" aria-hidden="true"></span><span class="edge" style="--i:5" aria-hidden="true"></span><span class="edge btns" style="--i:6" aria-hidden="true"></span><span class="edge" style="--i:7" aria-hidden="true"></span><span class="edge" style="--i:8" aria-hidden="true"></span><span class="edge" style="--i:9" aria-hidden="true"></span><span class="edge" style="--i:10" aria-hidden="true"></span><span class="edge" style="--i:11" aria-hidden="true"></span><span class="edge" style="--i:12" aria-hidden="true"></span>
         <img class="themed" src="../img/home_dark.webp" data-light="../img/home.webp" alt="Écran d'accueil de Pocket Glance avec le solde, une série, le budget du mois et le bouton d'ajout" width="720" height="1600">
-        <span class="hot sl dn" style="--x:0.0417;--y:0.1469;--w:0.9167;--h:0.2563;--z:70px;--d:1s" aria-hidden="true"><span class="cut"><img class="themed" src="../img/home_dark.webp" data-light="../img/home.webp" alt=""></span><span class="lab"><i class="ln"></i><span class="box"><strong>Votre solde en un coup d'œil</strong><span>Ce que vous avez maintenant, avec les revenus et dépenses du mois.</span></span></span></span>
-        <span class="hot sr" style="--x:0.0417;--y:0.4206;--w:0.9167;--h:0.1019;--z:45px;--d:1.2s" aria-hidden="true"><span class="cut"><img class="themed" src="../img/home_dark.webp" data-light="../img/home.webp" alt=""></span><span class="lab"><i class="ln"></i><span class="box"><strong>Une série qui motive</strong><span>Notez un peu chaque jour. Vos jours de repos sont gardés pour vous.</span></span></span></span>
-        <span class="hot sl" style="--x:0.0417;--y:0.5875;--w:0.9167;--h:0.1263;--z:60px;--d:1.4s" aria-hidden="true"><span class="cut"><img class="themed" src="../img/home_dark.webp" data-light="../img/home.webp" alt=""></span><span class="lab"><i class="ln"></i><span class="box"><strong>Une dépense quotidienne sûre</strong><span>Le budget restant ce mois-ci, et ce que vous pouvez dépenser par jour.</span></span></span></span>
-        <span class="hot sr" style="--x:0.7958;--y:0.8819;--w:0.1694;--h:0.0763;--r:50%;--z:60px;--d:1.6s" aria-hidden="true"><span class="cut"><img class="themed" src="../img/home_dark.webp" data-light="../img/home.webp" alt=""></span><span class="lab"><i class="ln"></i><span class="box"><strong>Ajoutez en quelques secondes</strong><span>Un toucher pour noter une dépense ou un revenu.</span></span></span></span>
+        <span class="hot sl dn" style="--x:0.0417;--y:0.1469;--w:0.9167;--h:0.2563;--z:70px;--d:1s" aria-hidden="true"><span class="cut"><img class="themed" src="../img/home_dark.webp" data-light="../img/home.webp" alt=""></span><span class="lab"><span class="flat"><i class="ln"></i><span class="box"><strong>Votre solde en un coup d'œil</strong><span>Ce que vous avez maintenant, avec les revenus et dépenses du mois.</span></span></span></span></span>
+        <span class="hot sr" style="--x:0.0417;--y:0.4206;--w:0.9167;--h:0.1019;--z:45px;--d:1.2s" aria-hidden="true"><span class="cut"><img class="themed" src="../img/home_dark.webp" data-light="../img/home.webp" alt=""></span><span class="lab"><span class="flat"><i class="ln"></i><span class="box"><strong>Une série qui motive</strong><span>Notez un peu chaque jour. Vos jours de repos sont gardés pour vous.</span></span></span></span></span>
+        <span class="hot sl" style="--x:0.0417;--y:0.5875;--w:0.9167;--h:0.1263;--z:60px;--d:1.4s" aria-hidden="true"><span class="cut"><img class="themed" src="../img/home_dark.webp" data-light="../img/home.webp" alt=""></span><span class="lab"><span class="flat"><i class="ln"></i><span class="box"><strong>Une dépense quotidienne sûre</strong><span>Le budget restant ce mois-ci, et ce que vous pouvez dépenser par jour.</span></span></span></span></span>
+        <span class="hot sr" style="--x:0.7958;--y:0.8819;--w:0.1694;--h:0.0763;--r:50%;--z:60px;--d:1.6s" aria-hidden="true"><span class="cut"><img class="themed" src="../img/home_dark.webp" data-light="../img/home.webp" alt=""></span><span class="lab"><span class="flat"><i class="ln"></i><span class="box"><strong>Ajoutez en quelques secondes</strong><span>Un toucher pour noter une dépense ou un revenu.</span></span></span></span></span>
       </div>
     </div>
   </div>
