@@ -71,7 +71,7 @@
   --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
   /* Spacing scale, used everywhere on the page so sections and tiles line up. */
   --gutter: 22px;
-  --space-section: clamp(96px, 12vw, 140px);
+  --space-section: clamp(96px, calc(12 * var(--vw)), 140px);
   --head-gap: 56px;
   --tile-radius: 26px;
   --tile-pad-y: 32px;
@@ -176,7 +176,7 @@ nav a.nav-cta svg { flex: none; }
 /* ---------- Hero: headline and buttons over drifting gold dust ---------- */
 .hero { position: relative; text-align: center; }
 /* Fills the first screen under the bar (svh: the height with the phone browser's toolbars showing). */
-.hero-pin { position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: center; min-height: calc(100vh - var(--bar-h, 53px)); min-height: calc(100svh - var(--bar-h, 53px)); padding: 64px 0; }
+.hero-pin { position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: center; min-height: calc(calc(100 * var(--vh)) - var(--bar-h, 53px)); padding: 64px 0; }
 .hero-pin::before {
   content: ""; position: absolute; left: 50%; top: 10%; width: 1200px; height: 1000px; margin-left: -600px;
   background: radial-gradient(closest-side, var(--glow), transparent 70%);
@@ -188,21 +188,93 @@ nav a.nav-cta svg { flex: none; }
 .hero-copy > :nth-child(2) { animation-delay: .1s; }
 .hero-copy > :nth-child(3) { animation-delay: .2s; }
 .eyebrow { font: 600 13px/1 var(--ui); letter-spacing: 0.2em; text-transform: uppercase; color: var(--brand); margin: 0 0 20px; }
-h1 { font: 600 clamp(3rem, min(12vw, 13vh), 8.6rem)/0.94 var(--heading); letter-spacing: -0.03em; margin: 0 auto 30px; max-width: 11ch; text-wrap: balance; }
+h1 { font: 600 clamp(3rem, min(calc(12 * var(--vw)), calc(13 * var(--vh))), 8.6rem)/0.94 var(--heading); letter-spacing: -0.03em; margin: 0 auto 30px; max-width: 11ch; text-wrap: balance; }
 h1 em { font-style: italic; font-weight: 500; }
-.lead { font: 400 clamp(1.15rem, 2.2vw, 1.5rem)/1.45 var(--ui); margin: 0 auto 36px; max-width: 26em; color: var(--muted); text-wrap: pretty; }
+.lead { font: 400 clamp(1.15rem, calc(2.2 * var(--vw)), 1.5rem)/1.45 var(--ui); margin: 0 auto 36px; max-width: 26em; color: var(--muted); text-wrap: pretty; }
 .actions { display: flex; flex-wrap: wrap; gap: 6px 18px; justify-content: center; align-items: center; }
+
+/* ---------- Hero phone: the whole home screen, tilted, its main parts popped out toward you ----------
+   Each .hot is a part of the 720x1600 capture (--x --y --w --h as fractions), cut from the
+   same image, laid exactly over it and lifted off the screen by --z. */
+.stage { position: relative; z-index: 3; margin: 56px auto 0; padding: 0 var(--gutter); perspective: 1600px; animation: rise-big 1.2s var(--ease) .3s both; }
+.stage { --ry: -20deg; --rx: 10deg; --rz: 3deg; }
+[dir="rtl"] .stage { --ry: 20deg; --rz: -3deg; }
+.stage .phone { --pw: min(220px, calc(56 * var(--vw))); --gap: 12px; width: var(--pw); margin: 0 auto; transform-style: preserve-3d; transform: rotateY(var(--ry)) rotateX(var(--rx)) rotateZ(var(--rz)); }
+.stage .phone > img { filter: brightness(.55); }
+.hot { position: absolute; z-index: 2; left: calc(2.7% + 94.6% * var(--x)); top: calc(1.2525% + 97.495% * var(--y)); width: calc(94.6% * var(--w)); height: calc(97.495% * var(--h)); transform-style: preserve-3d; }
+.hot .cut { position: absolute; inset: 0; overflow: hidden; border-radius: var(--r, 9px); transform: translateZ(var(--z, 60px)) scale(1.06); box-shadow: 0 0 0 1px rgba(225, 173, 102, 0.35), 0 40px 60px -20px rgba(0, 0, 0, 0.85); }
+.motion .hot .cut { animation: pop-out 1s var(--ease) both; animation-delay: var(--d, 1s); }
+/* Pointing at a card shows its info card outside the phone, joined to the card by an
+   L-shaped gold line: out sideways past the phone's edge (+ --gap), then up (or down, .dn)
+   by --v. Line and card sit in the popped card's plane; the info card turns to face the reader. */
+.hot:hover { z-index: 5; }
+.lab { position: absolute; top: 50%; width: 0; height: 0; pointer-events: none; transform: translateZ(var(--z, 60px)); transform-style: preserve-3d; visibility: hidden; transition: visibility .3s; --v: 34px; --bw: 180px; }
+.hot:hover .lab { visibility: visible; }
+/* Opacity goes on the line and the card, not on .lab: a see-through 3D group is drawn flat. */
+.lab .ln, .lab .box { opacity: 0; transition: opacity .3s var(--ease); }
+.hot:hover .lab .ln, .hot:hover .lab .box { opacity: 1; }
+.lab .ln { position: absolute; top: 0; height: 1.5px; width: var(--len); background: var(--accent); }
+.lab .ln::after { content: ""; position: absolute; bottom: 0; width: 1.5px; height: var(--v); background: var(--accent); }
+.hot.dn .lab .ln::after { bottom: auto; top: 0; }
+.lab .box {
+  position: absolute; bottom: var(--v); width: var(--bw); padding: 12px 14px; border-radius: 14px; text-align: start;
+  background: var(--page); color: var(--text); box-shadow: inset 0 0 0 1px var(--accent), 0 24px 44px -18px rgba(0, 0, 0, 0.8);
+  --oy: 100%; transform-origin: var(--ox) var(--oy);
+  /* On narrow screens it lies over the phone, so it is lifted above every card. */
+  transform: translateZ(60px) rotateZ(calc(-1 * var(--rz))) rotateX(calc(-1 * var(--rx))) rotateY(calc(-1 * var(--ry)));
+}
+.hot.dn .lab .box { bottom: auto; top: var(--v); --oy: 0%; }
+[dir="rtl"] .lab .box { direction: rtl; }
+.box strong { display: block; font: 600 0.95rem/1.25 var(--ui); margin-bottom: 3px; }
+.box span { display: block; color: var(--muted); font-size: 0.84rem; line-height: 1.4; }
+/* Which side of the phone: .sl left, .sr right (on wide screens, the side of the words).
+   Narrow screens have no room beside the phone, so the info card turns back over it. */
+.hot.sl .lab { left: 0; --len: calc(var(--pw) * (0.027 + 0.946 * var(--x)) + var(--gap)); }
+.hot.sl .ln { right: 0; left: auto; }
+.hot.sl .ln::after { left: 0; right: auto; }
+.hot.sl .box { left: calc(-1 * var(--len)); right: auto; --ox: 0%; }
+.hot.sr .lab { left: 100%; --len: calc(var(--pw) * (0.973 - 0.946 * (var(--x) + var(--w))) + var(--gap)); }
+.hot.sr .ln { left: 0; right: auto; }
+.hot.sr .ln::after { right: 0; left: auto; }
+.hot.sr .box { left: calc(var(--len) - var(--bw)); right: auto; --ox: 100%; }
+.hot .cut img { position: absolute; max-width: none; width: calc(100% / var(--w)); height: calc(100% / var(--h)); left: calc(-100% * var(--x) / var(--w)); top: calc(-100% * var(--y) / var(--h)); }
+@media (min-width: 768px) {
+  /* Side by side: the words on one side, the phone on the other, tilted further toward them.
+     The phone is sized by the height left under the bar as well as by the width, so the
+     first slide fits the screen exactly, whatever its shape. */
+  .hero-pin { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: clamp(20px, calc(4 * var(--vw)), 56px); max-width: 1280px; margin: 0 auto; padding: clamp(20px, calc(5 * var(--vh)), 48px) var(--gutter); text-align: start; }
+  .hero-copy { padding: 0; }
+  .hero-copy h1 { font-size: clamp(2.5rem, min(calc(6.4 * var(--vw)), calc(11 * var(--vh))), 6.4rem); margin-inline: 0; }
+  .hero-copy .lead { margin-inline: 0; }
+  .hero-copy .actions { justify-content: flex-start; }
+  .stage { margin: 0; padding: 0 clamp(12px, calc(4 * var(--vw)), 60px); }
+  .stage { --ry: -30deg; --rx: 12deg; --rz: 5deg; }
+  [dir="rtl"] .stage { --ry: 30deg; --rz: -5deg; }
+  .stage .phone { --pw: clamp(170px, min(calc(23 * var(--vw)), calc((100 * var(--vh) - var(--bar-h, 53px) - 150px) / 2.35)), 340px); --gap: clamp(20px, calc(3 * var(--vw)), 40px); }
+  /* Every info card on the side of the words: left here, right in Arabic. */
+  .lab { --bw: clamp(190px, calc(18 * var(--vw)), 250px); --v: 40px; }
+  /* Out beside the phone nothing overlaps it, so it stays in the card's plane and touches its line. */
+  .lab .box { transform: rotateZ(calc(-1 * var(--rz))) rotateX(calc(-1 * var(--rx))) rotateY(calc(-1 * var(--ry))); }
+  [dir="ltr"] .hot .lab { left: 0; --len: calc(var(--pw) * (0.027 + 0.946 * var(--x)) + var(--gap)); }
+  [dir="ltr"] .hot .ln { right: 0; left: auto; }
+  [dir="ltr"] .hot .ln::after { left: 0; right: auto; }
+  [dir="ltr"] .hot .box { right: var(--len); left: auto; --ox: 100%; }
+  [dir="rtl"] .hot .lab { left: 100%; --len: calc(var(--pw) * (0.973 - 0.946 * (var(--x) + var(--w))) + var(--gap)); }
+  [dir="rtl"] .hot .ln { left: 0; right: auto; }
+  [dir="rtl"] .hot .ln::after { right: 0; left: auto; }
+  [dir="rtl"] .hot .box { left: var(--len); right: auto; --ox: 0%; }
+}
 
 /* ---------- Shared section type ---------- */
 main { padding-bottom: 0; }
 .section { padding-top: var(--space-section); }
 .kicker { display: block; font: 600 13px/1 var(--ui); letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-bottom: 18px; }
-h2 { font: 600 clamp(2.4rem, 6vw, 4.6rem)/1 var(--heading); letter-spacing: -0.025em; margin: 0 0 22px; text-wrap: balance; }
-h3 { font: 600 clamp(1.9rem, 4vw, 3rem)/1.05 var(--heading); letter-spacing: -0.01em; margin: 0 0 18px; text-wrap: balance; }
+h2 { font: 600 clamp(2.4rem, calc(6 * var(--vw)), 4.6rem)/1 var(--heading); letter-spacing: -0.025em; margin: 0 0 22px; text-wrap: balance; }
+h3 { font: 600 clamp(1.9rem, calc(4 * var(--vw)), 3rem)/1.05 var(--heading); letter-spacing: -0.01em; margin: 0 0 18px; text-wrap: balance; }
 p { margin: 0 0 14px; }
 .center-head { text-align: center; max-width: 920px; margin: 0 auto var(--head-gap); }
 .center-head > :last-child { margin-bottom: 0; }
-.center-head p { color: var(--muted); font-size: clamp(1.05rem, 1.8vw, 1.25rem); }
+.center-head p { color: var(--muted); font-size: clamp(1.05rem, calc(1.8 * var(--vw)), 1.25rem); }
 .motion .up { opacity: 0; transform: translate3d(0, 40px, 0); transition: opacity 1s var(--ease), transform 1s var(--ease); }
 .motion .up.in { opacity: 1; transform: none; }
 .motion .up.d1 { transition-delay: .08s; } .motion .up.d2 { transition-delay: .16s; } .motion .up.d3 { transition-delay: .24s; }
@@ -221,7 +293,7 @@ p { margin: 0 0 14px; }
   .feature.wide:last-child { grid-column: 1 / -1; grid-template-columns: 1fr 1.4fr; }
   .feature.wide .shot { --P: 310px; --H: 380px; order: 2; margin: 0; }
   .feature.wide .txt { padding: var(--tile-pad-y) 0; }
-  .feature.wide h3 { font-size: clamp(2rem, 3vw, 2.7rem); margin-bottom: 14px; }
+  .feature.wide h3 { font-size: clamp(2rem, calc(3 * var(--vw)), 2.7rem); margin-bottom: 14px; }
   .feature.wide p { font-size: 1.1rem; max-width: 22em; }
 }
 .feature { background: var(--tile); border-radius: var(--tile-radius); padding: 0 var(--tile-pad-x) var(--tile-pad-y); overflow: hidden; transition: transform .45s var(--ease), box-shadow .45s var(--ease); }
@@ -265,7 +337,7 @@ p { margin: 0 0 14px; }
   --pp: 0;
   position: relative; overflow: hidden; background: #1C1A19; color: var(--plate-text);
   padding: var(--space-section) 0; text-align: center;
-  clip-path: inset(0 calc((1 - var(--pp)) * max(22px, (100vw - 1036px) / 2)) round calc((1 - var(--pp)) * 36px));
+  clip-path: inset(0 calc((1 - var(--pp)) * max(22px, (calc(100 * var(--vw)) - 1036px) / 2)) round calc((1 - var(--pp)) * 36px));
 }
 :root:not([data-theme="light"]) .plate { background: #1E1C1B; }
 .plate .glow { position: absolute; left: 50%; top: 50%; width: 1000px; height: 1000px; margin: -500px 0 0 -500px; background: radial-gradient(closest-side, rgba(225, 173, 102, 0.26), transparent 70%); pointer-events: none; transform: scale(calc(0.6 + var(--pp) * 0.5)); }
@@ -280,7 +352,7 @@ p { margin: 0 0 14px; }
 .facts div { background: #1C1A19; padding: var(--tile-pad-y) var(--tile-pad-x); }
 :root:not([data-theme="light"]) .facts div { background: #1E1C1B; }
 .facts b { display: block; font: 600 1.35rem/1.2 var(--heading); margin-bottom: 8px; color: var(--gold); }
-.facts b.num { font-size: clamp(2.8rem, 5vw, 3.6rem); line-height: 1; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+.facts b.num { font-size: clamp(2.8rem, calc(5 * var(--vw)), 3.6rem); line-height: 1; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
 .facts span { font-size: 0.93rem; line-height: 1.5; color: rgba(246, 244, 242, 0.7); }
 .plate .more { color: var(--gold); }
 .plate .spot::after { background: radial-gradient(300px circle at var(--mx, 50%) var(--my, 50%), rgba(225, 173, 102, 0.14), transparent 65%); }
@@ -355,11 +427,26 @@ footer .legal-note { flex-basis: 100%; margin: 4px 0 0; }
 @keyframes rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
 @keyframes rise-big { from { opacity: 0; transform: translateY(80px); } to { opacity: 1; transform: none; } }
 @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes pop-out { from { transform: none; box-shadow: none; } }
 @keyframes drift { from { transform: translate3d(-6%, 0, 0) scale(1); } to { transform: translate3d(6%, 4%, 0) scale(1.12); } }
 @keyframes ring { 0% { transform: scale(1); opacity: .7; } 100% { transform: scale(1.7); opacity: 0; } }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+/* ---------- Big screens ----------
+   On a large monitor at 100% scaling (a 4K display is 3840 CSS pixels wide) the whole page is
+   drawn larger, as if the screen were about 1750 pixels wide, so nothing looks tiny.
+   --vw and --vh are viewport units corrected for that zoom: use them instead of vw / vh. */
+:root { --zf: 1; --vw: calc(1vw / var(--zf)); --vh: calc(1vh / var(--zf)); }
+@supports (height: 1svh) { :root { --vh: calc(1svh / var(--zf)); } }
+@supports (zoom: 2) {
+  @media (min-width: 2000px) and (min-height: 1100px) { :root { --zf: 1.2; zoom: 1.2; } }
+  @media (min-width: 2400px) and (min-height: 1300px) { :root { --zf: 1.45; zoom: 1.45; } }
+  @media (min-width: 2800px) and (min-height: 1550px) { :root { --zf: 1.7; zoom: 1.7; } }
+  @media (min-width: 3200px) and (min-height: 1750px) { :root { --zf: 1.95; zoom: 1.95; } }
+  @media (min-width: 3600px) and (min-height: 2000px) { :root { --zf: 2.2; zoom: 2.2; } }
 }
   </style>
 </head>
@@ -400,6 +487,15 @@ footer .legal-note { flex-basis: 100%; margin: 4px 0 0; }
           Bei Google Play herunterladen
         </a>
         <a class="more" href="#features">Funktionen ansehen</a>
+      </div>
+    </div>
+    <div class="stage">
+      <div class="phone">
+        <img class="themed" src="../img/home_dark.webp" data-light="../img/home.webp" alt="Startbildschirm von Pocket Glance mit Kontostand, Serie, Monatsbudget und Hinzufügen-Taste" width="720" height="1600">
+        <span class="hot sl dn" style="--x:0.0417;--y:0.1469;--w:0.9167;--h:0.2563;--z:70px;--d:1s" aria-hidden="true"><span class="cut"><img class="themed" src="../img/home_dark.webp" data-light="../img/home.webp" alt=""></span><span class="lab"><i class="ln"></i><span class="box"><strong>Dein Kontostand auf einen Blick</strong><span>Was du jetzt hast, mit den Einnahmen und Ausgaben dieses Monats.</span></span></span></span>
+        <span class="hot sr" style="--x:0.0417;--y:0.4206;--w:0.9167;--h:0.1019;--z:45px;--d:1.2s" aria-hidden="true"><span class="cut"><img class="themed" src="../img/home_dark.webp" data-light="../img/home.webp" alt=""></span><span class="lab"><i class="ln"></i><span class="box"><strong>Eine Serie, die motiviert</strong><span>Trag jeden Tag ein wenig ein. Ruhetage werden für dich aufgehoben.</span></span></span></span>
+        <span class="hot sl" style="--x:0.0417;--y:0.5875;--w:0.9167;--h:0.1263;--z:60px;--d:1.4s" aria-hidden="true"><span class="cut"><img class="themed" src="../img/home_dark.webp" data-light="../img/home.webp" alt=""></span><span class="lab"><i class="ln"></i><span class="box"><strong>Sicher pro Tag ausgeben</strong><span>Das restliche Budget dieses Monats und wie viel du pro Tag ausgeben kannst.</span></span></span></span>
+        <span class="hot sr" style="--x:0.7958;--y:0.8819;--w:0.1694;--h:0.0763;--r:50%;--z:60px;--d:1.6s" aria-hidden="true"><span class="cut"><img class="themed" src="../img/home_dark.webp" data-light="../img/home.webp" alt=""></span><span class="lab"><i class="ln"></i><span class="box"><strong>In Sekunden erfasst</strong><span>Ein Tippen, um eine Ausgabe oder Einnahme zu erfassen.</span></span></span></span>
       </div>
     </div>
   </div>
@@ -565,7 +661,17 @@ Datenschutzerklärung, Nutzungsbedingungen und die Seite zum Löschen deiner Dat
       var next = now === "dark" ? "light" : "dark";
       r.setAttribute("data-theme", next);
       try { localStorage.setItem("theme", next); } catch (e) {}
+      themeShots();
     });
+    // The hero phone shows the app in the same theme as the page.
+    function themeShots() {
+      var light = r.getAttribute("data-theme") === "light";
+      document.querySelectorAll("img.themed").forEach(function (img) {
+        if (!img.dataset.dark) img.dataset.dark = img.getAttribute("src");
+        img.src = light ? img.dataset.light : img.dataset.dark;
+      });
+    }
+    themeShots();
   })();
 
   // Pointer spotlight on tiles. Harmless without motion, so it always runs.
