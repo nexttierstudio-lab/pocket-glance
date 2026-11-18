@@ -199,7 +199,7 @@ h1 em { font-style: italic; font-weight: 500; }
 .stage { position: relative; z-index: 3; margin: 56px auto 0; padding: 0 var(--gutter); perspective: 1600px; animation: rise-big 1.2s var(--ease) .3s both; }
 .stage { --ry: -20deg; --rx: 10deg; --rz: 3deg; }
 [dir="rtl"] .stage { --ry: 20deg; --rz: -3deg; }
-.stage .phone { --pw: min(220px, calc(56 * var(--vw))); --gap: 12px; width: var(--pw); margin: 0 auto; transform-style: preserve-3d; transform: rotateY(var(--ry)) rotateX(var(--rx)) rotateZ(var(--rz)); }
+.stage .phone { --pw: min(220px, calc(56 * var(--vw))); width: var(--pw); margin: 0 auto; transform-style: preserve-3d; transform: rotateY(var(--ry)) rotateX(var(--rx)) rotateZ(var(--rz)); }
 .stage .phone > img { filter: brightness(.55); }
 /* A real body: twelve copies of the outline stacked behind the screen make the metal edge, so the
    tilt shows the phone's thickness. The middle one carries the side buttons. */
@@ -217,9 +217,16 @@ h1 em { font-style: italic; font-weight: 500; }
 .hot .cut { position: absolute; inset: 0; overflow: hidden; border-radius: var(--r, 9px); transform: translateZ(var(--z, 60px)) scale(1.06); box-shadow: 0 0 0 1px rgba(225, 173, 102, 0.35), 0 40px 60px -20px rgba(0, 0, 0, 0.85); }
 .motion .hot .cut { animation: pop-out 1s var(--ease) both; animation-delay: var(--d, 1s); }
 /* Pointing at a card shows its info card outside the phone, joined to the card by an
-   L-shaped gold line: out sideways past the phone's edge (+ --gap), then up (or down, .dn)
-   by --v. Line and card sit in the popped card's plane; the info card turns to face the reader. */
-.hot:hover { z-index: 5; }
+   L-shaped gold line: out sideways past the phone's edge, then up (or down, .dn) by --v.
+   Only with a mouse to point with, beside the side-by-side phone, and only when the card
+   fits on screen without covering any of the hero's words (the script marks .no-room).
+   On phones, tablets and narrow windows the picture speaks for itself. */
+.lab { display: none; }
+@media (min-width: 768px) and (hover: hover) and (pointer: fine) {
+  .lab { display: block; }
+  .hot:hover { z-index: 5; }
+  .hot.no-room .lab { display: none; }
+}
 .lab { position: absolute; top: 50%; width: 0; height: 0; pointer-events: none; transform: translateZ(var(--z, 60px)); transform-style: preserve-3d; visibility: hidden; transition: visibility .3s; --v: 34px; --bw: 180px; }
 .hot:hover .lab { visibility: visible; }
 /* .flat is pinned to the card's edge and undoes the phone's tilt, so the L-shaped line and the
@@ -231,8 +238,6 @@ h1 em { font-style: italic; font-weight: 500; }
   opacity: 0; transition: opacity .3s var(--ease);
 }
 .hot:hover .lab .flat { opacity: 1; }
-/* On narrow screens the info card lies over the phone, so it is lifted above every card. */
-@media (max-width: 767px) { .lab .flat { transform: translateZ(60px) rotateZ(calc(-1 * var(--rz))) rotateX(calc(-1 * var(--rx))) rotateY(calc(-1 * var(--ry))); } }
 .lab .ln { position: absolute; top: 0; height: 1.5px; width: var(--len); background: var(--accent); }
 .lab .ln::after { content: ""; position: absolute; bottom: 0; width: 1.5px; height: var(--v); background: var(--accent); }
 .hot.dn .lab .ln::after { bottom: auto; top: 0; }
@@ -244,16 +249,6 @@ h1 em { font-style: italic; font-weight: 500; }
 [dir="rtl"] .lab .box { direction: rtl; }
 .box strong { display: block; font: 600 0.95rem/1.25 var(--ui); margin-bottom: 3px; }
 .box span { display: block; color: var(--muted); font-size: 0.84rem; line-height: 1.4; }
-/* Which side of the phone: .sl left, .sr right (on wide screens, the side of the words).
-   Narrow screens have no room beside the phone, so the info card turns back over it. */
-.hot.sl .lab { left: 0; --len: calc(var(--pw) * (0.027 + 0.946 * var(--x)) + var(--gap)); }
-.hot.sl .ln { right: 0; left: auto; }
-.hot.sl .ln::after { left: 0; right: auto; }
-.hot.sl .box { left: calc(-1 * var(--len)); right: auto; }
-.hot.sr .lab { left: 100%; --len: calc(var(--pw) * (0.973 - 0.946 * (var(--x) + var(--w))) + var(--gap)); }
-.hot.sr .ln { left: 0; right: auto; }
-.hot.sr .ln::after { right: 0; left: auto; }
-.hot.sr .box { left: calc(var(--len) - var(--bw)); right: auto; }
 .hot .cut img { position: absolute; max-width: none; width: calc(100% / var(--w)); height: calc(100% / var(--h)); left: calc(-100% * var(--x) / var(--w)); top: calc(-100% * var(--y) / var(--h)); }
 @media (min-width: 768px) {
   /* Side by side: the words on one side, the phone on the other, tilted further toward them.
@@ -267,7 +262,7 @@ h1 em { font-style: italic; font-weight: 500; }
   .stage { margin: 0; padding: 0 clamp(12px, calc(4 * var(--vw)), 60px); }
   .stage { --ry: -30deg; --rx: 12deg; --rz: 5deg; }
   [dir="rtl"] .stage { --ry: 30deg; --rz: -5deg; }
-  .stage .phone { --pw: clamp(170px, min(calc(23 * var(--vw)), calc((100 * var(--vh) - var(--bar-h, 53px) - 150px) / 2.35)), 340px); --gap: clamp(20px, calc(3 * var(--vw)), 40px); }
+  .stage .phone { --pw: clamp(170px, min(calc(23 * var(--vw)), calc((100 * var(--vh) - var(--bar-h, 53px) - 150px) / 2.35)), 340px); }
   /* Every info card on the side of the words: left here, right in Arabic. */
   .lab { --bw: clamp(190px, calc(18 * var(--vw)), 250px); --v: 40px; }
   /* The line meets the middle of the info card, so it runs far enough out to keep the card clear of the phone. */
@@ -689,6 +684,35 @@ A Política de Privacidade, os Termos e a página de exclusão de dados estão e
       });
     }
     themeShots();
+  })();
+
+  // Hero info cards: before one shows, check it fits on screen and covers none of the hero's
+  // words or buttons; if it would, it stays hidden (.no-room) and the picture speaks for itself.
+  (function () {
+    var bits = document.querySelectorAll(".hero-copy > *");
+    function overlaps(a, b) { return a.left < b.right && b.left < a.right && a.top < b.bottom && b.top < a.bottom; }
+    function wordRects() {
+      var out = [];
+      bits.forEach(function (el) {
+        var r = document.createRange();
+        r.selectNodeContents(el);
+        Array.prototype.forEach.call(r.getClientRects(), function (x) { out.push(x); });
+        el.querySelectorAll("a").forEach(function (a) { out.push(a.getBoundingClientRect()); });
+      });
+      return out;
+    }
+    document.querySelectorAll(".stage .hot").forEach(function (h) {
+      var box = h.querySelector(".box");
+      if (!box) return;
+      h.addEventListener("pointerenter", function () {
+        h.classList.remove("no-room");
+        var b = box.getBoundingClientRect();
+        if (!b.width) return;
+        var top = document.querySelector(".bar").getBoundingClientRect().bottom;
+        var off = b.left < 0 || b.right > window.innerWidth || b.top < top || b.bottom > window.innerHeight;
+        h.classList.toggle("no-room", off || wordRects().some(function (w) { return overlaps(b, w); }));
+      });
+    });
   })();
 
   // Pointer spotlight on tiles. Harmless without motion, so it always runs.
