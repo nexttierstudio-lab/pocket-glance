@@ -163,7 +163,7 @@ nav a.nav-cta svg { flex: none; }
 .phone .screens img { width: 100%; height: 100%; object-fit: cover; border-radius: inherit; }
 .phone::after { content: ""; position: absolute; inset: 1.2525% 2.7%; border-radius: 11.4% / 5.1%; pointer-events: none; background: linear-gradient(130deg, rgba(255,255,255,0.10), transparent 38%); }
 
-/* ---------- Scene 1: hero. Pinned while the phone stands up and you dive into its screen ---------- */
+/* ---------- Scene 1: hero. Pinned while the phone slides up to the middle of the screen ---------- */
 .hero { position: relative; text-align: center; }
 .hero-pin { position: relative; overflow: hidden; padding-top: 96px; }
 .hero-pin::before {
@@ -185,29 +185,16 @@ h1 em { font-style: italic; font-weight: 500; }
 .stage { position: relative; height: calc(var(--pw) * 1.75); margin-top: 56px; animation: rise-big 1.3s .25s var(--ease) both; }
 .stage .phone { position: absolute; left: 50%; top: 0; width: var(--pw); margin-left: calc(var(--pw) / -2); will-change: transform; }
 .stage .center { z-index: 2; }
-.stage .left  { top: 70px; transform: translateX(calc(var(--pw) * -0.82)) rotate(-7deg) scale(.86); }
-.stage .right { top: 70px; transform: translateX(calc(var(--pw) * 0.82)) rotate(7deg) scale(.86); }
-.hero-veil { position: absolute; inset: 0; z-index: 4; background: var(--page); opacity: 0; pointer-events: none; }
+.stage .left  { top: 70px; transform: translateX(calc(var(--pw) * -0.82)) scale(.86); }
+.stage .right { top: 70px; transform: translateX(calc(var(--pw) * 0.82)) scale(.86); }
 .cue { position: absolute; inset-inline-start: max(22px, calc(50vw - 520px)); bottom: 26px; z-index: 5; display: none; flex-direction: column; align-items: center; gap: 10px; font: 500 11px/1 var(--ui); letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
 .cue i { width: 1px; height: 38px; background: linear-gradient(var(--brand), transparent); animation: cue 2.2s var(--ease) infinite; transform-origin: top; }
-.motion .hero { height: 320vh; }
+.motion .hero { height: 200vh; }
 .motion .hero-pin { position: sticky; top: 0; height: 100vh; padding-top: 0; }
 .motion .hero-copy { padding-top: clamp(84px, 14vh, 140px); }
 .motion .stage { position: absolute; inset: 0; height: auto; margin: 0; animation: fade-in 1.2s .2s var(--ease) both; }
 .motion .stage .phone { transform: none; top: 0; }
 @media (min-width: 700px) { .motion .cue { display: flex; } }
-
-/* ---------- Scene 2: statement. Words light up as you scroll ---------- */
-.statement { position: relative; height: 240vh; }
-.statement-inner { position: sticky; top: 0; height: 100vh; display: grid; place-items: center; }
-.statement p { font: 600 clamp(2rem, 5.4vw, 4rem)/1.12 var(--heading); letter-spacing: -0.01em; max-width: 17ch; margin: 0 auto; text-align: center; text-wrap: balance; }
-.statement .w { display: inline-block; transition: color .35s var(--ease), transform .5s var(--ease), filter .5s var(--ease); }
-.statement em { font-style: normal; color: var(--brand); }
-.motion .statement .w { color: var(--faint); transform: translateY(0.12em); filter: blur(2px); }
-.motion .statement .w.lit { color: var(--text); transform: none; filter: none; }
-.motion .statement .w.lit.g { color: var(--brand); }
-:root:not(.motion) .statement { height: auto; padding: 140px 0 0; }
-:root:not(.motion) .statement-inner { position: static; height: auto; }
 
 /* ---------- Shared section type ---------- */
 main { padding-bottom: 40px; }
@@ -246,8 +233,7 @@ p { margin: 0 0 14px; }
   .motion .step.is-on { opacity: 1; transform: none; }
   .motion .step .shot { display: none; }
   .motion .device { display: block; }
-  .device-inner { position: sticky; top: max(64px, calc(50vh - 380px)); perspective: 1400px; }
-  .device .phone { will-change: transform; }
+  .device-inner { position: sticky; top: max(64px, calc(50vh - 380px)); }
   .device .screens img { position: absolute; inset: 0; opacity: 0; transform: scale(1.08); filter: blur(6px); transition: opacity .7s var(--ease), transform 1.1s var(--ease), filter .7s var(--ease); }
   .device .screens img.is-on { opacity: 1; transform: none; filter: none; }
   .device-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 22px; padding: 0 6px; }
@@ -258,13 +244,13 @@ p { margin: 0 0 14px; }
   .dots span.is-on { width: 26px; background: var(--accent); }
 }
 
-/* ---------- Scene 4: sideways gallery with a coverflow tilt ---------- */
+/* ---------- Scene 4: sideways gallery. Phones stay upright; the ones away from the middle shrink and fade ---------- */
 .hs-pin { overflow-x: auto; padding: 40px 0; }
 .hs-track { display: flex; align-items: center; gap: 5vw; padding: 0 8vw; width: max-content; }
 .hs-intro { width: min(460px, 78vw); flex: none; }
 .hs-intro p { color: var(--muted); font-size: clamp(1.05rem, 1.8vw, 1.25rem); }
-.hs-item { margin: 0; flex: none; width: min(clamp(190px, 21vw, 270px), calc((100vh - 220px) / 2.156)); perspective: 1200px; text-align: center; }
-.hs-item .phone { will-change: transform; transform-style: preserve-3d; }
+.hs-item { margin: 0; flex: none; width: min(clamp(190px, 21vw, 270px), calc((100vh - 220px) / 2.156)); text-align: center; }
+.hs-item .phone { will-change: transform; }
 .hs-item figcaption { margin-top: 22px; }
 .hs-item figcaption b { display: block; font: 600 1.35rem/1.2 var(--heading); }
 .hs-item figcaption span { font-size: 0.9rem; color: var(--muted); }
@@ -369,8 +355,6 @@ footer a:hover { color: var(--text); }
 :lang(ja) { word-break: auto-phrase; }
 :lang(ko) { word-break: keep-all; }
 :lang(hi) h1, :lang(ar) h1 { max-width: 13em; }
-:lang(ja) .statement p, :lang(ko) .statement p, :lang(zh) .statement p { max-width: 13em; line-height: 1.35; }
-:lang(hi) .statement p, :lang(ar) .statement p { line-height: 1.45; }
 /* No italics in scripts that have none */
 :lang(hi) em, :lang(ar) em, :lang(ja) em, :lang(ko) em, :lang(zh) em,
 :lang(hi) .short, :lang(ar) .short, :lang(ja) .short, :lang(ko) .short, :lang(zh) .short { font-style: normal; }
@@ -448,18 +432,11 @@ footer a:hover { color: var(--text); }
       <div class="phone right"><img src="../img/goals.webp" alt=""></div>
       <div class="phone center"><img class="only-dark" src="../img/home_dark.webp" alt=""><img class="only-light" src="../img/home.webp" alt=""></div>
     </div>
-    <div class="hero-veil"></div>
     <div class="cue" aria-hidden="true">向下滚动<i></i></div>
   </div>
 </section>
 
 <main>
-  <div class="statement" id="statement">
-    <div class="statement-inner wrap">
-      <p data-words>你的余额、预算和目标，全都<em class="g">只在你的手机上，别无他处。</em></p>
-    </div>
-  </div>
-
   <div class="wrap section" id="features">
     <div class="center-head up">
       <span class="kicker">功能</span>
@@ -701,7 +678,7 @@ footer a:hover { color: var(--text); }
     el.style.setProperty("--my", (e.clientY - r.top) + "px");
   }, { passive: true });
 
-  // Scroll scenes. One rAF loop: the hero (with its dust and pointer tilt) animates every
+  // Scroll scenes. One rAF loop: the hero (with its dust) animates every
   // frame while it is on screen; everything else updates only when the page has scrolled.
   (function () {
     var root = document.documentElement;
@@ -733,47 +710,14 @@ footer a:hover { color: var(--text); }
     $$(".up").forEach(function (el) { io.observe(el); });
     $$(".stat b[data-to]").forEach(function (b) { b.textContent = b.dataset.from; });
 
-    // Statement words. Intl.Segmenter splits languages written without spaces
-    // (Japanese, Chinese) into words; punctuation sticks to the word before it.
-    var statement = $("#statement"), para = statement.querySelector("[data-words]"), words = [];
-    var seg = window.Intl && Intl.Segmenter ? new Intl.Segmenter(root.lang, { granularity: "word" }) : null;
-    function pieces(text) {
-      if (seg) {
-        var out = [];
-        Array.from(seg.segment(text)).forEach(function (s) {
-          if (/^\s+$/.test(s.segment)) out.push(" ");
-          else if (!s.isWordLike && out.length && out[out.length - 1] !== " ") out[out.length - 1] += s.segment;
-          else out.push(s.segment);
-        });
-        return out;
-      }
-      return text.split(/(\s+)/).map(function (t) { return /^\s+$/.test(t) ? " " : t; });
-    }
-    var frag = document.createDocumentFragment();
-    Array.prototype.slice.call(para.childNodes).forEach(function (node) {
-      var gold = node.nodeType === 1;
-      pieces(node.textContent).forEach(function (t) {
-        if (!t) return;
-        if (t === " ") { frag.appendChild(document.createTextNode(" ")); return; }
-        var s = document.createElement("span");
-        s.className = "w" + (gold ? " g" : "");
-        s.textContent = t;
-        frag.appendChild(s);
-        words.push(s);
-      });
-    });
-    para.textContent = "";
-    para.appendChild(frag);
-
-    var hero = $(".hero"), copy = $(".hero-copy"), veil = $(".hero-veil"), cue = $(".cue");
+    var hero = $(".hero"), copy = $(".hero-copy"), cue = $(".cue");
     var cPh = $(".stage .center"), lPh = $(".stage .left"), rPh = $(".stage .right");
     var canvas = $("#dust"), ctx = canvas.getContext("2d");
     var steps = $$(".step"), screens = $$(".device .screens img"), dots = $$(".dots span");
-    var count = $(".count b"), devPhone = $(".device .phone");
+    var count = $(".count b");
     var hs = $(".hs"), track = $(".hs-track"), items = $$(".hs-item");
     var plate = $(".plate"), bar = $(".progress");
-    var vw, vh, M = {}, active = 0, lit = -1, dirty = true;
-    var tilt = { x: 0, y: 0, tx: 0, ty: 0 }, fine = matchMedia("(pointer: fine)").matches;
+    var vw, vh, M = {}, active = 0, dirty = true;
     var dpr = Math.min(window.devicePixelRatio || 1, 2), motes = [];
 
     function measure() {
@@ -783,7 +727,6 @@ footer a:hover { color: var(--text); }
       // Phones start below the buttons, never over them; on short screens they just peek in.
       M.y0 = Math.max(copyBottom + 36, vh * 0.5);
       M.y1 = 52 + (vh - 52 - M.ph) / 2;
-      M.zoom = Math.max(vw / (M.pw * 0.946), vh / (M.ph * 0.975)) * 1.08;
       M.spread = Math.min(M.pw * 0.82, vw * 0.3);
       M.heroRange = hero.offsetHeight - vh;
       // Sideways gallery: tall enough that scrolling down moves the whole track across.
@@ -806,8 +749,8 @@ footer a:hover { color: var(--text); }
       var rgb = getComputedStyle(root).getPropertyValue("--dust").trim();
       motes.forEach(function (m) {
         m.y -= m.s * 0.02 * m.z; if (m.y < -0.05) { m.y = 1.05; m.x = Math.random(); }
-        var x = (m.x + Math.sin(t * 0.0003 + m.ph) * 0.01 + tilt.y * 0.0015 * m.z) * vw;
-        var y = (m.y - tilt.x * 0.0015 * m.z) * vh;
+        var x = (m.x + Math.sin(t * 0.0003 + m.ph) * 0.01) * vw;
+        var y = m.y * vh;
         var a = (0.25 + 0.55 * (0.5 + 0.5 * Math.sin(t * 0.0015 + m.ph))) * m.z * fade;
         ctx.beginPath(); ctx.arc(x, y, m.r * m.z, 0, 6.2832);
         ctx.fillStyle = "rgba(" + rgb + "," + a.toFixed(3) + ")"; ctx.fill();
@@ -818,21 +761,20 @@ footer a:hover { color: var(--text); }
       var r = hero.getBoundingClientRect();
       if (r.bottom <= 0) return false;
       var p = clamp(-r.top / M.heroRange, 0, 1);
-      var a = ease(clamp(p / 0.4, 0, 1)), b = clamp((p - 0.45) / 0.55, 0, 1);
-      tilt.x += (tilt.tx - tilt.x) * 0.07; tilt.y += (tilt.ty - tilt.y) * 0.07;
-      var y = lerp(M.y0, M.y1, a), keep = 1 - b;
-      var rx = 22 * (1 - a) + tilt.x * keep, ry = tilt.y * keep, s = 1 + (M.zoom - 1) * b * b;
-      cPh.style.transform = "translate3d(0," + y.toFixed(1) + "px,0) perspective(1400px) rotateX(" + rx.toFixed(2) + "deg) rotateY(" + ry.toFixed(2) + "deg) scale(" + s.toFixed(4) + ")";
+      // The phones stay flat and upright: the middle one slides up to the centre of the
+      // screen while the side ones slide out and fade. No tilt, no zoom.
+      var a = ease(clamp(p / 0.8, 0, 1));
+      var y = lerp(M.y0, M.y1, a);
+      cPh.style.transform = "translate3d(0," + y.toFixed(1) + "px,0)";
       var sx = M.spread + a * vw * 0.35, so = clamp(1 - a * 1.3, 0, 1);
-      lPh.style.transform = "translate3d(" + (-sx).toFixed(1) + "px," + (y + 64).toFixed(1) + "px,0) perspective(1400px) rotateY(" + (24 * a + ry * 0.6).toFixed(2) + "deg) rotateZ(" + (-7 - 8 * a).toFixed(2) + "deg) scale(.86)";
-      rPh.style.transform = "translate3d(" + sx.toFixed(1) + "px," + (y + 64).toFixed(1) + "px,0) perspective(1400px) rotateY(" + (-24 * a + ry * 0.6).toFixed(2) + "deg) rotateZ(" + (7 + 8 * a).toFixed(2) + "deg) scale(.86)";
+      lPh.style.transform = "translate3d(" + (-sx).toFixed(1) + "px," + (y + 64).toFixed(1) + "px,0) scale(.86)";
+      rPh.style.transform = "translate3d(" + sx.toFixed(1) + "px," + (y + 64).toFixed(1) + "px,0) scale(.86)";
       lPh.style.opacity = rPh.style.opacity = so;
       copy.style.opacity = clamp(1 - a * 1.6, 0, 1);
       copy.style.transform = "translate3d(0," + (-a * 90).toFixed(1) + "px,0) scale(" + (1 - a * 0.06).toFixed(4) + ")";
       copy.style.filter = a > 0.01 ? "blur(" + (a * 8).toFixed(1) + "px)" : "";
-      veil.style.opacity = clamp((b - 0.72) / 0.28, 0, 1);
       cue.style.opacity = clamp(1 - p * 8, 0, 1);
-      drawDust(t, 1 - b);
+      drawDust(t, 1);
       return true;
     }
 
@@ -840,16 +782,11 @@ footer a:hover { color: var(--text); }
       var y = window.scrollY;
       bar.style.transform = "scaleX(" + clamp(y / (document.documentElement.scrollHeight - vh), 0, 1).toFixed(4) + ")";
 
-      // Statement.
-      var sr = statement.getBoundingClientRect();
-      var n = Math.round(clamp((-sr.top + vh * 0.25) / (sr.height - vh * 0.75), 0, 1) * words.length);
-      if (n !== lit) { words.forEach(function (w, i) { w.classList.toggle("lit", i < n); }); lit = n; }
-
-      // Story: nearest step to the middle drives the sticky phone; the phone leans as you scroll.
-      var best = 0, bd = Infinity, bestD = 0;
+      // Story: nearest step to the middle drives the sticky phone.
+      var best = 0, bd = Infinity;
       steps.forEach(function (s, i) {
         var r = s.getBoundingClientRect(), d = r.top + r.height / 2 - vh / 2;
-        if (Math.abs(d) < bd) { bd = Math.abs(d); best = i; bestD = d; }
+        if (Math.abs(d) < bd) { bd = Math.abs(d); best = i; }
       });
       if (best !== active) {
         steps[active].classList.remove("is-on"); steps[best].classList.add("is-on");
@@ -858,19 +795,15 @@ footer a:hover { color: var(--text); }
         count.textContent = ("0" + (best + 1)).slice(-2);
         active = best;
       }
-      if (devPhone.offsetParent) {
-        var lean = clamp(bestD / vh, -0.6, 0.6);
-        devPhone.style.transform = "rotateY(" + (lean * -16).toFixed(2) + "deg) rotateX(" + (lean * 8).toFixed(2) + "deg)";
-      }
 
-      // Sideways gallery with a coverflow tilt.
+      // Sideways gallery.
       var hr = hs.getBoundingClientRect();
       if (hr.top < vh && hr.bottom > 0) {
         var hp = clamp(-hr.top / (hr.height - vh), 0, 1), shift = hp * Math.max(0, M.trackW - vw);
         track.style.transform = "translate3d(" + (-shift).toFixed(1) + "px,0,0)";
         items.forEach(function (it, i) {
           var d = clamp((M.itemC[i] - shift - vw / 2) / vw, -1, 1), ad = Math.abs(d);
-          it.firstElementChild.style.transform = "rotateY(" + (d * -38).toFixed(2) + "deg) scale(" + (1 - ad * 0.16).toFixed(4) + ")";
+          it.firstElementChild.style.transform = "scale(" + (1 - ad * 0.16).toFixed(4) + ")";
           it.style.opacity = (1 - ad * 0.55).toFixed(3);
         });
       }
@@ -883,7 +816,6 @@ footer a:hover { color: var(--text); }
     function loop(t) {
       var heroOn = heroFrame(t);
       if (dirty) { rest(); dirty = false; }
-      if (!heroOn && tilt.x !== 0) { tilt.x = tilt.y = 0; }
       requestAnimationFrame(loop);
     }
 
@@ -891,10 +823,6 @@ footer a:hover { color: var(--text); }
     window.addEventListener("resize", measure);
     window.addEventListener("load", measure);
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
-    if (fine) window.addEventListener("pointermove", function (e) {
-      tilt.tx = (e.clientY / vh - 0.5) * -10;
-      tilt.ty = (e.clientX / vw - 0.5) * 16;
-    }, { passive: true });
     measure();
     requestAnimationFrame(loop);
   })();
