@@ -210,24 +210,35 @@ p { margin: 0 0 14px; }
 
 /* ---------- Features: six cards, a screenshot peeking out of each ---------- */
 .features { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); }
-.feature { background: var(--tile); border-radius: 26px; padding: 0 28px 30px; }
-.feature .shot { display: flex; justify-content: center; padding-top: 30px; margin-bottom: 26px; }
-.feature .shot .phone { width: 150px; flex: none; --shadow: 0 24px 40px -24px rgba(0, 0, 0, 0.55); }
+.feature { background: var(--tile); border-radius: 26px; padding: 0 28px 30px; overflow: hidden; transition: transform .45s var(--ease), box-shadow .45s var(--ease); }
+.feature:hover { transform: translateY(-5px); box-shadow: 0 22px 44px -20px rgba(0, 0, 0, 0.4); }
+.motion .feature.up.in:hover { transform: translateY(-5px); transition-delay: 0s; }
+/* A window onto the phone, centred on the part of the screen the feature is about.
+   --x --y --w --h are that part's box as fractions of the 720x1600 capture. */
+.feature .shot {
+  --P: 260px; position: relative; height: 210px; margin: 0 -28px 24px; overflow: hidden;
+  -webkit-mask-image: linear-gradient(transparent, #000 12%, #000 88%, transparent); mask-image: linear-gradient(transparent, #000 12%, #000 88%, transparent);
+}
+.feature .shot .phone {
+  position: absolute; width: var(--P); --shadow: none;
+  left: calc(50% - var(--P) * (0.027 + 0.946 * (var(--x) + var(--w) / 2)));
+  top: calc(105px - var(--P) * 2.156 * (0.012525 + 0.97495 * (var(--y) + var(--h) / 2)));
+}
 .feature .shot .phone > img { transition: filter .5s var(--ease); }
-/* The screen's key card, cut from the same capture and laid exactly over it. On hover (or, on
+/* The feature's card, cut from the same capture and laid exactly over it. On hover (or, on
    touch screens, once the card scrolls into view) it lifts out of the phone toward you. */
 .pop {
-  position: absolute; z-index: 2; overflow: hidden; border-radius: var(--r, 5px); pointer-events: none;
+  position: absolute; z-index: 2; overflow: hidden; border-radius: var(--r, 9px); pointer-events: none;
   left: calc(2.7% + 94.6% * var(--x)); top: calc(1.2525% + 97.495% * var(--y));
   width: calc(94.6% * var(--w)); height: calc(97.495% * var(--h));
   transition: transform .55s var(--ease), box-shadow .55s var(--ease);
 }
 .pop img { position: absolute; max-width: none; width: calc(100% / var(--w)); height: calc(100% / var(--h)); left: calc(-100% * var(--x) / var(--w)); top: calc(-100% * var(--y) / var(--h)); }
-.feature:hover .pop, .feature:focus-within .pop { transform: scale(1.3); box-shadow: 0 18px 36px -12px rgba(0, 0, 0, 0.55); }
-.feature:hover .shot .phone > img { filter: brightness(.72); }
+.feature:hover .pop, .feature:focus-within .pop { transform: translateY(-6px) scale(1.1); box-shadow: 0 20px 34px -14px rgba(0, 0, 0, 0.6); }
+.feature:hover .shot .phone > img { filter: brightness(.7); }
 @media (hover: none) {
-  .motion .feature.in .pop { transform: scale(1.3); box-shadow: 0 18px 36px -12px rgba(0, 0, 0, 0.55); transition-delay: .6s; }
-  .motion .feature.in .shot .phone > img { filter: brightness(.72); transition-delay: .6s; }
+  .motion .feature.in .pop { transform: translateY(-6px) scale(1.1); box-shadow: 0 20px 34px -14px rgba(0, 0, 0, 0.6); transition-delay: .6s; }
+  .motion .feature.in .shot .phone > img { filter: brightness(.7); transition-delay: .6s; }
 }
 .feature .kicker { margin-bottom: 10px; }
 .feature h3 { font-size: 1.6rem; margin-bottom: 8px; }
@@ -413,37 +424,37 @@ footer a:hover { color: var(--text); }
 
     <div class="features">
       <article class="feature spot up">
-        <div class="shot"><div class="phone"><img src="../img/home.webp" alt="사용 가능 잔액, 연속 기록, 월 예산을 보여주는 Pocket Glance 홈 화면" loading="lazy"><span class="pop" style="--x:0.0389;--y:0.5900;--w:0.9222;--h:0.1225" aria-hidden="true"><img src="../img/home.webp" alt="" loading="lazy"></span></div></div>
+        <div class="shot" style="--x:0.0389;--y:0.5900;--w:0.9222;--h:0.1225"><div class="phone"><img src="../img/home.webp" alt="사용 가능 잔액, 연속 기록, 월 예산을 보여주는 Pocket Glance 홈 화면" loading="lazy"><span class="pop" aria-hidden="true"><img src="../img/home.webp" alt="" loading="lazy"></span></div></div>
         <span class="kicker">한눈에</span>
         <h3>잔액, 예산, 하루 안전 지출액.</h3>
         <p>차분한 한 화면에서 이번 달 상황을 알 수 있어요.</p>
       </article>
       <article class="feature spot up d1">
-        <div class="shot"><div class="phone"><img src="../img/subs.webp" alt="연간 합계와 다가오는 갱신을 보여주는 구독 화면" loading="lazy"><span class="pop" style="--x:0.0389;--y:0.1113;--w:0.9222;--h:0.1713" aria-hidden="true"><img src="../img/subs.webp" alt="" loading="lazy"></span></div></div>
+        <div class="shot" style="--x:0.0389;--y:0.1113;--w:0.9222;--h:0.1713"><div class="phone"><img src="../img/subs.webp" alt="연간 합계와 다가오는 갱신을 보여주는 구독 화면" loading="lazy"><span class="pop" aria-hidden="true"><img src="../img/subs.webp" alt="" loading="lazy"></span></div></div>
         <span class="kicker">구독</span>
         <h3>구독에 실제로 드는 비용을 확인하세요.</h3>
         <p>스트리밍, 휴대폰, 헬스장, 보험: 모든 정기 결제를 한곳에.</p>
       </article>
       <article class="feature spot up d2">
-        <div class="shot"><div class="phone"><img src="../img/add.webp" alt="금액과 카테고리로 거래를 추가하는 화면" loading="lazy"><span class="pop" style="--x:0.1111;--y:0.1750;--w:0.7778;--h:0.1525" aria-hidden="true"><img src="../img/add.webp" alt="" loading="lazy"></span></div></div>
+        <div class="shot" style="--x:0.1111;--y:0.1750;--w:0.7778;--h:0.1525"><div class="phone"><img src="../img/add.webp" alt="금액과 카테고리로 거래를 추가하는 화면" loading="lazy"><span class="pop" aria-hidden="true"><img src="../img/add.webp" alt="" loading="lazy"></span></div></div>
         <span class="kicker">빠른 추가</span>
         <h3>몇 초 만에 지출 기록.</h3>
         <p>금액, 카테고리, 끝.</p>
       </article>
       <article class="feature spot up">
-        <div class="shot"><div class="phone"><img src="../img/analytics2.webp" alt="카테고리별 지출을 보여주는 분석 화면" loading="lazy"><span class="pop" style="--x:0.0389;--y:0.1125;--w:0.9222;--h:0.1775" aria-hidden="true"><img src="../img/analytics2.webp" alt="" loading="lazy"></span></div></div>
+        <div class="shot" style="--x:0.0389;--y:0.1125;--w:0.9222;--h:0.1775"><div class="phone"><img src="../img/analytics2.webp" alt="카테고리별 지출을 보여주는 분석 화면" loading="lazy"><span class="pop" aria-hidden="true"><img src="../img/analytics2.webp" alt="" loading="lazy"></span></div></div>
         <span class="kicker">분석</span>
         <h3>어디에 썼는지 정확하게.</h3>
         <p>명확한 내역과 함께, 지출이 늘고 있는지 줄고 있는지까지.</p>
       </article>
       <article class="feature spot up d1">
-        <div class="shot"><div class="phone"><img src="../img/goals.webp" alt="목표별 진행 상황을 보여주는 저축 목표 화면" loading="lazy"><span class="pop" style="--x:0.0389;--y:0.1113;--w:0.9222;--h:0.1975" aria-hidden="true"><img src="../img/goals.webp" alt="" loading="lazy"></span></div></div>
+        <div class="shot" style="--x:0.0389;--y:0.1113;--w:0.9222;--h:0.1975"><div class="phone"><img src="../img/goals.webp" alt="목표별 진행 상황을 보여주는 저축 목표 화면" loading="lazy"><span class="pop" aria-hidden="true"><img src="../img/goals.webp" alt="" loading="lazy"></span></div></div>
         <span class="kicker">저축 목표</span>
         <h3>가장 중요한 것을 위해 저축하세요.</h3>
         <p>여행, 노트북, 비상금.</p>
       </article>
       <article class="feature spot up d2">
-        <div class="shot"><div class="phone"><img src="../img/widgets.webp" alt="Pocket Glance의 예산, 결제, 목표 위젯이 있는 Android 홈 화면" loading="lazy"><span class="pop" style="--r:9px;--x:0.5194;--y:0.4025;--w:0.4361;--h:0.2313" aria-hidden="true"><img src="../img/widgets.webp" alt="" loading="lazy"></span></div></div>
+        <div class="shot" style="--r:16px;--x:0.5194;--y:0.4025;--w:0.4361;--h:0.2313"><div class="phone"><img src="../img/widgets.webp" alt="Pocket Glance의 예산, 결제, 목표 위젯이 있는 Android 홈 화면" loading="lazy"><span class="pop" aria-hidden="true"><img src="../img/widgets.webp" alt="" loading="lazy"></span></div></div>
         <span class="kicker">위젯 <em class="pro-tag">Pro</em></span>
         <h3>홈 화면에서 바로 보는 예산.</h3>
         <p>남은 예산, 다음 결제, 목표 진행 상황을 앱을 열지 않고 확인하세요.</p>
