@@ -201,15 +201,26 @@ h1 em { font-style: italic; font-weight: 500; }
 .stage .phone { width: clamp(240px, 26vw, 320px); margin: 0 auto; }
 .stage .phone > img { filter: brightness(.5); }
 .hot { position: absolute; z-index: 2; left: calc(2.7% + 94.6% * var(--x)); top: calc(1.2525% + 97.495% * var(--y)); width: calc(94.6% * var(--w)); height: calc(97.495% * var(--h)); }
-.hot .cut { position: absolute; inset: 0; overflow: hidden; border-radius: var(--r, 9px); box-shadow: 0 22px 36px -14px rgba(0, 0, 0, 0.7); transform: translateY(-4px) scale(1.08); }
-.motion .hot .cut { animation: lift .8s var(--ease) both; animation-delay: var(--d, 1s); }
+.hot { transform-style: preserve-3d; cursor: default; }
+.hot .cut { position: absolute; inset: 0; overflow: hidden; border-radius: var(--r, 9px); box-shadow: 0 14px 26px -14px rgba(0, 0, 0, 0.7); transform: translateY(-2px) scale(1.04); transition: transform .6s var(--ease), box-shadow .6s var(--ease); }
+/* The card being explained (it cycles, or follows the pointer) pops furthest out, ringed in gold. */
+.hot.on { z-index: 4; }
+.hot.on .cut { transform: translate3d(0, -8px, 50px) scale(1.14); box-shadow: 0 0 0 2px var(--gold), 0 30px 50px -16px rgba(0, 0, 0, 0.85); }
+.motion .hot .cut { animation: fade-in .8s var(--ease) both; animation-delay: var(--d, 1s); }
 .hot .cut img { position: absolute; max-width: none; width: calc(100% / var(--w)); height: calc(100% / var(--h)); left: calc(-100% * var(--x) / var(--w)); top: calc(-100% * var(--y) / var(--h)); }
 .num-badge { display: inline-grid; place-items: center; flex: none; width: 26px; height: 26px; border-radius: 50%; background: var(--accent); color: #fff; font: 600 13px/1 var(--ui); box-shadow: 0 6px 14px -6px rgba(0, 0, 0, 0.6); }
-.hot .num-badge { position: absolute; z-index: 3; left: -11px; top: -11px; }
+.hot .num-badge { position: absolute; z-index: 3; left: -11px; top: -11px; transition: translate .6s var(--ease); }
+.hot.on .num-badge { translate: 0 -8px 70px; }
 .motion .hot .num-badge { animation: pop-in .5s var(--ease) both; animation-delay: calc(var(--d, 1s) + .3s); }
 .notes { list-style: none; margin: 40px auto 0; padding: 0; display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); max-width: 640px; text-align: start; }
 .note { display: flex; gap: 14px; align-items: flex-start; background: var(--tile); border-radius: 18px; padding: 16px 18px; }
-.motion .note { animation: rise .8s var(--ease) both; animation-delay: calc(var(--d, 1s) + .2s); }
+.motion .note { animation: fade-in .8s var(--ease) both; animation-delay: calc(var(--d, 1s) + .2s); }
+/* `scale` and `translate` stack on top of any layout transform the note already has. */
+.note { cursor: default; opacity: .72; transition: opacity .5s var(--ease), scale .5s var(--ease), translate .5s var(--ease), box-shadow .5s var(--ease), background-color .5s var(--ease); }
+.note.on { opacity: 1; scale: 1.05; box-shadow: inset 0 0 0 1px var(--accent), 0 26px 50px -24px rgba(0, 0, 0, 0.7); }
+.note .num-badge { transition: transform .5s var(--ease); }
+.note.on .num-badge { transform: scale(1.15); }
+:root:not(.motion) .note { opacity: 1; }
 .note strong { display: block; font: 600 1.05rem/1.25 var(--ui); margin-bottom: 4px; }
 .note span { display: block; color: var(--muted); font-size: 0.92rem; line-height: 1.45; }
 @media (min-width: 900px) {
@@ -230,8 +241,14 @@ h1 em { font-style: italic; font-weight: 500; }
   .hero-copy h1 { font-size: clamp(3.6rem, 6.4vw, 6.4rem); margin-inline: 0; }
   .hero-copy .lead { margin-inline: 0; }
   .hero-copy .actions { justify-content: flex-start; }
-  .stage { display: flex; align-items: stretch; gap: 40px; width: auto; max-width: none; margin: 0; padding: 0; }
-  .stage .phone { width: clamp(260px, 21vw, 300px); margin: 0; flex: none; }
+  .stage { display: flex; align-items: stretch; gap: 48px; width: auto; max-width: none; margin: 0; padding: 0; perspective: 1800px; }
+  /* The phone on the far side, tilted toward the words. It straightens a little under the pointer. */
+  .stage .phone { order: 2; width: clamp(260px, 21vw, 300px); margin: 0; flex: none; transform-style: preserve-3d; transform: rotateY(-18deg) rotateX(6deg) rotateZ(2deg); transition: transform 1s var(--ease); }
+  [dir="rtl"] .stage .phone { transform: rotateY(18deg) rotateX(6deg) rotateZ(-2deg); }
+  .stage .phone:hover, [dir="rtl"] .stage .phone:hover { transform: rotateY(-6deg) rotateX(2deg); }
+  [dir="rtl"] .stage .phone:hover { transform: rotateY(6deg) rotateX(2deg); }
+  .note.on { translate: -8px 0; }
+  [dir="rtl"] .note.on { translate: 8px 0; }
   /* All four notes in one column beside the phone; the numbers tie each one to its card. */
   .notes { position: static; width: 290px; flex: none; display: flex; flex-direction: column; justify-content: center; gap: 12px; }
   .note, .note.l, .note.r { position: static; width: 100%; transform: none; padding: 14px 16px; gap: 12px; }
@@ -402,7 +419,6 @@ footer .legal-note { flex-basis: 100%; margin: 4px 0 0; }
 @keyframes rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
 @keyframes rise-big { from { opacity: 0; transform: translateY(80px); } to { opacity: 1; transform: none; } }
 @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
-@keyframes lift { from { transform: none; box-shadow: none; } }
 @keyframes pop-in { from { opacity: 0; transform: scale(.4); } }
 @keyframes drift { from { transform: translate3d(-6%, 0, 0) scale(1); } to { transform: translate3d(6%, 4%, 0) scale(1.12); } }
 @keyframes ring { 0% { transform: scale(1); opacity: .7; } 100% { transform: scale(1.7); opacity: 0; } }
@@ -640,6 +656,28 @@ footer .legal-note { flex-basis: 100%; margin: 4px 0 0; }
       });
     }
     themeShots();
+  })();
+
+  // Hero phone: one card at a time pops out with its explanation. Pointing at a card or an
+  // explanation shows that one and pauses the cycle.
+  (function () {
+    var hots = document.querySelectorAll(".stage .hot"), notes = document.querySelectorAll(".stage .note");
+    if (!hots.length) return;
+    var i = -1, timer = null, moving = document.documentElement.classList.contains("motion");
+    function show(n) {
+      i = n;
+      hots.forEach(function (h, k) { h.classList.toggle("on", k === n); });
+      notes.forEach(function (el, k) { el.classList.toggle("on", k === n); });
+    }
+    function start() { stop(); if (moving) timer = setInterval(function () { show((i + 1) % hots.length); }, 3200); }
+    function stop() { if (timer) clearInterval(timer); timer = null; }
+    [hots, notes].forEach(function (list) {
+      list.forEach(function (el, k) {
+        el.addEventListener("pointerenter", function () { stop(); show(k); });
+        el.addEventListener("pointerleave", start);
+      });
+    });
+    if (moving) setTimeout(function () { show(0); start(); }, 2400);
   })();
 
   // Pointer spotlight on tiles. Harmless without motion, so it always runs.
