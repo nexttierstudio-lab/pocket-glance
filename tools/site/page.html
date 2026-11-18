@@ -212,6 +212,22 @@ h1 em { font-style: italic; font-weight: 500; }
   .note.l::before { left: 100%; margin-left: 4px; }
   .note.r::before { right: 100%; margin-right: 4px; }
 }
+@media (min-width: 1100px) {
+  /* Side by side: the words on one side, the phone and its notes on the other. */
+  .hero-pin { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 56px; max-width: 1280px; margin: 0 auto; padding: 48px var(--gutter); text-align: start; }
+  .hero-copy { padding: 0; }
+  .hero-copy h1 { font-size: clamp(3.6rem, 6.4vw, 6.4rem); margin-inline: 0; }
+  .hero-copy .lead { margin-inline: 0; }
+  .hero-copy .actions { justify-content: flex-start; }
+  .stage { display: flex; align-items: stretch; gap: 40px; width: auto; max-width: none; margin: 0; padding: 0; }
+  .stage .phone { width: clamp(260px, 21vw, 300px); margin: 0; flex: none; }
+  /* All four notes in one column beside the phone; the numbers tie each one to its card. */
+  .notes { position: static; width: 290px; flex: none; display: flex; flex-direction: column; justify-content: center; gap: 12px; }
+  .note, .note.l, .note.r { position: static; width: 100%; transform: none; padding: 14px 16px; gap: 12px; }
+  .note::before { display: none; }
+  .note strong { font-size: 1rem; margin-bottom: 2px; }
+  .note span { font-size: 0.9rem; line-height: 1.4; }
+}
 
 /* ---------- Shared section type ---------- */
 main { padding-bottom: 0; }
