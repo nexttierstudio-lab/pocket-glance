@@ -60,7 +60,7 @@ body { padding-top: var(--bar-h); }
 .chips a:hover { background: var(--bar-chip-hover); }
 .chips a b { display: none; }
 .chips a[aria-current="true"] { border-color: var(--accent); color: var(--brand); font-weight: 600; }
-.menu-cta { display: flex; align-items: center; justify-content: center; gap: 10px; height: 50px; margin: 16px 4px 4px; border-radius: 999px; background: var(--accent); color: #fff; text-decoration: none; font: 500 16px/1 var(--ui); }
+.menu-cta { display: flex; align-items: center; justify-content: center; gap: 10px; height: 50px; margin: 4px 4px 8px; border-radius: 999px; background: var(--accent); color: #fff; text-decoration: none; font: 500 16px/1 var(--ui); }
 .menu-cta:hover { background: #8F6118; }
 .links a[aria-current="page"], .menu nav a[aria-current="page"] { color: var(--bar-text); background: var(--bar-chip); }
 
