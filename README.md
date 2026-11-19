@@ -62,5 +62,33 @@ computer, and since every link is relative, pages behave as they will on GitHub 
 Check the homepage, a couple of language folders (for example `/es/` and the right-to-left `/ar/`),
 and the Privacy, Terms and Delete data pages, then commit and push.
 
+## Publish on your own domain
+
+The site can also live on your own domain at `https://<domain>/pocket_glance/`, with
+`https://<domain>/` and `https://www.<domain>/` redirecting there. GitHub Pages keeps serving the
+existing address, so links already out there (such as the Play Store privacy link) keep working.
+
+Build the upload (needs Python 3.9+):
+
+```bash
+python tools/publish.py --domain example.com
+```
+
+This writes `dist/` (the site under `dist/pocket_glance/`, plus redirect rules) and `dist.zip`.
+Only the canonical, hreflang and link-preview addresses change; every visitor link is relative.
+
+**GoDaddy hosting (cPanel).** In cPanel, open File Manager, go to `public_html`, upload `dist.zip`,
+extract it there, then delete the zip. Turn on "Show hidden files" to see `.htaccess`. It forces
+https, sends `www.` to the bare domain, sends `/` to `/pocket_glance/`, and moves old top-level
+addresses (`/privacy.html`, `/es/`) to their new place. Under SSL/TLS Status, run AutoSSL so
+https works for both the bare and `www.` names. Repeat the upload after every site change.
+
+**Domain only (no GoDaddy hosting): Netlify, free.** Connect this repo in Netlify; `netlify.toml`
+already sets the build. Add the environment variable `SITE_DOMAIN=example.com`, then under Domain
+management add the domain (Netlify adds `www.` and redirects it). In GoDaddy DNS, set the `A`
+record for `@` to Netlify's load balancer address and a `CNAME` for `www` to the
+`<name>.netlify.app` address, exactly as Netlify shows them. Netlify then rebuilds and publishes on
+every push to `main`, and issues the https certificate itself.
+
 The fonts in `fonts/` are Bodoni Moda and Inter, both licensed under the
 [SIL Open Font License 1.1](https://openfontlicense.org/open-font-license-official-text/).

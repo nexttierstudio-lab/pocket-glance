@@ -1,0 +1,5 @@
+# Only used if the site is deployed with Netlify. Set SITE_DOMAIN (e.g. example.com) under
+# Site configuration > Environment variables; tools/publish.py builds dist/ for that domain.
+[build]
+  command = "python3 tools/publish.py"
+  publish = "dist"
