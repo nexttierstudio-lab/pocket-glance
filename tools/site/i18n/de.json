@@ -7,6 +7,7 @@
   "nav_pro": "Pro",
   "nav_privacy": "Datenschutz",
   "nav_terms": "Bedingungen",
+  "nav_delete": "Daten löschen",
   "cta_play": "Bei Google Play herunterladen",
   "nav_download": "Jetzt laden",
   "soon": "Demnächst",
@@ -82,5 +83,6 @@
   "lang_label": "Sprache",
   "menu_open": "Menü öffnen",
   "menu_close": "Menü schließen",
-  "legal_note": "Datenschutzerklärung, Nutzungsbedingungen und die Seite zum Löschen deiner Daten sind auf Englisch."
+  "legal_tr_note": "Diese Seite ist eine Übersetzung zur besseren Verständlichkeit. Bei Abweichungen gilt die englische Fassung.",
+  "legal_tr_link": "Englische Fassung lesen"
 }

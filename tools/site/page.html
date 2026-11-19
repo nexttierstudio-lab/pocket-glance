@@ -114,94 +114,12 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--gold); outline-
 .text-link { color: var(--link); text-decoration: none; background: linear-gradient(var(--accent), var(--accent)) 0 100% / 100% 1px no-repeat; transition: background-size .3s var(--ease); }
 .text-link:hover { background-size: 0 1px; background-position: 100% 100%; }
 
-/* ---------- Bar and reading progress ----------
-   At the top of the page the bar spans the full width. Once the page scrolls (.float, set by
-   the script) it lifts off the edge and shrinks into a rounded pill floating over the page.
-   Links sit in the middle; on narrow screens they, the languages and the download button
-   move into the menu panel behind the menu button, and the bar floats the same way. */
-:root { --bar-h: 60px; }
-body { padding-top: var(--bar-h); }
-.bar { position: fixed; top: 0; left: 0; right: 0; z-index: 30; padding: 0; transition: padding .5s var(--ease); }
-.bar-in {
-  position: relative; margin: 0 auto; max-width: 100%; height: var(--bar-h);
-  display: grid; grid-template-columns: minmax(max-content, 1fr) auto minmax(max-content, 1fr); align-items: center; gap: 16px;
-  padding-inline: max(var(--gutter), calc((100% - 1036px) / 2));
-  background: var(--bar-bg); border: 1px solid transparent; border-bottom-color: var(--bar-line); border-radius: 0;
-  -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px);
-  transition: max-width .5s var(--ease), height .5s var(--ease), border-radius .5s var(--ease), padding .5s var(--ease), box-shadow .5s var(--ease), border-color .5s var(--ease), background-color .35s var(--ease);
-}
-.bar.float { padding: 10px var(--gutter) 0; }
-.bar.float .bar-in {
-  max-width: 1080px; height: 54px; border-radius: 28px; padding-inline: 18px 9px;
-  border-color: var(--bar-line); box-shadow: 0 18px 44px -20px rgba(0, 0, 0, 0.55);
-}
-.brand { justify-self: start; display: flex; align-items: center; gap: 10px; font: 600 12px/1 var(--ui); letter-spacing: 0.18em; text-transform: uppercase; color: var(--brand); text-decoration: none; white-space: nowrap; }
-.brand img { width: 24px; height: 24px; border-radius: 7px; }
-.links { display: flex; align-items: center; gap: 2px; }
-.links a { font: 400 14px/1 var(--ui); color: var(--bar-muted); text-decoration: none; padding: 9px 12px; border-radius: 999px; white-space: nowrap; transition: color .2s, background-color .2s; }
-.links a:hover { color: var(--bar-text); background: var(--bar-chip); }
-.right { justify-self: end; display: flex; align-items: center; gap: 8px; }
-.nav-cta { display: inline-flex; align-items: center; gap: 7px; height: 36px; color: #fff; background: var(--accent); padding: 0 16px 0 13px; border-radius: 999px; font: 500 14px/1 var(--ui); text-decoration: none; white-space: nowrap; transition: background-color .2s; }
-.nav-cta:hover { background: #8F6118; }
-.nav-cta svg { flex: none; }
-.theme, .burger { appearance: none; border: 0; padding: 0; width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; cursor: pointer; background: var(--bar-chip); color: var(--bar-text); transition: background-color .2s, transform .5s var(--ease); }
-.theme[hidden] { display: none; }
-.theme:hover, .burger:hover { background: var(--bar-chip-hover); }
-:root[data-theme="light"] .theme { transform: rotate(180deg); }
-/* Two lines that turn into a cross while the menu is open. */
-.burger { display: none; position: relative; }
-.burger i { position: absolute; left: 11px; width: 14px; height: 1.6px; border-radius: 2px; background: currentColor; transition: transform .35s var(--ease), top .35s var(--ease); }
-.burger i:first-child { top: 14px; }
-.burger i:last-child { top: 20px; }
-.bar.open .burger i { top: 17px; }
-.bar.open .burger i:first-child { transform: rotate(45deg); }
-.bar.open .burger i:last-child { transform: rotate(-45deg); }
-
-/* The menu panel: a card under the bar, only on narrow screens. */
-.menu {
-  position: absolute; top: calc(100% + 8px); left: var(--gutter); right: var(--gutter); max-width: 1000px; margin: 0 auto;
-  max-height: calc(100 * var(--vh) - var(--bar-h) - 40px); overflow-y: auto; overscroll-behavior: contain;
-  padding: 10px; border-radius: 24px; background: var(--page); border: 1px solid var(--bar-line); box-shadow: 0 30px 60px -24px rgba(0, 0, 0, 0.6);
-  opacity: 0; visibility: hidden; transform: translateY(-8px) scale(.98); transform-origin: 50% 0;
-  transition: opacity .3s var(--ease), transform .35s var(--ease), visibility .35s;
-}
-.bar.open .menu { opacity: 1; visibility: visible; transform: none; }
-.menu nav { display: grid; }
-.menu nav a { font: 500 18px/1.2 var(--ui); color: var(--text); text-decoration: none; padding: 14px 14px; border-radius: 14px; }
-.menu nav a:hover { background: var(--bar-chip); }
-.menu-h { font: 600 12px/1 var(--ui); letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin: 14px 14px 10px; }
-:lang(ar) .menu-h { letter-spacing: 0; }
-.chips { list-style: none; margin: 0; padding: 0 4px; display: grid; gap: 6px; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
-.chips a { display: flex; align-items: center; gap: 9px; padding: 10px 12px; border-radius: 14px; background: var(--bar-chip); color: var(--text); text-decoration: none; font: 400 14px/1.2 var(--ui); border: 1px solid transparent; }
-.chips a:hover { background: var(--bar-chip-hover); }
-.chips a b { display: none; }
-.chips a[aria-current="true"] { border-color: var(--accent); color: var(--brand); font-weight: 600; }
-.menu .btn { display: flex; margin: 16px 4px 4px; }
-
-@media (max-width: 959px) {
-  .bar-in { grid-template-columns: 1fr auto; }
-  .links, .right .lang, .right .nav-cta { display: none; }
-  .burger { display: grid; }
-}
-@media (min-width: 960px) {
-  .menu { display: none; }
-}
-/* The bar's download button drops its tag until there is room for it in every language. */
-@media (max-width: 1139px) {
-  .nav-cta .soon { display: none; }
-}
-/* Without the script there is no menu button: the links stay in the bar and wrap. */
-:root:not(.js) .bar-in { height: auto; min-height: var(--bar-h); padding-block: 8px; }
-:root:not(.js) .links { display: flex; flex-wrap: wrap; }
-:root:not(.js) .burger { display: none; }
+{{>bar.css}}
 .progress { position: fixed; left: 0; top: 0; z-index: 31; height: 2px; width: 100%; background: var(--gold-grad); transform-origin: 0 50%; transform: scaleX(0); pointer-events: none; }
 :root:not(.motion) .progress { display: none; }
 
 /* ---------- Buttons ---------- */
 .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; height: 50px; text-decoration: none; font: 500 16px/1 var(--ui); padding: 0 26px; border-radius: 999px; transition: transform .35s var(--ease), box-shadow .35s var(--ease), background-color .2s; }
-.soon { font: 600 10px/1 var(--ui); font-style: normal; letter-spacing: 0.1em; text-transform: uppercase; white-space: nowrap; padding: 4px 7px; border-radius: 999px; background: rgba(255, 255, 255, 0.22); color: #fff; }
-.btn .soon { font-size: 11px; padding: 5px 9px; }
-:lang(ar) .soon, :lang(hi) .soon, :lang(ja) .soon, :lang(ko) .soon, :lang(zh) .soon { letter-spacing: 0; }
 .btn-gold { background: var(--accent); color: #fff; box-shadow: 0 14px 34px -14px rgba(160, 111, 36, 0.9); }
 .btn-gold:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 20px 40px -14px rgba(160, 111, 36, 0.95); }
 .more { font: 500 16px/1 var(--ui); height: 50px; color: var(--link); text-decoration: none; display: inline-flex; align-items: center; gap: 4px; padding: 0 8px; }
@@ -441,25 +359,6 @@ footer a { color: inherit; text-decoration: none; }
 footer a:hover { color: var(--text); }
 
 
-/* ---------- Language menu ---------- */
-.flag { flex: none; display: block; width: 21px; height: 14px; border-radius: 3px; box-shadow: 0 0 0 1px rgba(127, 127, 127, 0.25); }
-.lang { position: relative; }
-.lang summary { list-style: none; height: 36px; padding: 0 10px 0 11px; border-radius: 999px; display: flex; align-items: center; gap: 7px; cursor: pointer; background: var(--bar-chip); color: var(--bar-text); font: 600 12px/1 var(--ui); letter-spacing: 0.06em; transition: background-color .2s; }
-.lang summary::-webkit-details-marker { display: none; }
-.lang summary:hover, .lang[open] summary { background: var(--bar-chip-hover); }
-.lang summary .chev { transition: transform .3s var(--ease); opacity: .7; }
-.lang[open] summary .chev { transform: rotate(180deg); }
-.lang ul {
-  position: absolute; inset-inline-end: 0; top: calc(100% + 12px); margin: 0; padding: 6px; list-style: none; width: 250px;
-  max-height: calc(100 * var(--vh) - 100px); overflow-y: auto;
-  background: var(--page); border: 1px solid var(--bar-line); border-radius: 18px; box-shadow: 0 30px 60px -24px rgba(0, 0, 0, 0.6); z-index: 40;
-}
-.lang[open] ul { animation: drop .25s var(--ease); }
-.lang a { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 12px; padding: 9px 12px; border-radius: 12px; color: var(--text); text-decoration: none; font: 400 14px/1.2 var(--ui); }
-.lang a b { order: 3; font: 600 11px/1 var(--ui); letter-spacing: 0.08em; color: var(--muted); }
-.lang a:hover { background: var(--bar-chip); }
-.lang a[aria-current="true"] { background: var(--bar-chip); color: var(--brand); font-weight: 600; box-shadow: inset 0 0 0 1px var(--accent); }
-.lang a[aria-current="true"] b { color: var(--brand); }
 footer .legal-note { flex-basis: 100%; margin: 4px 0 0; }
 
 /* ---------- Scripts other than Latin ----------
@@ -519,39 +418,7 @@ footer .legal-note { flex-basis: 100%; margin: 4px 0 0; }
 </head>
 <body>
 <div class="progress" aria-hidden="true"></div>
-<header class="bar">
-  <div class="bar-in">
-    <a class="brand" href="./" aria-current="page"><img src="{{root}}img/icon-192.png" alt="" width="24" height="24">Pocket Glance</a>
-    <nav class="links" aria-label="{{nav_label}}">
-      <a href="#features">{{nav_features}}</a>
-      <a href="#pro">{{nav_pro}}</a>
-      <a href="{{root}}privacy.html">{{nav_privacy}}</a>
-      <a href="{{root}}terms.html">{{nav_terms}}</a>
-    </nav>
-    <div class="right">
-      <details class="lang">
-        <summary aria-label="{{lang_label}}: {{lang_name}}" title="{{lang_label}}">{{lang_flag}}<span>{{lang_code}}</span><svg class="chev" width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 3.75 5 6.75 8 3.75" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>
-        <ul>{{lang_menu}}</ul>
-      </details>
-      <button class="theme" type="button" hidden aria-label="{{theme_label}}" title="{{theme_title}}">
-        <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.25" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 1.75a6.25 6.25 0 0 1 0 12.5z" fill="currentColor"/></svg>
-      </button>
-      <a class="nav-cta" href="https://play.google.com/store/apps/details?id=com.nexttier.pocketglance" title="{{cta_play}}"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4.2 2.4c-.3.3-.4.7-.4 1.2v16.8c0 .5.1.9.4 1.2l9.5-9.6zm10.6 10.7 2.7 2.7-11.4 6.5c-.4.2-.9.3-1.2.1zm0-2.2-9.9-9.3c.3-.2.8-.1 1.2.1l11.4 6.5zm3.9 3.9-3-3 3-3 3.2 1.8c.9.5.9 1.9 0 2.4z"/></svg><span>{{nav_download}}</span><em class="soon">{{soon}}</em></a>
-      <button class="burger" type="button" aria-expanded="false" aria-controls="menu" aria-label="{{menu_open}}" data-open="{{menu_open}}" data-close="{{menu_close}}"><i></i><i></i></button>
-    </div>
-  </div>
-  <div class="menu" id="menu">
-    <nav aria-label="{{nav_label}}">
-      <a href="#features">{{nav_features}}</a>
-      <a href="#pro">{{nav_pro}}</a>
-      <a href="{{root}}privacy.html">{{nav_privacy}}</a>
-      <a href="{{root}}terms.html">{{nav_terms}}</a>
-    </nav>
-    <p class="menu-h">{{lang_label}}</p>
-    <ul class="chips">{{lang_menu}}</ul>
-    <a class="btn btn-gold" href="https://play.google.com/store/apps/details?id=com.nexttier.pocketglance"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4.2 2.4c-.3.3-.4.7-.4 1.2v16.8c0 .5.1.9.4 1.2l9.5-9.6zm10.6 10.7 2.7 2.7-11.4 6.5c-.4.2-.9.3-1.2.1zm0-2.2-9.9-9.3c.3-.2.8-.1 1.2.1l11.4 6.5zm3.9 3.9-3-3 3-3 3.2 1.8c.9.5.9 1.9 0 2.4z"/></svg>{{nav_download}}<em class="soon">{{soon}}</em></a>
-  </div>
-</header>
+{{>bar.html}}
 
 <section class="hero">
   <div class="hero-pin">
@@ -656,7 +523,7 @@ footer .legal-note { flex-basis: 100%; margin: 4px 0 0; }
           <div class="up d1 spot"><b class="num" data-to="10" data-from="0">10</b><span>{{st1}}</span></div>
           <div class="up d2 spot"><b class="num" data-to="14" data-from="0">14</b><span>{{st2}}</span></div>
         </div>
-        <a class="more" href="{{root}}privacy.html">{{p_link}}</a>
+        <a class="more" href="privacy.html">{{p_link}}</a>
       </div>
     </div>
   </div>
@@ -701,22 +568,13 @@ footer .legal-note { flex-basis: 100%; margin: 4px 0 0; }
 <footer>
   <div class="wrap">
     <span>© 2026 NextTier Studio · Pocket Glance</span>
-    <span><a href="{{root}}privacy.html">{{l_privacy_t}}</a> · <a href="{{root}}terms.html">{{l_terms_t}}</a> · <a href="{{root}}delete-data.html">{{l_delete_t}}</a> · <a href="mailto:nexttierstudio@gmail.com">nexttierstudio@gmail.com</a></span>
-{{legal_note}}  </div>
+    <span><a href="privacy.html">{{l_privacy_t}}</a> · <a href="terms.html">{{l_terms_t}}</a> · <a href="delete-data.html">{{l_delete_t}}</a> · <a href="mailto:nexttierstudio@gmail.com">nexttierstudio@gmail.com</a></span>
+  </div>
 </footer>
 <script>
-  // Language: remember the one picked from the menu; the English page sends a returning
-  // visitor to the language they picked before.
+  // The English homepage sends a returning visitor to the language they picked before.
   (function () {
-    var here = document.documentElement.getAttribute("data-lang");
-    document.querySelectorAll("a[data-lang]").forEach(function (a) {
-      a.addEventListener("click", function () { try { localStorage.setItem("lang", a.getAttribute("data-lang")); } catch (e) {} });
-    });
-    document.addEventListener("click", function (e) {
-      var d = document.querySelector(".lang[open]");
-      if (d && !d.contains(e.target)) d.removeAttribute("open");
-    });
-    if (here !== "en") return;
+    if (document.documentElement.getAttribute("data-lang") !== "en") return;
     try {
       var saved = localStorage.getItem("lang");
       var link = saved && saved !== "en" && document.querySelector('.lang a[data-lang="' + saved + '"]');
@@ -724,29 +582,7 @@ footer .legal-note { flex-basis: 100%; margin: 4px 0 0; }
     } catch (e) {}
   })();
 
-  // The bar: floats as a pill once the page scrolls; on narrow screens the menu button opens
-  // the panel with the links, the languages and the download button.
-  (function () {
-    var bar = document.querySelector(".bar"), btn = bar.querySelector(".burger"), lang = bar.querySelector(".lang");
-    function onScroll() { bar.classList.toggle("float", window.scrollY > 12); }
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    function setOpen(open) {
-      bar.classList.toggle("open", open);
-      btn.setAttribute("aria-expanded", open ? "true" : "false");
-      btn.setAttribute("aria-label", open ? btn.dataset.close : btn.dataset.open);
-    }
-    btn.addEventListener("click", function () { setOpen(!bar.classList.contains("open")); });
-    bar.querySelectorAll(".menu a").forEach(function (a) { a.addEventListener("click", function () { setOpen(false); }); });
-    document.addEventListener("click", function (e) { if (!bar.contains(e.target)) setOpen(false); });
-    document.addEventListener("keydown", function (e) {
-      if (e.key !== "Escape") return;
-      if (bar.classList.contains("open")) { setOpen(false); btn.focus(); }
-      if (lang.open) { lang.open = false; lang.querySelector("summary").focus(); }
-    });
-    // Back on a wide screen the panel is gone, so it should not reopen by itself later.
-    matchMedia("(min-width: 960px)").addEventListener("change", function (m) { if (m.matches) setOpen(false); });
-  })();
+{{>bar.js}}
 
   // Light / dark switch, the same as on the legal pages.
   (function () {

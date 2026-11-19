@@ -7,6 +7,7 @@
   "nav_pro": "Pro",
   "nav_privacy": "Confidentialité",
   "nav_terms": "Conditions",
+  "nav_delete": "Supprimer",
   "cta_play": "Télécharger sur Google Play",
   "nav_download": "Télécharger",
   "soon": "Bientôt",
@@ -82,5 +83,6 @@
   "lang_label": "Langue",
   "menu_open": "Ouvrir le menu",
   "menu_close": "Fermer le menu",
-  "legal_note": "La Politique de confidentialité, les Conditions et la page de suppression des données sont en anglais."
+  "legal_tr_note": "Cette page est une traduction fournie pour votre commodité. En cas de différence avec la version anglaise, la version anglaise prévaut.",
+  "legal_tr_link": "Lire la version anglaise"
 }

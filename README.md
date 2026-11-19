@@ -3,27 +3,30 @@
 Homepage, Privacy Policy, Terms & Conditions and data-deletion instructions for the Pocket Glance
 Android app, served with GitHub Pages.
 
-- `index.html`: homepage in English (generated, see below)
-- `es/`, `pt/`, `fr/`, `de/`, `hi/`, `ar/`, `ja/`, `ko/`, `zh/`: the homepage in the app's other
-  languages (generated)
-- `privacy.html`: Privacy Policy (English)
-- `terms.html`: Terms & Conditions (English)
-- `delete-data.html`: how to delete your data (English)
+- `index.html`, `privacy.html`, `terms.html`, `delete-data.html`: homepage, Privacy Policy,
+  Terms & Conditions and data-deletion instructions in English (generated, see below)
+- `es/`, `pt/`, `fr/`, `de/`, `hi/`, `ar/`, `ja/`, `ko/`, `zh/`: the same four pages in the app's
+  other languages (generated)
 - `img/`: app icon and phone screenshots used by the homepage
-- `tools/site/`: the homepage template, one strings file per language, and the build script
+- `tools/site/`: the page templates, the wording for every language, and the build script
 - `tools/make-screens.py`: rebuilds `img/*.webp` from the app's raw Play Store captures
 
 Each page is self-contained (inline CSS, plus a little inline script for the light/dark switch and,
 on the homepage, the language menu and scroll motion that is switched off for visitors who ask for
 reduced motion).
 
-## Editing the homepage
+## Editing the pages
 
-Don't edit `index.html` or the language folders by hand: they are overwritten by the build.
+Don't edit the four pages or the language folders by hand: they are overwritten by the build.
 
-- Layout, styles and script: `tools/site/page.html`
-- Wording: `tools/site/i18n/<code>.json` (`en.json` is the source; every other file must have
-  exactly the same keys)
+- Homepage layout, styles and script: `tools/site/page.html`
+- Legal pages layout and styles: `tools/site/legal.html`
+- Top bar (shared by every page): `tools/site/partials/bar.css`, `bar.html`, `bar.js`
+- Short wording: `tools/site/i18n/<code>.json` (`en.json` is the source; every other file must
+  have exactly the same keys)
+- Legal text: `tools/site/legal/<code>/privacy.html`, `terms.html`, `delete-data.html`
+  (`en/` is the source). When the English text changes, update every language. Translated
+  legal pages say that the English version applies if they differ.
 
 Then rebuild every language (needs Python 3):
 

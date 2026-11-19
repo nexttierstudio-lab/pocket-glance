@@ -1,18 +1,28 @@
-"""Builds the homepage in every supported language.
+"""Builds every page of the site in every supported language.
 
     python tools/site/build.py
     python tools/site/build.py --site-url https://example.com/pocket_glance/ --out dist/pocket_glance
 
-Reads tools/site/page.html (the template) and tools/site/i18n/<code>.json (one strings
-file per language, with en.json as the source of truth), and writes:
+Templates:
+    page.html                 the homepage
+    legal.html                the Privacy Policy, Terms and Delete-your-data pages
+    partials/bar.*            the top bar (styles, markup, script), shared by both
 
-    index.html           English, at the site root
-    <code>/index.html    every other language, e.g. es/index.html
+Wording:
+    i18n/<code>.json          short strings for every page (en.json is the source of truth)
+    legal/<code>/<page>.html  the text of each legal page: a "title:" line, a "description:"
+                              line, "---", then the page body (en/ is the source of truth)
 
-To change copy, edit the strings files and rebuild. To add a language, add a row to LANGS
-and a strings file with the same keys as en.json. The build stops if a key is missing,
-extra, or a placeholder is left unfilled. Values may contain the small bits of markup the
-English uses (<span class="gold">, <em class="gold">, a link to {{root}}terms.html).
+It writes, for each of index.html, privacy.html, terms.html and delete-data.html:
+
+    <page>          English, at the site root
+    <code>/<page>   every other language, e.g. es/privacy.html
+
+To change copy, edit the strings or legal files and rebuild. To add a language, add a row to
+LANGS, a strings file with the same keys as en.json, and a legal/<code>/ folder. The build
+stops if a key is missing, extra, a legal file is missing, or a placeholder is left unfilled.
+Values may contain the small bits of markup the English uses (<span class="gold">,
+<em class="gold">, a link to terms.html).
 
 --site-url only changes the absolute addresses search engines and link previews read
 (canonical, hreflang, og:image); every link a visitor clicks is relative. --out writes the
@@ -81,19 +91,46 @@ def folder(code):
     return "" if code == "en" else code + "/"
 
 
-def rel(from_code, to_code):
-    """Relative link from one language's page to another's."""
-    up = "" if from_code == "en" else "../"
-    target = folder(to_code)
+def rel(from_code, to_code, page=""):
+    """Relative link from one language's copy of a page to another language's copy."""
     if from_code == to_code:
-        return "./"
-    return (up + target) or "./"
+        return page or "./"
+    up = "" if from_code == "en" else "../"
+    return (up + folder(to_code) + page) or "./"
+
+
+# The pages built for every language: (file, template). Legal pages take their wording from
+# legal/<code>/<file>: a title line, a description line, "---", then the page's body.
+PAGES = [("index.html", "page.html"), ("privacy.html", "legal.html"), ("terms.html", "legal.html"), ("delete-data.html", "legal.html")]
+# Links in the bar: the homepage's sections and two legal pages, or the three legal pages.
+HOME_LINKS = [("#features", "nav_features"), ("#pro", "nav_pro"), ("privacy.html", "nav_privacy"), ("terms.html", "nav_terms")]
+LEGAL_LINKS = [("privacy.html", "nav_privacy"), ("terms.html", "nav_terms"), ("delete-data.html", "nav_delete")]
+
+
+def include(template):
+    """Pastes in shared pieces: {{>bar.css}} is the file partials/bar.css."""
+    return re.sub(r"\{\{>([\w.]+)\}\}", lambda m: (HERE / "partials" / m.group(1)).read_text(encoding="utf-8").rstrip("\n"), template)
+
+
+def fill(text, *tables):
+    for table in tables:
+        text = re.sub(r"\{\{(\w+)\}\}", lambda m: table[m.group(1)] if m.group(1) in table else m.group(0), text)
+    return text
+
+
+def legal_content(code, file):
+    path = HERE / "legal" / code / file
+    if not path.exists():
+        sys.exit(f"missing {path}")
+    head, body = path.read_text(encoding="utf-8").split("\n---\n", 1)
+    meta = dict(line.split(": ", 1) for line in head.strip().splitlines())
+    return meta["title"], meta["description"], body.rstrip("\n")
 
 
 def main(site_url=SITE_URL, out_root=ROOT):
     site_url = site_url.rstrip("/") + "/"
     out_root = Path(out_root)
-    template = (HERE / "page.html").read_text(encoding="utf-8")
+    templates = {t: include((HERE / t).read_text(encoding="utf-8")) for _, t in PAGES}
     strings = {c: json.loads((HERE / "i18n" / f"{c}.json").read_text(encoding="utf-8")) for c, *_ in LANGS}
     keys = set(strings["en"])
     bad = False
@@ -105,40 +142,58 @@ def main(site_url=SITE_URL, out_root=ROOT):
     if bad:
         sys.exit(1)
 
-    alternates = "\n".join(
-        f'  <link rel="alternate" hreflang="{lang}" href="{site_url}{folder(code)}">' for code, lang, *_ in LANGS
-    ) + f'\n  <link rel="alternate" hreflang="x-default" href="{site_url}">'
+    for file, template in PAGES:
+        page_path = "" if file == "index.html" else file
+        alternates = "\n".join(
+            f'  <link rel="alternate" hreflang="{lang}" href="{site_url}{folder(code)}{page_path}">' for code, lang, *_ in LANGS
+        ) + f'\n  <link rel="alternate" hreflang="x-default" href="{site_url}{page_path}">'
 
-    for code, lang, og, _name, direction in LANGS:
-        s = strings[code]
-        # One list, used twice: the bar's dropdown (wide screens) and the grid of chips in the
-        # menu panel (phones). Each entry: flag, code, the language's own name.
-        menu = "".join(
-            f'<li><a href="{rel(code, c)}" hreflang="{l}" lang="{l}" data-lang="{c}"'
-            + (' aria-current="true"' if c == code else "")
-            + f">{flag(c)}<b>{c.upper()}</b><span>{n}</span></a></li>"
-            for c, l, _o, n, _d in LANGS
-        )
-        system = {
-            "lang": lang, "dir": direction, "code": code, "og_locale": og,
-            "root": "" if code == "en" else "../",
-            "site": site_url,
-            "alternates": alternates + f'\n  <link rel="canonical" href="{site_url}{folder(code)}">',
-            "lang_menu": menu,
-            "lang_flag": flag(code),
-            "lang_code": code.upper(),
-            "lang_name": _name,
-            "legal_note": "" if code == "en" else f'    <p class="legal-note">{s["legal_note"]}</p>\n',
-        }
-        page = re.sub(r"\{\{(\w+)\}\}", lambda m: s[m.group(1)] if m.group(1) in s else m.group(0), template)
-        page = re.sub(r"\{\{(\w+)\}\}", lambda m: system[m.group(1)] if m.group(1) in system else m.group(0), page)
-        left = re.findall(r"\{\{\w+\}\}", page)
-        if left:
-            sys.exit(f"{code}: unfilled {sorted(set(left))}")
-        out = out_root / folder(code) / "index.html"
-        out.parent.mkdir(parents=True, exist_ok=True)
-        out.write_text(page, encoding="utf-8", newline="\n")
-        print("wrote", out)
+        for code, lang, og, name, direction in LANGS:
+            s = strings[code]
+            # One list, used twice: the bar's dropdown (wide screens) and the grid of chips in the
+            # menu panel (phones). Each entry: flag, code, the language's own name, and it leads
+            # to this same page in that language.
+            menu = "".join(
+                f'<li><a href="{rel(code, c, page_path)}" hreflang="{l}" lang="{l}" data-lang="{c}"'
+                + (' aria-current="true"' if c == code else "")
+                + f">{flag(c)}<b>{c.upper()}</b><span>{n}</span></a></li>"
+                for c, l, _o, n, _d in LANGS
+            )
+            links = HOME_LINKS if file == "index.html" else LEGAL_LINKS
+            bar_links = "\n".join(
+                f'      <a href="{href}"' + (' aria-current="page"' if href == file else "") + f">{s[key]}</a>"
+                for href, key in links
+            )
+            system = {
+                "lang": lang, "dir": direction, "code": code, "og_locale": og,
+                "root": "" if code == "en" else "../",
+                "site": site_url,
+                "alternates": alternates + f'\n  <link rel="canonical" href="{site_url}{folder(code)}{page_path}">',
+                "lang_menu": menu,
+                "lang_flag": flag(code),
+                "lang_code": code.upper(),
+                "lang_name": name,
+                "bar_links": bar_links,
+                "brand_current": ' aria-current="page"' if file == "index.html" else "",
+            }
+            text = templates[template]
+            if template == "legal.html":
+                title, description, body = legal_content(code, file)
+                system["page_title"], system["page_description"] = title, description
+                # A translated legal page says so and links to the English original.
+                system["tr_note"] = "" if code == "en" else (
+                    f'    <p class="tr-note">{s["legal_tr_note"]} '
+                    f'<a href="../{file}" hreflang="en" lang="en">{s["legal_tr_link"]}</a></p>\n'
+                )
+                text = text.replace("{{content}}", body)
+            out_text = fill(text, s, system)
+            left = re.findall(r"\{\{>?[\w.]+\}\}", out_text)
+            if left:
+                sys.exit(f"{code}/{file}: unfilled {sorted(set(left))}")
+            out = out_root / folder(code) / file
+            out.parent.mkdir(parents=True, exist_ok=True)
+            out.write_text(out_text, encoding="utf-8", newline="\n")
+            print("wrote", out)
 
 
 if __name__ == "__main__":

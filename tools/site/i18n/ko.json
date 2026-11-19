@@ -7,6 +7,7 @@
   "nav_pro": "Pro",
   "nav_privacy": "개인정보",
   "nav_terms": "약관",
+  "nav_delete": "데이터 삭제",
   "cta_play": "Google Play에서 다운로드",
   "nav_download": "지금 다운로드",
   "soon": "출시 예정",
@@ -82,5 +83,6 @@
   "lang_label": "언어",
   "menu_open": "메뉴 열기",
   "menu_close": "메뉴 닫기",
-  "legal_note": "개인정보처리방침, 이용약관, 데이터 삭제 페이지는 영어로 제공됩니다."
+  "legal_tr_note": "이 페이지는 편의를 위해 제공되는 번역본입니다. 영어 버전과 다를 경우 영어 버전이 우선합니다.",
+  "legal_tr_link": "영어 버전 보기"
 }

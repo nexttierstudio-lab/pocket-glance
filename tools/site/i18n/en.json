@@ -7,6 +7,7 @@
   "nav_pro": "Pro",
   "nav_privacy": "Privacy",
   "nav_terms": "Terms",
+  "nav_delete": "Delete data",
   "cta_play": "Download on Google Play",
   "nav_download": "Download now",
   "soon": "Coming soon",
@@ -82,5 +83,6 @@
   "lang_label": "Language",
   "menu_open": "Open menu",
   "menu_close": "Close menu",
-  "legal_note": "The Privacy Policy, Terms and data deletion pages are in English."
+  "legal_tr_note": "This page is a translation, provided for convenience. If it differs from the English version, the English version applies.",
+  "legal_tr_link": "Read the English version"
 }
