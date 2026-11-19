@@ -81,16 +81,12 @@ body { padding-top: var(--bar-h); }
   .nav-cta { height: 44px; gap: 9px; padding: 0 22px 0 18px; font-size: 15px; }
   .nav-cta svg { width: 17px; height: 17px; }
 }
-/* The bar's download button drops its tag until there is room for it in every language. */
-@media (max-width: 1279px) {
-  .nav-cta .soon { display: none; }
-}
 /* Without the script there is no menu button: the links stay in the bar and wrap. */
 :root:not(.js) .bar-in { height: auto; min-height: var(--bar-h); padding-block: 8px; }
 :root:not(.js) .links { display: flex; flex-wrap: wrap; }
 :root:not(.js) .burger { display: none; }
 
-/* "Coming soon" tag on the download buttons */
+/* "Coming soon" tag (not used while the buttons themselves say Coming soon) */
 .soon { font: 600 10px/1 var(--ui); font-style: normal; letter-spacing: 0.1em; text-transform: uppercase; white-space: nowrap; padding: 4px 7px; border-radius: 999px; background: rgba(255, 255, 255, 0.22); color: #fff; }
 .btn .soon, .menu-cta .soon { font-size: 11px; padding: 5px 9px; }
 :lang(ar) .soon, :lang(hi) .soon, :lang(ja) .soon, :lang(ko) .soon, :lang(zh) .soon { letter-spacing: 0; }
