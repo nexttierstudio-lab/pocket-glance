@@ -43,6 +43,40 @@ LANGS = [
 ]
 
 
+def _star(cx, cy, r, rot=0.0):
+    """Points of a five-pointed star, for the small flags below."""
+    import math
+    pts = []
+    for i in range(10):
+        a = math.radians(rot - 90 + i * 36)
+        rr = r if i % 2 == 0 else r * 0.4
+        pts.append(f"{cx + rr * math.cos(a):.2f},{cy + rr * math.sin(a):.2f}")
+    return f'<polygon points="{" ".join(pts)}"/>'
+
+
+# Small flags drawn inline (30x20), so the menu needs no images and no emoji font: Windows
+# shows flag emoji as two letters. Simplified on purpose; at 20 pixels wide the detail is lost anyway.
+_US_STRIPES = "".join(f'<rect y="{20 / 13 * i:.3f}" width="30" height="{20 / 13:.3f}" fill="#fff"/>' for i in range(1, 13, 2))
+FLAGS = {
+    "en": f'<rect width="30" height="20" fill="#B22234"/>{_US_STRIPES}<rect width="13" height="10.77" fill="#3C3B6E"/>'
+          '<g fill="#fff">' + "".join(_star(2.2 + 2.2 * x + (1.1 if y % 2 else 0), 1.6 + 1.9 * y, 0.65) for y in range(5) for x in range(5 if y % 2 == 0 else 4)) + "</g>",
+    "es": '<rect width="10" height="20" fill="#006847"/><rect x="10" width="10" height="20" fill="#fff"/><rect x="20" width="10" height="20" fill="#CE1126"/><circle cx="15" cy="10" r="2.4" fill="#8C6A3A"/>',
+    "pt": '<rect width="30" height="20" fill="#009C3B"/><polygon points="3,10 15,2.5 27,10 15,17.5" fill="#FFDF00"/><circle cx="15" cy="10" r="4.6" fill="#002776"/><path d="M10.6 9.2c3-.9 6.3-.6 8.8.9" stroke="#fff" stroke-width="1" fill="none"/>',
+    "fr": '<rect width="10" height="20" fill="#0055A4"/><rect x="10" width="10" height="20" fill="#fff"/><rect x="20" width="10" height="20" fill="#EF4135"/>',
+    "de": '<rect width="30" height="6.67" fill="#000"/><rect y="6.67" width="30" height="6.67" fill="#DD0000"/><rect y="13.33" width="30" height="6.67" fill="#FFCE00"/>',
+    "hi": '<rect width="30" height="6.67" fill="#FF9933"/><rect y="6.67" width="30" height="6.67" fill="#fff"/><rect y="13.33" width="30" height="6.67" fill="#138808"/><circle cx="15" cy="10" r="2.6" fill="none" stroke="#000080" stroke-width=".8"/><circle cx="15" cy="10" r=".6" fill="#000080"/>',
+    "ar": '<rect width="30" height="20" fill="#006C35"/><path d="M8 7.2h14M9 9.3c1.5-1 3 1 4.5 0s3 1 4.5 0 2.5 1 3.5 0" stroke="#fff" stroke-width=".9" fill="none" stroke-linecap="round"/><path d="M8.5 13.5h12.5l1.5-.8" stroke="#fff" stroke-width=".9" fill="none" stroke-linecap="round"/>',
+    "ja": '<rect width="30" height="20" fill="#fff"/><circle cx="15" cy="10" r="6" fill="#BC002D"/>',
+    "ko": '<rect width="30" height="20" fill="#fff"/><circle cx="15" cy="10" r="5" fill="#0047A0"/><path d="M10 10a5 5 0 0 1 10 0a2.5 2.5 0 0 1-5 0a2.5 2.5 0 0 0-5 0z" fill="#CD2E3A"/>'
+          '<g stroke="#000" stroke-width="1"><path d="M4.4 5.4l2.2-2.4M5.4 6.3l2.2-2.4M6.4 7.2l2.2-2.4"/><path d="M21.4 15.6l2.2-2.4M22.4 16.5l2.2-2.4M23.4 17.4l2.2-2.4"/><path d="M21.4 4.4l2.2 2.4M22.4 3.5l2.2 2.4M20.4 5.3l2.2 2.4"/><path d="M4.4 14.6l2.2 2.4M5.4 13.7l2.2 2.4M6.4 12.8l2.2 2.4"/></g>',
+    "zh": '<rect width="30" height="20" fill="#DE2910"/><g fill="#FFDE00">' + _star(5, 5, 3) + _star(10, 2, 1, 23) + _star(12, 4, 1, 45) + _star(12, 7, 1, 70) + _star(10, 9, 1, 20) + "</g>",
+}
+
+
+def flag(code):
+    return f'<svg class="flag" viewBox="0 0 30 20" width="21" height="14" aria-hidden="true">{FLAGS[code]}</svg>'
+
+
 def folder(code):
     return "" if code == "en" else code + "/"
 
@@ -77,10 +111,12 @@ def main(site_url=SITE_URL, out_root=ROOT):
 
     for code, lang, og, _name, direction in LANGS:
         s = strings[code]
+        # One list, used twice: the bar's dropdown (wide screens) and the grid of chips in the
+        # menu panel (phones). Each entry: flag, code, the language's own name.
         menu = "".join(
             f'<li><a href="{rel(code, c)}" hreflang="{l}" lang="{l}" data-lang="{c}"'
             + (' aria-current="true"' if c == code else "")
-            + f">{n}</a></li>"
+            + f">{flag(c)}<b>{c.upper()}</b><span>{n}</span></a></li>"
             for c, l, _o, n, _d in LANGS
         )
         system = {
@@ -89,6 +125,9 @@ def main(site_url=SITE_URL, out_root=ROOT):
             "site": site_url,
             "alternates": alternates + f'\n  <link rel="canonical" href="{site_url}{folder(code)}">',
             "lang_menu": menu,
+            "lang_flag": flag(code),
+            "lang_code": code.upper(),
+            "lang_name": _name,
             "legal_note": "" if code == "en" else f'    <p class="legal-note">{s["legal_note"]}</p>\n',
         }
         page = re.sub(r"\{\{(\w+)\}\}", lambda m: s[m.group(1)] if m.group(1) in s else m.group(0), template)
