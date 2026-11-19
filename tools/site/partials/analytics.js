@@ -117,12 +117,11 @@
       return s ? (s.id || (s.classList.contains("hero") ? "hero" : s.classList.contains("closer") ? "closing" : "page")) : "page";
     }
     document.addEventListener("click", function (e) {
-      var el = e.target.closest("a, button.theme");
+      var el = e.target.closest("a, button[data-mode]");
       if (!el || !on) return;
       var at = where(el), href = el.getAttribute("href") || "";
-      if (el.matches("button.theme")) {
-        // The theme switch runs first; read the theme it set once it has.
-        setTimeout(function () { track("theme_toggle", { theme: document.documentElement.getAttribute("data-theme") || "", link_location: at }); }, 0);
+      if (el.matches("button[data-mode]")) {
+        track("theme_toggle", { theme: el.getAttribute("data-mode"), link_location: el.closest(".lang") ? "dropdown" : at });
       } else if (/play\.google\.com/.test(href)) {
         track("play_click", { link_location: at });
       } else if (el.hasAttribute("data-lang")) {

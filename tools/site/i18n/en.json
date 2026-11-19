@@ -89,5 +89,8 @@
   "consent_text": "May we use Google Analytics to count visits and clicks on this website? It helps us see what is useful. It never sees anything in the app.",
   "consent_yes": "Allow",
   "consent_no": "No thanks",
-  "consent_settings": "Analytics settings"
+  "consent_settings": "Analytics settings",
+  "mode_label": "Theme",
+  "mode_light": "Light",
+  "mode_dark": "Dark"
 }

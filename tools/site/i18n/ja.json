@@ -89,5 +89,8 @@
   "consent_text": "このウェブサイトの訪問数とクリック数を数えるために Google アナリティクスを使ってもよろしいですか？役立つ内容を知るために使います。アプリ内の情報は一切見ません。",
   "consent_yes": "許可する",
   "consent_no": "許可しない",
-  "consent_settings": "アクセス解析の設定"
+  "consent_settings": "アクセス解析の設定",
+  "mode_label": "テーマ",
+  "mode_light": "ライト",
+  "mode_dark": "ダーク"
 }

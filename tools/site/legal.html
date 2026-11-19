@@ -246,16 +246,22 @@ footer a:hover { color: var(--text); }
 
 {{>analytics.js}}
 
+  // Light / dark buttons in the language menu and the phone menu. Dark unless Light was picked.
   (function () {
-    var b = document.querySelector(".theme"), r = document.documentElement;
-    if (!b) return;
-    b.hidden = false;
-    b.addEventListener("click", function () {
+    var r = document.documentElement, btns = document.querySelectorAll("[data-mode]");
+    function mark() {
       var now = r.getAttribute("data-theme") || "dark";
-      var next = now === "dark" ? "light" : "dark";
-      r.setAttribute("data-theme", next);
-      try { localStorage.setItem("theme", next); } catch (e) {}
+      btns.forEach(function (b) { b.setAttribute("aria-pressed", b.getAttribute("data-mode") === now ? "true" : "false"); });
+    }
+    btns.forEach(function (b) {
+      b.addEventListener("click", function () {
+        var next = b.getAttribute("data-mode");
+        r.setAttribute("data-theme", next);
+        try { localStorage.setItem("theme", next); } catch (e) {}
+        mark();
+      });
     });
+    mark();
   })();
 </script>
 </body>

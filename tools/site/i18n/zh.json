@@ -89,5 +89,8 @@
   "consent_text": "我们可以使用 Google Analytics 统计本网站的访问和点击次数吗？这能帮助我们了解哪些内容有用。它绝不会看到应用中的任何内容。",
   "consent_yes": "允许",
   "consent_no": "不用了",
-  "consent_settings": "统计分析设置"
+  "consent_settings": "统计分析设置",
+  "mode_label": "主题",
+  "mode_light": "浅色",
+  "mode_dark": "深色"
 }

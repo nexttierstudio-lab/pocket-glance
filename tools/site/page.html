@@ -588,18 +588,23 @@ footer .legal-note { flex-basis: 100%; margin: 4px 0 0; }
 
 {{>analytics.js}}
 
-  // Light / dark switch, the same as on the legal pages.
+  // Light / dark buttons in the language menu and the phone menu. Dark unless Light was picked.
   (function () {
-    var b = document.querySelector(".theme"), r = document.documentElement;
-    if (!b) return;
-    b.hidden = false;
-    b.addEventListener("click", function () {
+    var r = document.documentElement, btns = document.querySelectorAll("[data-mode]");
+    function mark() {
       var now = r.getAttribute("data-theme") || "dark";
-      var next = now === "dark" ? "light" : "dark";
-      r.setAttribute("data-theme", next);
-      try { localStorage.setItem("theme", next); } catch (e) {}
-      themeShots();
+      btns.forEach(function (b) { b.setAttribute("aria-pressed", b.getAttribute("data-mode") === now ? "true" : "false"); });
+    }
+    btns.forEach(function (b) {
+      b.addEventListener("click", function () {
+        var next = b.getAttribute("data-mode");
+        r.setAttribute("data-theme", next);
+        try { localStorage.setItem("theme", next); } catch (e) {}
+        mark();
+        themeShots();
+      });
     });
+    mark();
     // The hero phone shows the app in the same theme as the page.
     function themeShots() {
       var light = r.getAttribute("data-theme") === "light";

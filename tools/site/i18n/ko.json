@@ -89,5 +89,8 @@
   "consent_text": "이 웹사이트의 방문 수와 클릭 수를 세기 위해 Google 애널리틱스를 사용해도 될까요? 어떤 내용이 유용한지 알 수 있습니다. 앱 안의 정보는 절대 보지 않습니다.",
   "consent_yes": "허용",
   "consent_no": "거부",
-  "consent_settings": "분석 설정"
+  "consent_settings": "분석 설정",
+  "mode_label": "테마",
+  "mode_light": "라이트",
+  "mode_dark": "다크"
 }
