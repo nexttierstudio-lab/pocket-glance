@@ -102,9 +102,10 @@ def rel(from_code, to_code, page=""):
 # The pages built for every language: (file, template). Legal pages take their wording from
 # legal/<code>/<file>: a title line, a description line, "---", then the page's body.
 PAGES = [("index.html", "page.html"), ("privacy.html", "legal.html"), ("terms.html", "legal.html"), ("delete-data.html", "legal.html")]
-# Links in the bar: the homepage's sections and two legal pages, or the three legal pages.
-HOME_LINKS = [("#features", "nav_features"), ("#pro", "nav_pro"), ("privacy.html", "nav_privacy"), ("terms.html", "nav_terms")]
-LEGAL_LINKS = [("privacy.html", "nav_privacy"), ("terms.html", "nav_terms"), ("delete-data.html", "nav_delete")]
+# Links in the bar, the same three on every page: two homepage sections and the homepage's
+# privacy section (not the policy itself). The legal pages are reached from the footer and from
+# that section's link, so visitors only open them when they mean to.
+NAV_LINKS = [("#features", "nav_features"), ("#pro", "nav_pro"), ("#private", "nav_privacy")]
 
 
 def include(template):
@@ -159,11 +160,9 @@ def main(site_url=SITE_URL, out_root=ROOT):
                 + f">{flag(c)}<b>{c.upper()}</b><span>{n}</span></a></li>"
                 for c, l, _o, n, _d in LANGS
             )
-            links = HOME_LINKS if file == "index.html" else LEGAL_LINKS
-            bar_links = "\n".join(
-                f'      <a href="{href}"' + (' aria-current="page"' if href == file else "") + f">{s[key]}</a>"
-                for href, key in links
-            )
+            # On the legal pages the links lead back to the homepage's sections.
+            home = "" if file == "index.html" else "./"
+            bar_links = "\n".join(f'      <a href="{home}{href}">{s[key]}</a>' for href, key in NAV_LINKS)
             system = {
                 "lang": lang, "dir": direction, "code": code, "og_locale": og,
                 "root": "" if code == "en" else "../",

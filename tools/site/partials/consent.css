@@ -1,0 +1,24 @@
+/* ---------- Analytics notice ----------
+   A small card in the bottom corner, shown until the visitor picks Allow or No thanks.
+   Nothing is measured before Allow. "Analytics settings" in the footer brings it back. */
+.consent {
+  position: fixed; z-index: 40; inset-inline-start: var(--gutter); bottom: var(--gutter);
+  width: min(400px, calc(100% - 2 * var(--gutter)));
+  background: var(--page); color: var(--text); border: 1px solid var(--divider); border-radius: 18px;
+  padding: 16px 18px; box-shadow: 0 22px 50px -24px rgba(0, 0, 0, 0.6);
+  font: 400 0.86rem/1.5 var(--ui);
+}
+.consent[hidden] { display: none; }
+.consent p { margin: 0 0 12px; color: var(--muted); }
+.consent p a { color: var(--text); }
+.consent .row { display: flex; justify-content: flex-end; gap: 8px; flex-wrap: wrap; }
+.consent button { font: 500 0.86rem/1 var(--ui); height: 36px; padding: 0 16px; border-radius: 999px; cursor: pointer; border: 1px solid var(--divider); background: transparent; color: var(--text); }
+.consent button:hover { background: var(--tile); }
+.consent .yes { background: var(--accent); border-color: var(--accent); color: #fff; }
+.consent .yes:hover { background: var(--accent); filter: brightness(1.08); }
+footer .consent-open { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+footer .consent-open:hover { color: var(--text); }
+@media (prefers-reduced-motion: no-preference) {
+  .consent { animation: consent-in .45s var(--ease) both; }
+  @keyframes consent-in { from { opacity: 0; transform: translateY(12px); } }
+}

@@ -1,37 +1,40 @@
 /* ---------- Bar and reading progress ----------
-   At the top of the page the bar spans the full width. Once the page scrolls (.float, set by
-   the script) it lifts off the edge and shrinks into a rounded pill floating over the page.
+   At the top of the page the bar is see-through and sits on the page itself: the name, plain
+   text links, a globe for the language and theme menu, and the download button. Once the page
+   scrolls (.float, set by the script) it gets a frosted background and shrinks into a rounded
+   pill floating over the page.
    Links sit in the middle; on narrow screens they, the languages and the download button
    move into the menu panel behind the menu button, and the bar floats the same way. */
 :root { --bar-h: 60px; }
 body { padding-top: var(--bar-h); }
 .bar { position: fixed; top: 0; left: 0; right: 0; z-index: 30; padding: 0; transition: padding .5s var(--ease); }
 .bar-in {
-  position: relative; margin: 0 auto; max-width: 100%; height: var(--bar-h);
+  position: relative; margin: 0 auto; width: 100%; max-width: 100%; height: var(--bar-h);
   display: grid; grid-template-columns: minmax(max-content, 1fr) auto minmax(max-content, 1fr); align-items: center; gap: 16px;
-  padding-inline: max(var(--gutter), calc((100% - 1036px) / 2));
-  background: var(--bar-bg); border: 1px solid transparent; border-bottom-color: var(--bar-line); border-radius: 0;
-  -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px);
-  transition: max-width .5s var(--ease), height .5s var(--ease), border-radius .5s var(--ease), padding .5s var(--ease), box-shadow .5s var(--ease), border-color .5s var(--ease), background-color .35s var(--ease);
+  padding-inline: max(var(--gutter), calc((100% - 1200px) / 2));
+  background: transparent; border: 1px solid transparent; border-radius: 0;
+  transition: width .5s var(--ease), max-width .5s var(--ease), gap .5s var(--ease), height .5s var(--ease), border-radius .5s var(--ease), padding .5s var(--ease), box-shadow .5s var(--ease), border-color .5s var(--ease), background-color .35s var(--ease);
 }
 .bar.float { padding: 10px var(--gutter) 0; }
 .bar.float .bar-in {
-  max-width: 1080px; height: 54px; border-radius: 28px; padding-inline: 18px 9px;
+  max-width: 1000px; height: 54px; border-radius: 28px; padding-inline: 9px;
   border-color: var(--bar-line); box-shadow: 0 18px 44px -20px rgba(0, 0, 0, 0.55);
 }
-.brand { justify-self: start; display: flex; align-items: center; gap: 10px; font: 600 12px/1 var(--ui); letter-spacing: 0.18em; text-transform: uppercase; color: var(--brand); text-decoration: none; white-space: nowrap; }
-.brand img { width: 24px; height: 24px; border-radius: 7px; }
-.links { display: flex; align-items: center; gap: 2px; }
-.links a { font: 400 14px/1 var(--ui); color: var(--bar-muted); text-decoration: none; padding: 9px 12px; border-radius: 999px; white-space: nowrap; transition: color .2s, background-color .2s; }
-.links a:hover { color: var(--bar-text); background: var(--bar-chip); }
+.bar.float .bar-in, .bar.open .bar-in {
+  background: var(--bar-bg); -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px);
+}
+.brand { justify-self: start; display: flex; align-items: center; gap: 10px; font: 600 17px/1 var(--ui); letter-spacing: -0.01em; color: var(--bar-text); text-decoration: none; white-space: nowrap; }
+.brand img { width: 28px; height: 28px; border-radius: 8px; }
+.bar.float .brand { margin-inline-start: 6px; transition: margin .5s var(--ease); }
+.links { display: flex; align-items: center; gap: 8px; }
+.links a { font: 500 15px/1 var(--ui); color: var(--bar-muted); text-decoration: none; padding: 9px 12px; border-radius: 999px; white-space: nowrap; transition: color .2s; }
+.links a:hover { color: var(--bar-text); }
 .right { justify-self: end; display: flex; align-items: center; gap: 8px; }
 .nav-cta { display: inline-flex; align-items: center; gap: 7px; height: 36px; color: #fff; background: var(--accent); padding: 0 16px 0 13px; border-radius: 999px; font: 500 14px/1 var(--ui); text-decoration: none; white-space: nowrap; transition: background-color .2s; }
 .nav-cta:hover { background: #8F6118; }
 .nav-cta svg { flex: none; }
-.theme, .burger { appearance: none; border: 0; padding: 0; width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; cursor: pointer; background: var(--bar-chip); color: var(--bar-text); transition: background-color .2s, transform .5s var(--ease); }
-.theme[hidden] { display: none; }
-.theme:hover, .burger:hover { background: var(--bar-chip-hover); }
-:root[data-theme="light"] .theme { transform: rotate(180deg); }
+.burger { appearance: none; border: 0; padding: 0; width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; cursor: pointer; background: var(--bar-chip); color: var(--bar-text); transition: background-color .2s, transform .5s var(--ease); }
+.burger:hover { background: var(--bar-chip-hover); }
 /* Two lines that turn into a cross while the menu is open. */
 .burger { display: none; position: relative; }
 .burger i { position: absolute; left: 11px; width: 14px; height: 1.6px; border-radius: 2px; background: currentColor; transition: transform .35s var(--ease), top .35s var(--ease); }
@@ -60,9 +63,10 @@ body { padding-top: var(--bar-h); }
 .chips a:hover { background: var(--bar-chip-hover); }
 .chips a b { display: none; }
 .chips a[aria-current="true"] { border-color: var(--accent); color: var(--brand); font-weight: 600; }
-.menu-cta { display: flex; align-items: center; justify-content: center; gap: 10px; height: 50px; margin: 16px 4px 4px; border-radius: 999px; background: var(--accent); color: #fff; text-decoration: none; font: 500 16px/1 var(--ui); }
+.menu-cta { display: flex; align-items: center; justify-content: center; gap: 10px; height: 50px; margin: 4px 4px 8px; border-radius: 999px; background: var(--accent); color: #fff; text-decoration: none; font: 500 16px/1 var(--ui); }
 .menu-cta:hover { background: #8F6118; }
-.links a[aria-current="page"], .menu nav a[aria-current="page"] { color: var(--bar-text); background: var(--bar-chip); }
+.links a[aria-current="page"] { color: var(--bar-text); }
+.menu nav a[aria-current="page"] { color: var(--bar-text); background: var(--bar-chip); }
 
 @media (max-width: 959px) {
   .bar-in { grid-template-columns: 1fr auto; }
@@ -71,17 +75,30 @@ body { padding-top: var(--bar-h); }
 }
 @media (min-width: 960px) {
   .menu { display: none; }
-}
-/* The bar's download button drops its tag until there is room for it in every language. */
-@media (max-width: 1139px) {
-  .nav-cta .soon { display: none; }
+  /* Wide screens: a taller bar and a larger download button. The side columns are equal when
+     there is room (up to 1200px of content), so the links sit in the middle of the bar. */
+  :root { --bar-h: 68px; }
+  /* Scrolled: the bar draws in from both sides into a pill just wide enough for its contents,
+     centred on the page. The two side columns are equal (each as wide as the wider of the
+     name and the language + download pair), and the padding is the same on both sides, so
+     the links stay in the middle with the name and the buttons close beside them. Browsers
+     that can animate to fit-content (interpolate-size) slide into it; others snap. */
+  :root { interpolate-size: allow-keywords; }
+  .bar.float .bar-in { width: fit-content; max-width: 100%; height: 60px; padding-inline: 8px; gap: 28px; }
+  /* The name and the language + button pair are sized to be about as wide as each other. */
+  .brand { font-size: 20px; gap: 11px; }
+  .brand img { width: 32px; height: 32px; border-radius: 9px; }
+  .right { gap: 6px; }
+  .lang summary { padding: 0 6px; gap: 6px; }
+  .nav-cta { height: 44px; padding: 0 17px; font-size: 15px; }
+  .nav-cta svg { display: none; }
 }
 /* Without the script there is no menu button: the links stay in the bar and wrap. */
 :root:not(.js) .bar-in { height: auto; min-height: var(--bar-h); padding-block: 8px; }
 :root:not(.js) .links { display: flex; flex-wrap: wrap; }
 :root:not(.js) .burger { display: none; }
 
-/* "Coming soon" tag on the download buttons */
+/* "Coming soon" tag (not used while the buttons themselves say Coming soon) */
 .soon { font: 600 10px/1 var(--ui); font-style: normal; letter-spacing: 0.1em; text-transform: uppercase; white-space: nowrap; padding: 4px 7px; border-radius: 999px; background: rgba(255, 255, 255, 0.22); color: #fff; }
 .btn .soon, .menu-cta .soon { font-size: 11px; padding: 5px 9px; }
 :lang(ar) .soon, :lang(hi) .soon, :lang(ja) .soon, :lang(ko) .soon, :lang(zh) .soon { letter-spacing: 0; }
@@ -89,19 +106,35 @@ body { padding-top: var(--bar-h); }
 /* ---------- Language menu ---------- */
 .flag { flex: none; display: block; width: 21px; height: 14px; border-radius: 3px; box-shadow: 0 0 0 1px rgba(127, 127, 127, 0.25); }
 .lang { position: relative; }
-.lang summary { list-style: none; height: 36px; padding: 0 10px 0 11px; border-radius: 999px; display: flex; align-items: center; gap: 7px; cursor: pointer; background: var(--bar-chip); color: var(--bar-text); font: 600 12px/1 var(--ui); letter-spacing: 0.06em; transition: background-color .2s; }
+.lang summary { list-style: none; height: 40px; padding: 0 8px; border-radius: 999px; display: flex; align-items: center; gap: 7px; cursor: pointer; background: transparent; color: var(--bar-text); font: 500 14px/1 var(--ui); letter-spacing: 0.02em; transition: background-color .2s; }
+.lang summary .globe { opacity: .85; }
 .lang summary::-webkit-details-marker { display: none; }
 .lang summary:hover, .lang[open] summary { background: var(--bar-chip-hover); }
 .lang summary .chev { transition: transform .3s var(--ease); opacity: .7; }
 .lang[open] summary .chev { transform: rotate(180deg); }
-.lang ul {
-  position: absolute; inset-inline-end: 0; top: calc(100% + 12px); margin: 0; padding: 6px; list-style: none; width: 250px;
+.lang .drop {
+  position: absolute; inset-inline-end: 0; top: calc(100% + 12px); padding: 6px; width: 260px;
   max-height: calc(100 * var(--vh) - 100px); overflow-y: auto;
   background: var(--page); border: 1px solid var(--bar-line); border-radius: 18px; box-shadow: 0 30px 60px -24px rgba(0, 0, 0, 0.6); z-index: 40;
 }
-.lang[open] ul { animation: drop .25s var(--ease); }
+.lang ul { margin: 0; padding: 0; list-style: none; }
+.lang[open] .drop { animation: drop .25s var(--ease); }
 .lang a { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 12px; padding: 9px 12px; border-radius: 12px; color: var(--text); text-decoration: none; font: 400 14px/1.2 var(--ui); }
 .lang a b { order: 3; font: 600 11px/1 var(--ui); letter-spacing: 0.08em; color: var(--muted); }
 .lang a:hover { background: var(--bar-chip); }
 .lang a[aria-current="true"] { background: var(--bar-chip); color: var(--brand); font-weight: 600; box-shadow: inset 0 0 0 1px var(--accent); }
 .lang a[aria-current="true"] b { color: var(--brand); }
+
+/* ---------- Light / dark, inside the language menu and the phone menu ---------- */
+.mode { padding: 10px 6px 4px; }
+.lang .mode { border-top: 1px solid var(--bar-line); margin-top: 6px; }
+.mode-h { font: 600 11px/1 var(--ui); letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin: 0 6px 9px; }
+:lang(ar) .mode-h, :lang(hi) .mode-h, :lang(ja) .mode-h, :lang(ko) .mode-h, :lang(zh) .mode-h { letter-spacing: 0; }
+.mode-row { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 3px; border-radius: 12px; background: var(--bar-chip); }
+.mode-row button { appearance: none; border: 0; display: flex; align-items: center; justify-content: center; gap: 7px; height: 34px; border-radius: 9px; cursor: pointer; background: transparent; color: var(--muted); font: 500 13px/1 var(--ui); transition: background-color .2s, color .2s; }
+.mode-row button:hover { color: var(--text); }
+.mode-row button[aria-pressed="true"] { background: var(--page); color: var(--text); box-shadow: 0 1px 3px rgba(0, 0, 0, 0.18); }
+.menu .mode { padding: 14px 4px 4px; }
+.menu .mode-h { font-size: 12px; letter-spacing: 0.16em; margin: 0 10px 10px; }
+.menu .mode-row button { height: 42px; font-size: 15px; }
+:root:not(.js) .mode { display: none; }
