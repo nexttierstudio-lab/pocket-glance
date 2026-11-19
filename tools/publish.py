@@ -2,6 +2,7 @@
 
     python tools/publish.py --domain example.com
     python tools/publish.py                       # reads the domain from SITE_DOMAIN
+    python tools/publish.py --domain example.com --stubs   # for GitHub Pages (see below)
 
 It writes:
 
@@ -10,6 +11,8 @@ It writes:
       .htaccess               for GoDaddy cPanel / Apache: https, www -> bare domain, / -> /pocket_glance/
       _redirects              the same redirects for Netlify
       index.html              fallback for hosts with no redirects: sends visitors on to /pocket_glance/
+      privacy.html, es/, ...  only with --stubs: small pages that send the old top-level addresses on
+                              to /pocket_glance/..., for hosts with no server redirects (GitHub Pages)
     dist.zip                  dist/ zipped, for uploading through cPanel File Manager
 
 The repo itself is not changed, so GitHub Pages keeps serving the existing address. Only the
@@ -95,9 +98,32 @@ def fallback_index(site_url):
 """
 
 
+def stub(site_url, path):
+    """A page at an old top-level address that sends visitors to its new place."""
+    depth = path.count("/")
+    target = "../" * depth + f"{SUBPATH}/" + path.removesuffix("index.html")
+    return f"""<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pocket Glance</title>
+  <link rel="canonical" href="{site_url}{path.removesuffix('index.html')}">
+  <meta name="robots" content="noindex">
+  <meta http-equiv="refresh" content="0; url={target}">
+  <script>location.replace("{target}" + location.search + location.hash);</script>
+</head>
+<body>
+  <p><a href="{target}">Continue to Pocket Glance</a></p>
+</body>
+</html>
+"""
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--domain", default=os.environ.get("SITE_DOMAIN"), help="your domain, without www (or set SITE_DOMAIN)")
+    ap.add_argument("--stubs", action="store_true", help="add redirect pages at the old top-level addresses")
     args = ap.parse_args()
 
     domain = (args.domain or "").strip().lower()
@@ -128,6 +154,12 @@ def main():
     (DIST / ".htaccess").write_text(htaccess(domain), encoding="utf-8", newline="\n")
     (DIST / "_redirects").write_text(netlify_redirects(), encoding="utf-8", newline="\n")
     (DIST / "index.html").write_text(fallback_index(site_url), encoding="utf-8", newline="\n")
+
+    if args.stubs:
+        for path in LEGAL + [f"{code}/index.html" for code in LANG_FOLDERS]:
+            out = DIST / path
+            out.parent.mkdir(parents=True, exist_ok=True)
+            out.write_text(stub(site_url, path), encoding="utf-8", newline="\n")
 
     archive = ROOT / "dist.zip"
     with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as z:

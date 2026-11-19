@@ -1,0 +1,68 @@
+# Publishes https://nexttierstudio.co.in/pocket_glance/ with GitHub Pages on every push to main.
+#
+# Builds dist/ with tools/publish.py: the site in dist/pocket_glance/, a root page that sends
+# nexttierstudio.co.in/ on to /pocket_glance/, and small pages at the old addresses
+# (/privacy.html, /es/, ...) so links to the old github.io site keep working once GitHub
+# redirects it to the custom domain.
+#
+# Deploys only when the repo's Settings > Pages > Source is "GitHub Actions". While it is still
+# "Deploy from a branch", the build runs as a check and the old branch site stays as it is.
+name: Publish site
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+env:
+  SITE_DOMAIN: nexttierstudio.co.in
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      deploy: ${{ steps.source.outputs.deploy }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Build dist/
+        run: python tools/publish.py --stubs
+      - name: Check the Pages source
+        id: source
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          source=$(gh api "repos/${{ github.repository }}/pages" --jq .build_type 2>/dev/null || echo none)
+          echo "Pages source: $source"
+          if [ "$source" = "workflow" ]; then
+            echo "deploy=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::notice::Pages source is '$source', not GitHub Actions, so this run only checks the build."
+            echo "deploy=false" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/upload-pages-artifact@v3
+        if: steps.source.outputs.deploy == 'true'
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    if: needs.build.outputs.deploy == 'true'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
