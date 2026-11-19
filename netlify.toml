@@ -1,5 +1,9 @@
-# Only used if the site is deployed with Netlify. Set SITE_DOMAIN (e.g. example.com) under
-# Site configuration > Environment variables; tools/publish.py builds dist/ for that domain.
+# Netlify deploy for https://nexttierstudio.co.in/pocket_glance/
+# tools/publish.py builds dist/ for SITE_DOMAIN: the site in dist/pocket_glance/ plus the
+# redirects in dist/_redirects (/ -> /pocket_glance/). Netlify redirects www to the bare domain.
 [build]
   command = "python3 tools/publish.py"
   publish = "dist"
+
+[build.environment]
+  SITE_DOMAIN = "nexttierstudio.co.in"
