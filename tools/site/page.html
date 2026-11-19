@@ -100,7 +100,10 @@
    all but vanish in big headings. Pinning the optical size keeps them visible at every size.
    !important because every `font:` shorthand on the page resets this property. */
 * { font-variation-settings: "opsz" 24 !important; }
-html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+html { scroll-behavior: smooth; scroll-padding-top: calc(var(--bar-h) + 12px); }
+/* A link to a section lands with the section's content (not its top spacing) just under the
+   floating bar, so there is no empty band between the bar and the section. */
+#features, #private, #pro { scroll-margin-top: calc(-1 * var(--space-section)); }
 body {
   margin: 0; background: var(--page); color: var(--text);
   font: 400 17px/1.6 var(--ui); font-feature-settings: "ss07";
