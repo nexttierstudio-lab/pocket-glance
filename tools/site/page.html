@@ -14,6 +14,7 @@
   <meta property="og:image" content="{{site}}img/icon-192.png">
   <meta property="og:locale" content="{{og_locale}}">
   <script>
+    document.documentElement.classList.add("js");
     // Applies a saved light/dark choice before the page paints. Stored in this browser only.
     try { var t = localStorage.getItem("theme"); if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t); } catch (e) {}
     // Motion is opt-in: only when scripts run and the visitor has not asked for reduced motion.
@@ -99,7 +100,7 @@
    all but vanish in big headings. Pinning the optical size keeps them visible at every size.
    !important because every `font:` shorthand on the page resets this property. */
 * { font-variation-settings: "opsz" 24 !important; }
-html { scroll-behavior: smooth; scroll-padding-top: 60px; }
+html { scroll-behavior: smooth; scroll-padding-top: 80px; }
 body {
   margin: 0; background: var(--page); color: var(--text);
   font: 400 17px/1.6 var(--ui); font-feature-settings: "ss07";
@@ -113,33 +114,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--gold); outline-
 .text-link { color: var(--link); text-decoration: none; background: linear-gradient(var(--accent), var(--accent)) 0 100% / 100% 1px no-repeat; transition: background-size .3s var(--ease); }
 .text-link:hover { background-size: 0 1px; background-position: 100% 100%; }
 
-/* ---------- Bar and reading progress ---------- */
-.bar {
-  position: sticky; top: 0; z-index: 30;
-  background: var(--bar-bg);
-  -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px);
-  border-bottom: 1px solid var(--bar-line);
-}
-.bar .wrap { display: flex; align-items: center; justify-content: space-between; gap: 8px 16px; flex-wrap: wrap; min-height: 52px; padding-top: 8px; padding-bottom: 8px; }
-.brand { display: flex; align-items: center; gap: 10px; font: 600 12px/1 var(--ui); letter-spacing: 0.18em; text-transform: uppercase; color: var(--brand); text-decoration: none; }
-.brand img { width: 24px; height: 24px; border-radius: 7px; }
-nav { display: flex; flex-wrap: wrap; align-items: center; gap: 2px; margin: 0 -10px; }
-nav a { font: 400 13px/1 var(--ui); color: var(--bar-muted); text-decoration: none; padding: 8px 10px; border-radius: 999px; transition: color .2s, background-color .2s; }
-nav a:hover { color: var(--bar-text); }
-nav a.nav-cta { display: inline-flex; align-items: center; gap: 7px; color: #fff; background: var(--accent); padding: 7px 14px 7px 11px; margin-left: 6px; font-weight: 500; }
-nav a.nav-cta:hover { background: #8F6118; color: #fff; }
-nav a.nav-cta svg { flex: none; }
-.right { display: flex; align-items: center; gap: 14px; }
-.theme { appearance: none; border: 0; padding: 0; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; cursor: pointer; background: var(--bar-chip); color: var(--bar-text); transition: background-color .2s, transform .5s var(--ease); }
-.theme[hidden] { display: none; }
-.theme:hover { background: var(--bar-chip-hover); }
-:root[data-theme="light"] .theme { transform: rotate(180deg); }
-@media (max-width: 520px) {
-  nav a.nav-hide { display: none; }
-  /* Not enough room for the label: the button becomes the Play Store icon alone. */
-  nav a.nav-cta { width: 30px; height: 30px; padding: 0; justify-content: center; border-radius: 50%; }
-  nav a.nav-cta span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-}
+{{>bar.css}}
 .progress { position: fixed; left: 0; top: 0; z-index: 31; height: 2px; width: 100%; background: var(--gold-grad); transform-origin: 0 50%; transform: scaleX(0); pointer-events: none; }
 :root:not(.motion) .progress { display: none; }
 
@@ -384,16 +359,6 @@ footer a { color: inherit; text-decoration: none; }
 footer a:hover { color: var(--text); }
 
 
-/* ---------- Language menu ---------- */
-.lang { position: relative; }
-.lang summary { list-style: none; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; cursor: pointer; background: var(--bar-chip); color: var(--bar-text); transition: background-color .2s; }
-.lang summary::-webkit-details-marker { display: none; }
-.lang summary:hover, .lang[open] summary { background: var(--bar-chip-hover); }
-.lang ul { position: absolute; inset-inline-end: 0; top: calc(100% + 10px); margin: 0; padding: 6px; list-style: none; min-width: 180px; background: var(--page); border: 1px solid var(--bar-line); border-radius: 16px; box-shadow: 0 24px 50px -20px rgba(0, 0, 0, 0.5); z-index: 40; }
-.lang a { display: flex; justify-content: space-between; gap: 12px; padding: 9px 12px; border-radius: 10px; color: var(--text); text-decoration: none; font: 400 14px/1.2 var(--ui); }
-.lang a:hover { background: var(--bar-chip); }
-.lang a[aria-current="true"] { color: var(--brand); font-weight: 600; }
-.lang a[aria-current="true"]::after { content: "✓"; }
 footer .legal-note { flex-basis: 100%; margin: 4px 0 0; }
 
 /* ---------- Scripts other than Latin ----------
@@ -427,6 +392,7 @@ footer .legal-note { flex-basis: 100%; margin: 4px 0 0; }
 @keyframes rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
 @keyframes rise-big { from { opacity: 0; transform: translateY(80px); } to { opacity: 1; transform: none; } }
 @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes drop { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
 @keyframes pop-out { from { transform: none; box-shadow: none; } }
 @keyframes drift { from { transform: translate3d(-6%, 0, 0) scale(1); } to { transform: translate3d(6%, 4%, 0) scale(1.12); } }
 @keyframes ring { 0% { transform: scale(1); opacity: .7; } 100% { transform: scale(1.7); opacity: 0; } }
@@ -452,27 +418,7 @@ footer .legal-note { flex-basis: 100%; margin: 4px 0 0; }
 </head>
 <body>
 <div class="progress" aria-hidden="true"></div>
-<header class="bar">
-  <div class="wrap">
-    <a class="brand" href="./" aria-current="page"><img src="{{root}}img/icon-192.png" alt="" width="24" height="24">Pocket Glance</a>
-    <div class="right">
-      <nav aria-label="{{nav_label}}">
-        <a class="nav-hide" href="#features">{{nav_features}}</a>
-        <a class="nav-hide" href="#pro">{{nav_pro}}</a>
-        <a href="{{root}}privacy.html">{{nav_privacy}}</a>
-        <a href="{{root}}terms.html">{{nav_terms}}</a>
-        <a class="nav-cta" href="https://play.google.com/store/apps/details?id=com.nexttier.pocketglance" title="{{cta_play}}"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4.2 2.4c-.3.3-.4.7-.4 1.2v16.8c0 .5.1.9.4 1.2l9.5-9.6zm10.6 10.7 2.7 2.7-11.4 6.5c-.4.2-.9.3-1.2.1zm0-2.2-9.9-9.3c.3-.2.8-.1 1.2.1l11.4 6.5zm3.9 3.9-3-3 3-3 3.2 1.8c.9.5.9 1.9 0 2.4z"/></svg><span>{{nav_download}}</span></a>
-      </nav>
-      <details class="lang">
-        <summary aria-label="{{lang_label}}" title="{{lang_label}}"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.25" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M1.75 8h12.5M8 1.75c1.9 1.8 2.8 3.9 2.8 6.25S9.9 12.45 8 14.25C6.1 12.45 5.2 10.35 5.2 8S6.1 3.55 8 1.75z" fill="none" stroke="currentColor" stroke-width="1.3"/></svg></summary>
-        <ul>{{lang_menu}}</ul>
-      </details>
-      <button class="theme" type="button" hidden aria-label="{{theme_label}}" title="{{theme_title}}">
-        <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.25" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 1.75a6.25 6.25 0 0 1 0 12.5z" fill="currentColor"/></svg>
-      </button>
-    </div>
-  </div>
-</header>
+{{>bar.html}}
 
 <section class="hero">
   <div class="hero-pin">
@@ -485,6 +431,7 @@ footer .legal-note { flex-basis: 100%; margin: 4px 0 0; }
         <a class="btn btn-gold" href="https://play.google.com/store/apps/details?id=com.nexttier.pocketglance">
           <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4.2 2.4c-.3.3-.4.7-.4 1.2v16.8c0 .5.1.9.4 1.2l9.5-9.6zm10.6 10.7 2.7 2.7-11.4 6.5c-.4.2-.9.3-1.2.1zm0-2.2-9.9-9.3c.3-.2.8-.1 1.2.1l11.4 6.5zm3.9 3.9-3-3 3-3 3.2 1.8c.9.5.9 1.9 0 2.4z"/></svg>
           {{cta_play}}
+          <em class="soon">{{soon}}</em>
         </a>
         <a class="more" href="#features">{{cta_more}}</a>
       </div>
@@ -576,7 +523,7 @@ footer .legal-note { flex-basis: 100%; margin: 4px 0 0; }
           <div class="up d1 spot"><b class="num" data-to="10" data-from="0">10</b><span>{{st1}}</span></div>
           <div class="up d2 spot"><b class="num" data-to="14" data-from="0">14</b><span>{{st2}}</span></div>
         </div>
-        <a class="more" href="{{root}}privacy.html">{{p_link}}</a>
+        <a class="more" href="privacy.html">{{p_link}}</a>
       </div>
     </div>
   </div>
@@ -614,29 +561,20 @@ footer .legal-note { flex-basis: 100%; margin: 4px 0 0; }
     <div class="icon-wrap up"><img src="{{root}}img/icon-192.png" alt="" width="104" height="104"></div>
     <h2 class="up d1">{{c_title}}</h2>
     <p class="up d2">{{c_lead}}</p>
-    <a class="btn btn-gold up d3" href="https://play.google.com/store/apps/details?id=com.nexttier.pocketglance"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4.2 2.4c-.3.3-.4.7-.4 1.2v16.8c0 .5.1.9.4 1.2l9.5-9.6zm10.6 10.7 2.7 2.7-11.4 6.5c-.4.2-.9.3-1.2.1zm0-2.2-9.9-9.3c.3-.2.8-.1 1.2.1l11.4 6.5zm3.9 3.9-3-3 3-3 3.2 1.8c.9.5.9 1.9 0 2.4z"/></svg>{{cta_play}}</a>
+    <a class="btn btn-gold up d3" href="https://play.google.com/store/apps/details?id=com.nexttier.pocketglance"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4.2 2.4c-.3.3-.4.7-.4 1.2v16.8c0 .5.1.9.4 1.2l9.5-9.6zm10.6 10.7 2.7 2.7-11.4 6.5c-.4.2-.9.3-1.2.1zm0-2.2-9.9-9.3c.3-.2.8-.1 1.2.1l11.4 6.5zm3.9 3.9-3-3 3-3 3.2 1.8c.9.5.9 1.9 0 2.4z"/></svg>{{cta_play}}<em class="soon">{{soon}}</em></a>
   </div>
 </main>
 
 <footer>
   <div class="wrap">
     <span>© 2026 NextTier Studio · Pocket Glance</span>
-    <span><a href="{{root}}privacy.html">{{l_privacy_t}}</a> · <a href="{{root}}terms.html">{{l_terms_t}}</a> · <a href="{{root}}delete-data.html">{{l_delete_t}}</a> · <a href="mailto:nexttierstudio@gmail.com">nexttierstudio@gmail.com</a></span>
-{{legal_note}}  </div>
+    <span><a href="privacy.html">{{l_privacy_t}}</a> · <a href="terms.html">{{l_terms_t}}</a> · <a href="delete-data.html">{{l_delete_t}}</a> · <a href="mailto:nexttierstudio@gmail.com">nexttierstudio@gmail.com</a></span>
+  </div>
 </footer>
 <script>
-  // Language: remember the one picked from the menu; the English page sends a returning
-  // visitor to the language they picked before.
+  // The English homepage sends a returning visitor to the language they picked before.
   (function () {
-    var here = document.documentElement.getAttribute("data-lang");
-    document.querySelectorAll(".lang a[hreflang]").forEach(function (a) {
-      a.addEventListener("click", function () { try { localStorage.setItem("lang", a.getAttribute("data-lang")); } catch (e) {} });
-    });
-    document.addEventListener("click", function (e) {
-      var d = document.querySelector(".lang[open]");
-      if (d && !d.contains(e.target)) d.removeAttribute("open");
-    });
-    if (here !== "en") return;
+    if (document.documentElement.getAttribute("data-lang") !== "en") return;
     try {
       var saved = localStorage.getItem("lang");
       var link = saved && saved !== "en" && document.querySelector('.lang a[data-lang="' + saved + '"]');
@@ -644,13 +582,7 @@ footer .legal-note { flex-basis: 100%; margin: 4px 0 0; }
     } catch (e) {}
   })();
 
-  // The hero fills the screen under the bar, whose height changes when its links wrap on phones.
-  (function () {
-    var bar = document.querySelector(".bar");
-    function fit() { document.documentElement.style.setProperty("--bar-h", bar.offsetHeight + "px"); }
-    fit();
-    window.addEventListener("resize", fit);
-  })();
+{{>bar.js}}
 
   // Light / dark switch, the same as on the legal pages.
   (function () {

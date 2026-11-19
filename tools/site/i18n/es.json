@@ -7,8 +7,10 @@
   "nav_pro": "Pro",
   "nav_privacy": "Privacidad",
   "nav_terms": "Términos",
+  "nav_delete": "Borrar datos",
   "cta_play": "Descargar en Google Play",
   "nav_download": "Descargar ahora",
+  "soon": "Próximamente",
   "theme_label": "Cambiar entre modo claro y oscuro",
   "theme_title": "Claro / oscuro",
   "hero_title": "Tu dinero. <em class=\"gold\">De un vistazo.</em>",
@@ -79,5 +81,8 @@
   "c_title": "Empieza con <span class=\"gold\">un vistazo al día.</span>",
   "c_lead": "Gratis en Google Play. No necesitas cuenta.",
   "lang_label": "Idioma",
-  "legal_note": "La Política de privacidad, los Términos y la página para eliminar datos están en inglés."
+  "menu_open": "Abrir menú",
+  "menu_close": "Cerrar menú",
+  "legal_tr_note": "Esta página es una traducción para tu comodidad. Si difiere de la versión en inglés, prevalece la versión en inglés.",
+  "legal_tr_link": "Leer la versión en inglés"
 }

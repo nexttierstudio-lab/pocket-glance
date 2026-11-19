@@ -7,8 +7,10 @@
   "nav_pro": "Pro",
   "nav_privacy": "Privacy",
   "nav_terms": "Terms",
+  "nav_delete": "Delete data",
   "cta_play": "Download on Google Play",
   "nav_download": "Download now",
+  "soon": "Coming soon",
   "theme_label": "Switch between light and dark mode",
   "theme_title": "Light / dark",
   "hero_title": "Your money. <em class=\"gold\">At a glance.</em>",
@@ -79,5 +81,8 @@
   "c_title": "Start with one <span class=\"gold\">glance a day.</span>",
   "c_lead": "Free on Google Play. No account needed.",
   "lang_label": "Language",
-  "legal_note": "The Privacy Policy, Terms and data deletion pages are in English."
+  "menu_open": "Open menu",
+  "menu_close": "Close menu",
+  "legal_tr_note": "This page is a translation, provided for convenience. If it differs from the English version, the English version applies.",
+  "legal_tr_link": "Read the English version"
 }

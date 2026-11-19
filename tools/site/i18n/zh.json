@@ -7,8 +7,10 @@
   "nav_pro": "Pro",
   "nav_privacy": "隐私",
   "nav_terms": "条款",
+  "nav_delete": "删除数据",
   "cta_play": "在 Google Play 下载",
   "nav_download": "立即下载",
+  "soon": "即将推出",
   "theme_label": "在浅色和深色模式之间切换",
   "theme_title": "浅色 / 深色",
   "hero_title": "你的钱，<em class=\"gold\">一目了然。</em>",
@@ -79,5 +81,8 @@
   "c_title": "从<span class=\"gold\">每天看一眼</span>开始。",
   "c_lead": "在 Google Play 免费下载，无需账号。",
   "lang_label": "语言",
-  "legal_note": "隐私政策、条款和数据删除页面目前仅提供英文版。"
+  "menu_open": "打开菜单",
+  "menu_close": "关闭菜单",
+  "legal_tr_note": "本页面为译文，仅供参考。如与英文版本有出入，以英文版本为准。",
+  "legal_tr_link": "阅读英文版本"
 }
