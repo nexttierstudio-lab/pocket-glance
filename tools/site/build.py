@@ -1,6 +1,7 @@
 """Builds the homepage in every supported language.
 
     python tools/site/build.py
+    python tools/site/build.py --site-url https://example.com/pocket_glance/ --out dist/pocket_glance
 
 Reads tools/site/page.html (the template) and tools/site/i18n/<code>.json (one strings
 file per language, with en.json as the source of truth), and writes:
@@ -12,7 +13,12 @@ To change copy, edit the strings files and rebuild. To add a language, add a row
 and a strings file with the same keys as en.json. The build stops if a key is missing,
 extra, or a placeholder is left unfilled. Values may contain the small bits of markup the
 English uses (<span class="gold">, <em class="gold">, a link to {{root}}terms.html).
+
+--site-url only changes the absolute addresses search engines and link previews read
+(canonical, hreflang, og:image); every link a visitor clicks is relative. --out writes the
+pages somewhere other than the repo root (tools/publish.py uses both).
 """
+import argparse
 import json
 import re
 import sys
@@ -50,7 +56,9 @@ def rel(from_code, to_code):
     return (up + target) or "./"
 
 
-def main():
+def main(site_url=SITE_URL, out_root=ROOT):
+    site_url = site_url.rstrip("/") + "/"
+    out_root = Path(out_root)
     template = (HERE / "page.html").read_text(encoding="utf-8")
     strings = {c: json.loads((HERE / "i18n" / f"{c}.json").read_text(encoding="utf-8")) for c, *_ in LANGS}
     keys = set(strings["en"])
@@ -64,8 +72,8 @@ def main():
         sys.exit(1)
 
     alternates = "\n".join(
-        f'  <link rel="alternate" hreflang="{lang}" href="{SITE_URL}{folder(code)}">' for code, lang, *_ in LANGS
-    ) + f'\n  <link rel="alternate" hreflang="x-default" href="{SITE_URL}">'
+        f'  <link rel="alternate" hreflang="{lang}" href="{site_url}{folder(code)}">' for code, lang, *_ in LANGS
+    ) + f'\n  <link rel="alternate" hreflang="x-default" href="{site_url}">'
 
     for code, lang, og, _name, direction in LANGS:
         s = strings[code]
@@ -78,8 +86,8 @@ def main():
         system = {
             "lang": lang, "dir": direction, "code": code, "og_locale": og,
             "root": "" if code == "en" else "../",
-            "site": SITE_URL,
-            "alternates": alternates + f'\n  <link rel="canonical" href="{SITE_URL}{folder(code)}">',
+            "site": site_url,
+            "alternates": alternates + f'\n  <link rel="canonical" href="{site_url}{folder(code)}">',
             "lang_menu": menu,
             "legal_note": "" if code == "en" else f'    <p class="legal-note">{s["legal_note"]}</p>\n',
         }
@@ -88,11 +96,15 @@ def main():
         left = re.findall(r"\{\{\w+\}\}", page)
         if left:
             sys.exit(f"{code}: unfilled {sorted(set(left))}")
-        out = ROOT / folder(code) / "index.html"
+        out = out_root / folder(code) / "index.html"
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(page, encoding="utf-8", newline="\n")
-        print("wrote", out.relative_to(ROOT))
+        print("wrote", out)
 
 
 if __name__ == "__main__":
-    main()
+    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("--site-url", default=SITE_URL, help=f"public address of the site (default {SITE_URL})")
+    ap.add_argument("--out", default=str(ROOT), help="folder to write into (default: the repo root)")
+    args = ap.parse_args()
+    main(args.site_url, args.out)

@@ -62,5 +62,34 @@ computer, and since every link is relative, pages behave as they will on GitHub 
 Check the homepage, a couple of language folders (for example `/es/` and the right-to-left `/ar/`),
 and the Privacy, Terms and Delete data pages, then commit and push.
 
+## Publish on your own domain
+
+The site is published at <https://nexttierstudio.co.in/pocket_glance/>, and
+`nexttierstudio.co.in` and `www.nexttierstudio.co.in` send visitors there. Every push to `main`
+runs `.github/workflows/pages.yml`, which builds `dist/` with `tools/publish.py --stubs` and
+deploys it with GitHub Pages:
+
+- `dist/pocket_glance/`: the whole site. Only the canonical, hreflang and link-preview addresses
+  point at the domain; every visitor link is relative.
+- `dist/index.html`: sends the bare domain on to `/pocket_glance/`.
+- `dist/privacy.html`, `dist/es/`, ...: send the old top-level addresses on to their new place, so
+  links to the old `nexttierstudio-lab.github.io/pocket-glance/` address (such as the Play Store
+  privacy link) keep working once GitHub redirects it to the domain.
+
+One-time setup (already done if the site is live):
+
+1. GoDaddy DNS for nexttierstudio.co.in: four `A` records for `@` pointing to `185.199.108.153`,
+   `185.199.109.153`, `185.199.110.153` and `185.199.111.153` (remove any other `A` record for
+   `@`), and a `CNAME` for `www` pointing to `nexttierstudio-lab.github.io`.
+2. GitHub, Settings > Pages: Source "GitHub Actions", custom domain `nexttierstudio.co.in`, then
+   "Enforce HTTPS" once the certificate is ready. Re-run the "Publish site" workflow.
+
+Until the Source is "GitHub Actions" the workflow only checks the build. To build the same thing
+locally, or a copy for other hosting (Apache `.htaccess` and Netlify `_redirects` are included):
+
+```bash
+python tools/publish.py --domain nexttierstudio.co.in
+```
+
 The fonts in `fonts/` are Bodoni Moda and Inter, both licensed under the
 [SIL Open Font License 1.1](https://openfontlicense.org/open-font-license-official-text/).
