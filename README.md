@@ -64,8 +64,8 @@ and the Privacy, Terms and Delete data pages, then commit and push.
 
 ## Publish on your own domain
 
-The site is published at <https://nexttiersudio.co.in/pocket_glance/>, and
-`nexttiersudio.co.in` and `www.nexttiersudio.co.in` send visitors there. Every push to `main`
+The site is published at <https://nexttierstudio.co.in/pocket_glance/>, and
+`nexttierstudio.co.in` and `www.nexttierstudio.co.in` send visitors there. Every push to `main`
 runs `.github/workflows/pages.yml`, which builds `dist/` with `tools/publish.py --stubs` and
 deploys it with GitHub Pages:
 
@@ -78,17 +78,17 @@ deploys it with GitHub Pages:
 
 One-time setup (already done if the site is live):
 
-1. GoDaddy DNS for nexttiersudio.co.in: four `A` records for `@` pointing to `185.199.108.153`,
+1. GoDaddy DNS for nexttierstudio.co.in: four `A` records for `@` pointing to `185.199.108.153`,
    `185.199.109.153`, `185.199.110.153` and `185.199.111.153` (remove any other `A` record for
    `@`), and a `CNAME` for `www` pointing to `nexttierstudio-lab.github.io`.
-2. GitHub, Settings > Pages: Source "GitHub Actions", custom domain `nexttiersudio.co.in`, then
+2. GitHub, Settings > Pages: Source "GitHub Actions", custom domain `nexttierstudio.co.in`, then
    "Enforce HTTPS" once the certificate is ready. Re-run the "Publish site" workflow.
 
 Until the Source is "GitHub Actions" the workflow only checks the build. To build the same thing
 locally, or a copy for other hosting (Apache `.htaccess` and Netlify `_redirects` are included):
 
 ```bash
-python tools/publish.py --domain nexttiersudio.co.in
+python tools/publish.py --domain nexttierstudio.co.in
 ```
 
 The fonts in `fonts/` are Bodoni Moda and Inter, both licensed under the
