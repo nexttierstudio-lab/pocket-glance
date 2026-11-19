@@ -84,5 +84,10 @@
   "menu_open": "Abrir menú",
   "menu_close": "Cerrar menú",
   "legal_tr_note": "Esta página es una traducción para tu comodidad. Si difiere de la versión en inglés, prevalece la versión en inglés.",
-  "legal_tr_link": "Leer la versión en inglés"
+  "legal_tr_link": "Leer la versión en inglés",
+  "consent_label": "Preferencia de analítica",
+  "consent_text": "¿Nos permites usar Google Analytics para contar las visitas y los clics en este sitio web? Nos ayuda a saber qué es útil. Nunca ve nada de la app.",
+  "consent_yes": "Permitir",
+  "consent_no": "No, gracias",
+  "consent_settings": "Ajustes de analítica"
 }

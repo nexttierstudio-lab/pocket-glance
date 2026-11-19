@@ -115,6 +115,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--gold); outline-
 .text-link:hover { background-size: 0 1px; background-position: 100% 100%; }
 
 {{>bar.css}}
+{{>consent.css}}
 .progress { position: fixed; left: 0; top: 0; z-index: 31; height: 2px; width: 100%; background: var(--gold-grad); transform-origin: 0 50%; transform: scaleX(0); pointer-events: none; }
 :root:not(.motion) .progress { display: none; }
 
@@ -568,9 +569,10 @@ footer .legal-note { flex-basis: 100%; margin: 4px 0 0; }
 <footer>
   <div class="wrap">
     <span>© 2026 NextTier Studio · Pocket Glance</span>
-    <span><a href="privacy.html">{{l_privacy_t}}</a> · <a href="terms.html">{{l_terms_t}}</a> · <a href="delete-data.html">{{l_delete_t}}</a> · <a href="mailto:nexttierstudio@gmail.com">nexttierstudio@gmail.com</a></span>
+    <span><a href="privacy.html">{{l_privacy_t}}</a> · <a href="terms.html">{{l_terms_t}}</a> · <a href="delete-data.html">{{l_delete_t}}</a> · <button type="button" class="consent-open">{{consent_settings}}</button> · <a href="mailto:nexttierstudio@gmail.com">nexttierstudio@gmail.com</a></span>
   </div>
 </footer>
+{{>consent.html}}
 <script>
   // The English homepage sends a returning visitor to the language they picked before.
   (function () {
@@ -583,6 +585,8 @@ footer .legal-note { flex-basis: 100%; margin: 4px 0 0; }
   })();
 
 {{>bar.js}}
+
+{{>analytics.js}}
 
   // Light / dark switch, the same as on the legal pages.
   (function () {

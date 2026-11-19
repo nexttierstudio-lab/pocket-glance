@@ -84,5 +84,10 @@
   "menu_open": "打开菜单",
   "menu_close": "关闭菜单",
   "legal_tr_note": "本页面为译文，仅供参考。如与英文版本有出入，以英文版本为准。",
-  "legal_tr_link": "阅读英文版本"
+  "legal_tr_link": "阅读英文版本",
+  "consent_label": "统计分析选项",
+  "consent_text": "我们可以使用 Google Analytics 统计本网站的访问和点击次数吗？这能帮助我们了解哪些内容有用。它绝不会看到应用中的任何内容。",
+  "consent_yes": "允许",
+  "consent_no": "不用了",
+  "consent_settings": "统计分析设置"
 }

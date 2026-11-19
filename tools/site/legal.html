@@ -102,6 +102,7 @@ main a:not(.card) {
 main a:not(.card):hover { background-size: 0 1px; background-position: 100% 100%; }
 
 {{>bar.css}}
+{{>consent.css}}
 body, .bar, .hero, .tiles div, .card { transition: background-color .35s var(--ease), color .35s var(--ease); }
 .card { transition: background-color .35s var(--ease), color .35s var(--ease), transform .45s var(--ease), box-shadow .45s var(--ease); }
 
@@ -236,11 +237,14 @@ footer a:hover { color: var(--text); }
 <footer>
   <div class="wrap">
     <span>© 2026 NextTier Studio · Pocket Glance</span>
-    <span><a href="privacy.html">{{l_privacy_t}}</a> · <a href="terms.html">{{l_terms_t}}</a> · <a href="delete-data.html">{{l_delete_t}}</a> · <a href="mailto:nexttierstudio@gmail.com">nexttierstudio@gmail.com</a></span>
+    <span><a href="privacy.html">{{l_privacy_t}}</a> · <a href="terms.html">{{l_terms_t}}</a> · <a href="delete-data.html">{{l_delete_t}}</a> · <button type="button" class="consent-open">{{consent_settings}}</button> · <a href="mailto:nexttierstudio@gmail.com">nexttierstudio@gmail.com</a></span>
   </div>
 </footer>
+{{>consent.html}}
 <script>
 {{>bar.js}}
+
+{{>analytics.js}}
 
   (function () {
     var b = document.querySelector(".theme"), r = document.documentElement;
