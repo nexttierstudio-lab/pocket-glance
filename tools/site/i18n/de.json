@@ -7,8 +7,10 @@
   "nav_pro": "Pro",
   "nav_privacy": "Datenschutz",
   "nav_terms": "Bedingungen",
+  "nav_delete": "Daten löschen",
   "cta_play": "Bei Google Play herunterladen",
   "nav_download": "Jetzt laden",
+  "soon": "Demnächst",
   "theme_label": "Zwischen hellem und dunklem Modus wechseln",
   "theme_title": "Hell / dunkel",
   "hero_title": "Dein Geld. <em class=\"gold\">Auf einen Blick.</em>",
@@ -79,5 +81,8 @@
   "c_title": "Fang an mit <span class=\"gold\">einem Blick am Tag.</span>",
   "c_lead": "Kostenlos bei Google Play. Kein Konto nötig.",
   "lang_label": "Sprache",
-  "legal_note": "Datenschutzerklärung, Nutzungsbedingungen und die Seite zum Löschen deiner Daten sind auf Englisch."
+  "menu_open": "Menü öffnen",
+  "menu_close": "Menü schließen",
+  "legal_tr_note": "Diese Seite ist eine Übersetzung zur besseren Verständlichkeit. Bei Abweichungen gilt die englische Fassung.",
+  "legal_tr_link": "Englische Fassung lesen"
 }

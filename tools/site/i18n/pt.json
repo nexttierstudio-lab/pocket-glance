@@ -7,8 +7,10 @@
   "nav_pro": "Pro",
   "nav_privacy": "Privacidade",
   "nav_terms": "Termos",
+  "nav_delete": "Excluir dados",
   "cta_play": "Baixar no Google Play",
   "nav_download": "Baixar agora",
+  "soon": "Em breve",
   "theme_label": "Alternar entre modo claro e escuro",
   "theme_title": "Claro / escuro",
   "hero_title": "Seu dinheiro. <em class=\"gold\">De relance.</em>",
@@ -79,5 +81,8 @@
   "c_title": "Comece com <span class=\"gold\">uma olhada por dia.</span>",
   "c_lead": "Grátis no Google Play. Sem precisar de conta.",
   "lang_label": "Idioma",
-  "legal_note": "A Política de Privacidade, os Termos e a página de exclusão de dados estão em inglês."
+  "menu_open": "Abrir menu",
+  "menu_close": "Fechar menu",
+  "legal_tr_note": "Esta página é uma tradução para sua conveniência. Se houver diferença em relação à versão em inglês, vale a versão em inglês.",
+  "legal_tr_link": "Ler a versão em inglês"
 }

@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="{{lang}}" dir="{{dir}}" data-lang="{{code}}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{page_title}} · Pocket Glance</title>
+  <meta name="description" content="{{page_description}}">
+  <meta name="theme-color" content="#1C1A19">
+{{alternates}}
+  <link rel="icon" type="image/png" href="{{root}}img/favicon.png">
+  <script>
+    document.documentElement.classList.add("js");
+    // Applies a saved light/dark choice before the page paints. Stored in this browser only.
+    try { var t = localStorage.getItem("theme"); if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t); } catch (e) {}
+  </script>
+  <style>
+/* Pocket Glance "Classical" theme, from the app's NTTokens.kt:
+   Paper (light) and Ink (dark) palettes, Bodoni Moda headings, Inter UI text.
+   The fonts are the app's own files, served from fonts/, so nothing loads from a third party.
+   Motion is CSS only and is switched off for visitors who ask for reduced motion. */
+@font-face { font-family: "Bodoni Moda"; src: url("{{root}}fonts/bodoni_moda.ttf") format("truetype"); font-weight: 400 900; font-style: normal; font-display: swap; }
+@font-face { font-family: "Bodoni Moda"; src: url("{{root}}fonts/bodoni_moda_italic.ttf") format("truetype"); font-weight: 400 900; font-style: italic; font-display: swap; }
+@font-face { font-family: "Inter"; src: url("{{root}}fonts/inter_regular.ttf") format("truetype"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Inter"; src: url("{{root}}fonts/inter_medium.ttf") format("truetype"); font-weight: 500; font-display: swap; }
+@font-face { font-family: "Inter"; src: url("{{root}}fonts/inter_semibold.ttf") format("truetype"); font-weight: 600; font-display: swap; }
+:root {
+  color-scheme: light dark;
+  --page: #F8F7F5;
+  --tile: #E8E6E3;
+  --text: #201F1D;
+  --muted: rgba(32, 31, 29, 0.64);
+  --divider: rgba(32, 31, 29, 0.12);
+  --accent: #A06F24;
+  --link: #5A3B0A;
+  --plate: #1C1A19;
+  --plate-text: #F6F4F2;
+  --gold: #E1AD66;
+  /* Top bar and hero: these match the page in light mode and use the dark plate in dark mode. */
+  --brand: #8F6118;
+  --bar-bg: rgba(248, 247, 245, 0.78);
+  --bar-line: rgba(32, 31, 29, 0.10);
+  --bar-text: #201F1D;
+  --bar-muted: rgba(32, 31, 29, 0.66);
+  --bar-chip: rgba(32, 31, 29, 0.08);
+  --bar-chip-hover: rgba(32, 31, 29, 0.14);
+  --hero-bg: var(--page);
+  --hero-text: var(--text);
+  --hero-lead: rgba(32, 31, 29, 0.78);
+  --hero-meta: rgba(32, 31, 29, 0.55);
+  --hero-line: var(--divider);
+  --glow: transparent;
+  --heading: "Bodoni Moda", "Bodoni 72", Didot, Georgia, serif;
+  --ui: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --gutter: 22px;
+}
+/* Dark is the default. Light applies only when the visitor picks it with the switch. */
+:root:not([data-theme="light"]) {
+  color-scheme: dark;
+  --page: #1C1A19;
+  --tile: #282524;
+  --text: #F6F4F2;
+  --muted: rgba(246, 244, 242, 0.66);
+  --divider: rgba(243, 242, 242, 0.16);
+  --link: #E1AD66;
+  --brand: #E1AD66;
+  --bar-bg: rgba(28, 26, 25, 0.72);
+  --bar-line: rgba(246, 244, 242, 0.08);
+  --bar-text: #fff;
+  --bar-muted: rgba(246, 244, 242, 0.72);
+  --bar-chip: rgba(246, 244, 242, 0.12);
+  --bar-chip-hover: rgba(246, 244, 242, 0.22);
+  --hero-bg: #1C1A19;
+  --hero-text: #F6F4F2;
+  --hero-lead: rgba(246, 244, 242, 0.82);
+  --hero-meta: rgba(246, 244, 242, 0.5);
+  --hero-line: transparent;
+  --glow: rgba(225, 173, 102, 0.20);
+}
+:root[data-theme="light"] { color-scheme: light; }
+* { box-sizing: border-box; }
+/* Bodoni Moda thins its hairlines and serifs as the type grows (optical size up to 96), until they
+   all but vanish in big headings. Pinning the optical size keeps them visible at every size.
+   !important because every `font:` shorthand on the page resets this property. */
+* { font-variation-settings: "opsz" 24 !important; }
+html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+body {
+  margin: 0; background: var(--page); color: var(--text);
+  font: 400 17px/1.65 var(--ui); font-feature-settings: "ss07";
+  -webkit-font-smoothing: antialiased; overflow-wrap: break-word;
+}
+.wrap { max-width: 980px; margin: 0 auto; padding: 0 22px; }
+strong { font-weight: 600; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 6px; }
+
+/* Text links: the underline draws in on hover */
+main a:not(.card) {
+  color: var(--link); text-decoration: none;
+  background: linear-gradient(var(--accent), var(--accent)) 0 100% / 100% 1px no-repeat;
+  transition: background-size .3s var(--ease);
+}
+main a:not(.card):hover { background-size: 0 1px; background-position: 100% 100%; }
+
+{{>bar.css}}
+body, .bar, .hero, .tiles div, .card { transition: background-color .35s var(--ease), color .35s var(--ease); }
+.card { transition: background-color .35s var(--ease), color .35s var(--ease), transform .45s var(--ease), box-shadow .45s var(--ease); }
+
+/* Hero: matches the page in light mode; the app's dark plate with a slow gold glow in dark mode */
+.hero { position: relative; overflow: hidden; background: var(--hero-bg); color: var(--hero-text); border-bottom: 1px solid var(--hero-line); text-align: center; padding: 88px 0 96px; }
+.hero::before {
+  content: ""; position: absolute; inset: -40% -10% auto; height: 150%;
+  background: radial-gradient(closest-side, var(--glow), transparent 70%);
+  animation: drift 16s ease-in-out infinite alternate; pointer-events: none;
+}
+.hero .wrap { position: relative; }
+.eyebrow { font: 600 12px/1 var(--ui); letter-spacing: 0.18em; text-transform: uppercase; color: var(--brand); margin: 0 0 22px; }
+h1 { font: 600 clamp(2.6rem, calc(8 * var(--vw)), 4.75rem)/1.04 var(--heading); letter-spacing: -0.01em; margin: 0 auto 24px; max-width: 14ch; text-wrap: balance; }
+.lead { font: italic 500 clamp(1.15rem, calc(2.4 * var(--vw)), 1.4rem)/1.5 var(--heading); margin: 0 auto 26px; max-width: 34em; color: var(--hero-lead); text-wrap: pretty; }
+.meta { margin: 0; font-size: 0.8rem; letter-spacing: 0.02em; color: var(--hero-meta); }
+.hero .wrap > * { animation: rise .9s var(--ease) both; }
+.hero .wrap > :nth-child(2) { animation-delay: .08s; }
+.hero .wrap > :nth-child(3) { animation-delay: .18s; }
+.hero .wrap > :nth-child(4) { animation-delay: .28s; }
+
+/* Three quiet promises under the hero */
+.tiles { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); padding-top: 14px; }
+.tiles div { background: var(--tile); border-radius: 22px; padding: 28px 26px 26px; }
+.tiles b { display: block; font: 600 1.55rem/1.15 var(--heading); margin-bottom: 8px; }
+.tiles span { color: var(--muted); font-size: 0.95rem; line-height: 1.5; display: block; }
+
+/* Sections: heading on the left, text on the right, a hairline between */
+main { padding-bottom: 72px; }
+section { border-top: 1px solid var(--divider); padding: 44px 0 32px; }
+section:first-of-type { border-top: 0; }
+h2 { font: 600 clamp(1.6rem, calc(3.2 * var(--vw)), 2rem)/1.15 var(--heading); margin: 0 0 18px; text-wrap: balance; }
+h2 span { display: block; font: 600 12px/1 var(--ui); letter-spacing: 0.16em; color: var(--accent); margin-bottom: 12px; }
+@media (min-width: 820px) {
+  section { display: grid; grid-template-columns: 290px minmax(0, 1fr); column-gap: 56px; padding: 60px 0 46px; }
+  section > * { grid-column: 2; }
+  section > h2 { grid-column: 1; grid-row: 1 / span 30; align-self: start; position: sticky; top: 92px; margin: 0; }
+}
+p { margin: 0 0 14px; }
+ul, ol { padding-inline-start: 1.2em; margin: 0 0 14px; }
+li { margin: 7px 0; padding-inline-start: 4px; }
+li::marker { color: var(--accent); }
+.short { font: italic 500 1.3rem/1.4 var(--heading); margin: 0 0 18px; text-wrap: pretty; }
+.table-wrap { overflow-x: auto; margin: 0 0 14px; }
+table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+th, td { text-align: start; vertical-align: top; padding-block: 12px; padding-inline: 0 14px; border-bottom: 1px solid var(--divider); }
+th { color: var(--muted); font: 500 0.72rem/1.3 var(--ui); text-transform: uppercase; letter-spacing: 0.1em; }
+tr:last-child td { border-bottom: 0; }
+
+/* Landing-page cards */
+.cards { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); padding-top: 14px; }
+.card {
+  display: block; background: var(--tile); border-radius: 22px; padding: 30px 28px; min-height: 190px;
+  text-decoration: none; color: var(--text); transition: transform .45s var(--ease), box-shadow .45s var(--ease);
+}
+.card:hover { transform: translateY(-4px); box-shadow: 0 18px 40px -18px rgba(0, 0, 0, 0.35); }
+.card b { display: block; font: 600 1.7rem/1.15 var(--heading); margin-bottom: 10px; }
+.card span { color: var(--muted); font-size: 0.97rem; display: block; }
+.card i { display: inline-block; margin-top: 18px; font-style: normal; font-weight: 500; font-size: 0.92rem; color: var(--link); transition: transform .45s var(--ease); }
+.card:hover i { transform: translateX(5px); }
+
+footer { border-top: 1px solid var(--divider); color: var(--muted); font-size: 0.8rem; padding: 22px 0 40px; }
+footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 20px; }
+footer a { color: inherit; text-decoration: none; }
+footer a:hover { color: var(--text); }
+
+/* A translated page says so, and links to the English original. */
+.tr-note { margin: 22px auto 0; max-width: 40em; font-size: 0.82rem; line-height: 1.5; color: var(--hero-meta); }
+.tr-note a { color: var(--link); }
+
+/* ---------- Scripts other than Latin ----------
+   Bodoni Moda and Inter only cover Latin, so each script falls back to a matching
+   serif / sans that ships with the visitor's system. */
+:lang(hi) { --heading: "Bodoni Moda", "Noto Serif Devanagari", "Nirmala UI", "Kohinoor Devanagari", serif; --ui: "Inter", "Noto Sans Devanagari", "Nirmala UI", system-ui, sans-serif; }
+:lang(ar) { --heading: "Bodoni Moda", "Noto Naskh Arabic", "Geeza Pro", "Segoe UI", serif; --ui: "Inter", "Noto Sans Arabic", "Segoe UI", system-ui, sans-serif; }
+:lang(ja) { --heading: "Bodoni Moda", "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", serif; --ui: "Inter", "Noto Sans JP", "Hiragino Sans", "Yu Gothic UI", "Meiryo", sans-serif; }
+:lang(ko) { --heading: "Bodoni Moda", "Noto Serif KR", "AppleMyungjo", "Batang", serif; --ui: "Inter", "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif; }
+:lang(zh) { --heading: "Bodoni Moda", "Noto Serif SC", "Songti SC", "SimSun", serif; --ui: "Inter", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif; }
+:lang(hi) h1, :lang(ar) h1, :lang(hi) h2, :lang(ar) h2 { line-height: 1.35; }
+:lang(ja) h1, :lang(ko) h1, :lang(zh) h1, :lang(ja) h2, :lang(ko) h2, :lang(zh) h2 { line-height: 1.25; letter-spacing: 0; }
+:lang(ja) { word-break: auto-phrase; }
+:lang(ko) { word-break: keep-all; }
+/* No italics in scripts that have none */
+:lang(hi) .lead, :lang(ar) .lead, :lang(ja) .lead, :lang(ko) .lead, :lang(zh) .lead,
+:lang(hi) .short, :lang(ar) .short, :lang(ja) .short, :lang(ko) .short, :lang(zh) .short { font-style: normal; }
+:lang(ja) .eyebrow, :lang(ko) .eyebrow, :lang(zh) .eyebrow, :lang(hi) .eyebrow, :lang(ja) h2 span, :lang(ko) h2 span, :lang(zh) h2 span, :lang(hi) h2 span { letter-spacing: 0.08em; }
+:lang(ar) .eyebrow, :lang(ar) h1, :lang(ar) h2, :lang(ar) h2 span, :lang(ar) th { letter-spacing: 0; }
+
+@keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+@keyframes drift { from { transform: translate3d(-6%, 0, 0) scale(1); } to { transform: translate3d(6%, 4%, 0) scale(1.12); } }
+
+/* Content eases in as it scrolls into view, where the browser supports it.
+   Everything stays visible where it does not. */
+@supports (animation-timeline: view()) {
+  main section, .tiles div, .card {
+    animation: rise linear both; animation-timeline: view(); animation-range: entry 0% entry 28%;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before { animation: none !important; transition: none !important; }
+}
+@media print {
+  .bar, .tiles { display: none; }
+  .hero { background: none; color: #000; padding: 0 0 20px; text-align: start; }
+  body { padding-top: 0; }
+  .hero::before { display: none; }
+  .lead, .meta, .eyebrow { color: #333; }
+  body { background: #fff; }
+  * { animation: none !important; }
+}
+
+/* ---------- Big screens ----------
+   On a large monitor at 100% scaling (a 4K display is 3840 CSS pixels wide) the whole page is
+   drawn larger, as if the screen were about 1750 pixels wide, so nothing looks tiny.
+   --vw and --vh are viewport units corrected for that zoom: use them instead of vw / vh. */
+:root { --zf: 1; --vw: calc(1vw / var(--zf)); --vh: calc(1vh / var(--zf)); }
+@supports (height: 1svh) { :root { --vh: calc(1svh / var(--zf)); } }
+@supports (zoom: 2) {
+  @media (min-width: 2000px) and (min-height: 1100px) { :root { --zf: 1.2; zoom: 1.2; } }
+  @media (min-width: 2400px) and (min-height: 1300px) { :root { --zf: 1.45; zoom: 1.45; } }
+  @media (min-width: 2800px) and (min-height: 1550px) { :root { --zf: 1.7; zoom: 1.7; } }
+  @media (min-width: 3200px) and (min-height: 1750px) { :root { --zf: 1.95; zoom: 1.95; } }
+  @media (min-width: 3600px) and (min-height: 2000px) { :root { --zf: 2.2; zoom: 2.2; } }
+}
+  </style>
+</head>
+<body>
+{{>bar.html}}
+
+{{content}}
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 NextTier Studio · Pocket Glance</span>
+    <span><a href="privacy.html">{{l_privacy_t}}</a> · <a href="terms.html">{{l_terms_t}}</a> · <a href="delete-data.html">{{l_delete_t}}</a> · <a href="mailto:nexttierstudio@gmail.com">nexttierstudio@gmail.com</a></span>
+  </div>
+</footer>
+<script>
+{{>bar.js}}
+
+  (function () {
+    var b = document.querySelector(".theme"), r = document.documentElement;
+    if (!b) return;
+    b.hidden = false;
+    b.addEventListener("click", function () {
+      var now = r.getAttribute("data-theme") || "dark";
+      var next = now === "dark" ? "light" : "dark";
+      r.setAttribute("data-theme", next);
+      try { localStorage.setItem("theme", next); } catch (e) {}
+    });
+  })();
+</script>
+</body>
+</html>

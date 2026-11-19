@@ -30,7 +30,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 SUBPATH = "pocket_glance"
 DIST = ROOT / "dist"
-STATIC = ["privacy.html", "terms.html", "delete-data.html", "fonts", "img"]
+STATIC = ["fonts", "img"]  # the pages themselves come from tools/site/build.py
 LEGAL = ["privacy.html", "terms.html", "delete-data.html"]
 LANG_FOLDERS = ["es", "pt", "fr", "de", "hi", "ar", "ja", "ko", "zh"]
 

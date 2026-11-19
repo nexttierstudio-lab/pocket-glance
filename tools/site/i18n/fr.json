@@ -7,8 +7,10 @@
   "nav_pro": "Pro",
   "nav_privacy": "Confidentialité",
   "nav_terms": "Conditions",
+  "nav_delete": "Supprimer",
   "cta_play": "Télécharger sur Google Play",
   "nav_download": "Télécharger",
+  "soon": "Bientôt",
   "theme_label": "Basculer entre le mode clair et le mode sombre",
   "theme_title": "Clair / sombre",
   "hero_title": "Votre argent. <em class=\"gold\">D'un coup d'œil.</em>",
@@ -79,5 +81,8 @@
   "c_title": "Commencez par <span class=\"gold\">un coup d'œil par jour.</span>",
   "c_lead": "Gratuit sur Google Play. Aucun compte requis.",
   "lang_label": "Langue",
-  "legal_note": "La Politique de confidentialité, les Conditions et la page de suppression des données sont en anglais."
+  "menu_open": "Ouvrir le menu",
+  "menu_close": "Fermer le menu",
+  "legal_tr_note": "Cette page est une traduction fournie pour votre commodité. En cas de différence avec la version anglaise, la version anglaise prévaut.",
+  "legal_tr_link": "Lire la version anglaise"
 }
