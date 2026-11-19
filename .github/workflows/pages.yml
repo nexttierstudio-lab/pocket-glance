@@ -1,7 +1,7 @@
-# Publishes https://nexttierstudio.co.in/pocket_glance/ with GitHub Pages on every push to main.
+# Publishes https://nexttiersudio.co.in/pocket_glance/ with GitHub Pages on every push to main.
 #
 # Builds dist/ with tools/publish.py: the site in dist/pocket_glance/, a root page that sends
-# nexttierstudio.co.in/ on to /pocket_glance/, and small pages at the old addresses
+# nexttiersudio.co.in/ on to /pocket_glance/, and small pages at the old addresses
 # (/privacy.html, /es/, ...) so links to the old github.io site keep working once GitHub
 # redirects it to the custom domain.
 #
@@ -24,7 +24,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  SITE_DOMAIN: nexttierstudio.co.in
+  SITE_DOMAIN: nexttiersudio.co.in
 
 jobs:
   build:
