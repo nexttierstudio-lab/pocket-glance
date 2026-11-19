@@ -84,5 +84,13 @@
   "menu_open": "Menü öffnen",
   "menu_close": "Menü schließen",
   "legal_tr_note": "Diese Seite ist eine Übersetzung zur besseren Verständlichkeit. Bei Abweichungen gilt die englische Fassung.",
-  "legal_tr_link": "Englische Fassung lesen"
+  "legal_tr_link": "Englische Fassung lesen",
+  "consent_label": "Analyse-Einstellung",
+  "consent_text": "Dürfen wir Google Analytics nutzen, um Besuche und Klicks auf dieser Website zu zählen? So sehen wir, was nützlich ist. Es sieht nie etwas aus der App.",
+  "consent_yes": "Erlauben",
+  "consent_no": "Nein, danke",
+  "consent_settings": "Analyse-Einstellungen",
+  "mode_label": "Design",
+  "mode_light": "Hell",
+  "mode_dark": "Dunkel"
 }
