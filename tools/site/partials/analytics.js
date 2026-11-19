@@ -113,6 +113,7 @@
       if (el.closest(".menu")) return "menu";
       if (el.closest(".bar")) return "bar";
       if (el.closest("footer")) return "footer";
+      if (el.closest(".end")) return "legal_end";
       var s = el.closest("section[id], .hero, .closer, main");
       return s ? (s.id || (s.classList.contains("hero") ? "hero" : s.classList.contains("closer") ? "closing" : "page")) : "page";
     }

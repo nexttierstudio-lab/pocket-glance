@@ -336,6 +336,19 @@ tr:last-child td { border-bottom: 0; }
 .card i { display: inline-block; margin-top: 18px; font-style: normal; font-weight: 500; font-size: 0.92rem; color: var(--link); transition: transform .45s var(--ease); }
 .card:hover i { transform: translateX(5px); }
 
+/* The way back to the app at the end of every legal page: the homepage's closing message,
+   the Play button and a link back to the features. */
+.end { text-align: center; padding: 64px 0 80px; border-top: 1px solid var(--divider); }
+.end img { width: 72px; height: 72px; border-radius: 18px; margin: 0 auto 22px; display: block; }
+.end h2 { font: 600 clamp(1.9rem, calc(4.4 * var(--vw)), 2.8rem)/1.08 var(--heading); letter-spacing: -0.02em; max-width: 16ch; margin: 0 auto 14px; }
+.end p { color: var(--muted); margin: 0 0 26px; font-size: 1.05rem; }
+.end h2 span { display: inline; font: inherit; letter-spacing: inherit; margin: 0; }
+.end .gold { color: var(--link); }
+.end-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px 18px; }
+.end .btn { display: inline-flex; align-items: center; gap: 10px; height: 50px; padding: 0 26px; border-radius: 999px; background: var(--accent); color: #fff; text-decoration: none; font: 500 16px/1 var(--ui); box-shadow: 0 14px 34px -14px rgba(160, 111, 36, 0.9); transition: transform .35s var(--ease); }
+.end .btn:hover { transform: translateY(-2px); }
+.end .back { font: 500 16px/1 var(--ui); color: var(--link); text-decoration: none; }
+.end .back::after { content: "›"; margin-inline-start: 4px; }
 footer { border-top: 1px solid var(--divider); color: var(--muted); font-size: 0.8rem; padding: 22px 0 40px; }
 footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 20px; }
 footer a { color: inherit; text-decoration: none; }
@@ -407,9 +420,9 @@ footer a:hover { color: var(--text); }
   <div class="bar-in">
     <a class="brand" href="./"><img src="../img/icon-192.png" alt="" width="24" height="24">Pocket Glance</a>
     <nav class="links" aria-label="साइट">
-      <a href="privacy.html" aria-current="page">गोपनीयता</a>
-      <a href="terms.html">शर्तें</a>
-      <a href="delete-data.html">डेटा हटाएँ</a>
+      <a href="./#features">सुविधाएँ</a>
+      <a href="./#pro">Pro</a>
+      <a href="./#private">गोपनीयता</a>
     </nav>
     <div class="right">
       <details class="lang">
@@ -424,9 +437,9 @@ footer a:hover { color: var(--text); }
   <div class="menu" id="menu">
     <a class="menu-cta" href="https://play.google.com/store/apps/details?id=com.nexttier.pocketglance"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4.2 2.4c-.3.3-.4.7-.4 1.2v16.8c0 .5.1.9.4 1.2l9.5-9.6zm10.6 10.7 2.7 2.7-11.4 6.5c-.4.2-.9.3-1.2.1zm0-2.2-9.9-9.3c.3-.2.8-.1 1.2.1l11.4 6.5zm3.9 3.9-3-3 3-3 3.2 1.8c.9.5.9 1.9 0 2.4z"/></svg>जल्द आ रहा है</a>
     <nav aria-label="साइट">
-      <a href="privacy.html" aria-current="page">गोपनीयता</a>
-      <a href="terms.html">शर्तें</a>
-      <a href="delete-data.html">डेटा हटाएँ</a>
+      <a href="./#features">सुविधाएँ</a>
+      <a href="./#pro">Pro</a>
+      <a href="./#private">गोपनीयता</a>
     </nav>
     <p class="menu-h">भाषा</p>
     <ul class="chips"><li><a href="../privacy.html" hreflang="en" lang="en" data-lang="en"><svg class="flag" viewBox="0 0 30 20" width="21" height="14" aria-hidden="true"><rect width="30" height="20" fill="#B22234"/><rect y="1.538" width="30" height="1.538" fill="#fff"/><rect y="4.615" width="30" height="1.538" fill="#fff"/><rect y="7.692" width="30" height="1.538" fill="#fff"/><rect y="10.769" width="30" height="1.538" fill="#fff"/><rect y="13.846" width="30" height="1.538" fill="#fff"/><rect y="16.923" width="30" height="1.538" fill="#fff"/><rect width="13" height="10.77" fill="#3C3B6E"/><g fill="#fff"><polygon points="2.20,0.95 2.35,1.39 2.82,1.40 2.45,1.68 2.58,2.13 2.20,1.86 1.82,2.13 1.95,1.68 1.58,1.40 2.05,1.39"/><polygon points="4.40,0.95 4.55,1.39 5.02,1.40 4.65,1.68 4.78,2.13 4.40,1.86 4.02,2.13 4.15,1.68 3.78,1.40 4.25,1.39"/><polygon points="6.60,0.95 6.75,1.39 7.22,1.40 6.85,1.68 6.98,2.13 6.60,1.86 6.22,2.13 6.35,1.68 5.98,1.40 6.45,1.39"/><polygon points="8.80,0.95 8.95,1.39 9.42,1.40 9.05,1.68 9.18,2.13 8.80,1.86 8.42,2.13 8.55,1.68 8.18,1.40 8.65,1.39"/><polygon points="11.00,0.95 11.15,1.39 11.62,1.40 11.25,1.68 11.38,2.13 11.00,1.86 10.62,2.13 10.75,1.68 10.38,1.40 10.85,1.39"/><polygon points="3.30,2.85 3.45,3.29 3.92,3.30 3.55,3.58 3.68,4.03 3.30,3.76 2.92,4.03 3.05,3.58 2.68,3.30 3.15,3.29"/><polygon points="5.50,2.85 5.65,3.29 6.12,3.30 5.75,3.58 5.88,4.03 5.50,3.76 5.12,4.03 5.25,3.58 4.88,3.30 5.35,3.29"/><polygon points="7.70,2.85 7.85,3.29 8.32,3.30 7.95,3.58 8.08,4.03 7.70,3.76 7.32,4.03 7.45,3.58 7.08,3.30 7.55,3.29"/><polygon points="9.90,2.85 10.05,3.29 10.52,3.30 10.15,3.58 10.28,4.03 9.90,3.76 9.52,4.03 9.65,3.58 9.28,3.30 9.75,3.29"/><polygon points="2.20,4.75 2.35,5.19 2.82,5.20 2.45,5.48 2.58,5.93 2.20,5.66 1.82,5.93 1.95,5.48 1.58,5.20 2.05,5.19"/><polygon points="4.40,4.75 4.55,5.19 5.02,5.20 4.65,5.48 4.78,5.93 4.40,5.66 4.02,5.93 4.15,5.48 3.78,5.20 4.25,5.19"/><polygon points="6.60,4.75 6.75,5.19 7.22,5.20 6.85,5.48 6.98,5.93 6.60,5.66 6.22,5.93 6.35,5.48 5.98,5.20 6.45,5.19"/><polygon points="8.80,4.75 8.95,5.19 9.42,5.20 9.05,5.48 9.18,5.93 8.80,5.66 8.42,5.93 8.55,5.48 8.18,5.20 8.65,5.19"/><polygon points="11.00,4.75 11.15,5.19 11.62,5.20 11.25,5.48 11.38,5.93 11.00,5.66 10.62,5.93 10.75,5.48 10.38,5.20 10.85,5.19"/><polygon points="3.30,6.65 3.45,7.09 3.92,7.10 3.55,7.38 3.68,7.83 3.30,7.56 2.92,7.83 3.05,7.38 2.68,7.10 3.15,7.09"/><polygon points="5.50,6.65 5.65,7.09 6.12,7.10 5.75,7.38 5.88,7.83 5.50,7.56 5.12,7.83 5.25,7.38 4.88,7.10 5.35,7.09"/><polygon points="7.70,6.65 7.85,7.09 8.32,7.10 7.95,7.38 8.08,7.83 7.70,7.56 7.32,7.83 7.45,7.38 7.08,7.10 7.55,7.09"/><polygon points="9.90,6.65 10.05,7.09 10.52,7.10 10.15,7.38 10.28,7.83 9.90,7.56 9.52,7.83 9.65,7.38 9.28,7.10 9.75,7.09"/><polygon points="2.20,8.55 2.35,8.99 2.82,9.00 2.45,9.28 2.58,9.73 2.20,9.46 1.82,9.73 1.95,9.28 1.58,9.00 2.05,8.99"/><polygon points="4.40,8.55 4.55,8.99 5.02,9.00 4.65,9.28 4.78,9.73 4.40,9.46 4.02,9.73 4.15,9.28 3.78,9.00 4.25,8.99"/><polygon points="6.60,8.55 6.75,8.99 7.22,9.00 6.85,9.28 6.98,9.73 6.60,9.46 6.22,9.73 6.35,9.28 5.98,9.00 6.45,8.99"/><polygon points="8.80,8.55 8.95,8.99 9.42,9.00 9.05,9.28 9.18,9.73 8.80,9.46 8.42,9.73 8.55,9.28 8.18,9.00 8.65,8.99"/><polygon points="11.00,8.55 11.15,8.99 11.62,9.00 11.25,9.28 11.38,9.73 11.00,9.46 10.62,9.73 10.75,9.28 10.38,9.00 10.85,8.99"/></g></svg><b>EN</b><span>English</span></a></li><li><a href="../es/privacy.html" hreflang="es-419" lang="es-419" data-lang="es"><svg class="flag" viewBox="0 0 30 20" width="21" height="14" aria-hidden="true"><rect width="10" height="20" fill="#006847"/><rect x="10" width="10" height="20" fill="#fff"/><rect x="20" width="10" height="20" fill="#CE1126"/><circle cx="15" cy="10" r="2.4" fill="#8C6A3A"/></svg><b>ES</b><span>Español</span></a></li><li><a href="../pt/privacy.html" hreflang="pt-BR" lang="pt-BR" data-lang="pt"><svg class="flag" viewBox="0 0 30 20" width="21" height="14" aria-hidden="true"><rect width="30" height="20" fill="#009C3B"/><polygon points="3,10 15,2.5 27,10 15,17.5" fill="#FFDF00"/><circle cx="15" cy="10" r="4.6" fill="#002776"/><path d="M10.6 9.2c3-.9 6.3-.6 8.8.9" stroke="#fff" stroke-width="1" fill="none"/></svg><b>PT</b><span>Português</span></a></li><li><a href="../fr/privacy.html" hreflang="fr" lang="fr" data-lang="fr"><svg class="flag" viewBox="0 0 30 20" width="21" height="14" aria-hidden="true"><rect width="10" height="20" fill="#0055A4"/><rect x="10" width="10" height="20" fill="#fff"/><rect x="20" width="10" height="20" fill="#EF4135"/></svg><b>FR</b><span>Français</span></a></li><li><a href="../de/privacy.html" hreflang="de" lang="de" data-lang="de"><svg class="flag" viewBox="0 0 30 20" width="21" height="14" aria-hidden="true"><rect width="30" height="6.67" fill="#000"/><rect y="6.67" width="30" height="6.67" fill="#DD0000"/><rect y="13.33" width="30" height="6.67" fill="#FFCE00"/></svg><b>DE</b><span>Deutsch</span></a></li><li><a href="privacy.html" hreflang="hi" lang="hi" data-lang="hi" aria-current="true"><svg class="flag" viewBox="0 0 30 20" width="21" height="14" aria-hidden="true"><rect width="30" height="6.67" fill="#FF9933"/><rect y="6.67" width="30" height="6.67" fill="#fff"/><rect y="13.33" width="30" height="6.67" fill="#138808"/><circle cx="15" cy="10" r="2.6" fill="none" stroke="#000080" stroke-width=".8"/><circle cx="15" cy="10" r=".6" fill="#000080"/></svg><b>HI</b><span>हिन्दी</span></a></li><li><a href="../ar/privacy.html" hreflang="ar" lang="ar" data-lang="ar"><svg class="flag" viewBox="0 0 30 20" width="21" height="14" aria-hidden="true"><rect width="30" height="20" fill="#006C35"/><path d="M8 7.2h14M9 9.3c1.5-1 3 1 4.5 0s3 1 4.5 0 2.5 1 3.5 0" stroke="#fff" stroke-width=".9" fill="none" stroke-linecap="round"/><path d="M8.5 13.5h12.5l1.5-.8" stroke="#fff" stroke-width=".9" fill="none" stroke-linecap="round"/></svg><b>AR</b><span>العربية</span></a></li><li><a href="../ja/privacy.html" hreflang="ja" lang="ja" data-lang="ja"><svg class="flag" viewBox="0 0 30 20" width="21" height="14" aria-hidden="true"><rect width="30" height="20" fill="#fff"/><circle cx="15" cy="10" r="6" fill="#BC002D"/></svg><b>JA</b><span>日本語</span></a></li><li><a href="../ko/privacy.html" hreflang="ko" lang="ko" data-lang="ko"><svg class="flag" viewBox="0 0 30 20" width="21" height="14" aria-hidden="true"><rect width="30" height="20" fill="#fff"/><circle cx="15" cy="10" r="5" fill="#0047A0"/><path d="M10 10a5 5 0 0 1 10 0a2.5 2.5 0 0 1-5 0a2.5 2.5 0 0 0-5 0z" fill="#CD2E3A"/><g stroke="#000" stroke-width="1"><path d="M4.4 5.4l2.2-2.4M5.4 6.3l2.2-2.4M6.4 7.2l2.2-2.4"/><path d="M21.4 15.6l2.2-2.4M22.4 16.5l2.2-2.4M23.4 17.4l2.2-2.4"/><path d="M21.4 4.4l2.2 2.4M22.4 3.5l2.2 2.4M20.4 5.3l2.2 2.4"/><path d="M4.4 14.6l2.2 2.4M5.4 13.7l2.2 2.4M6.4 12.8l2.2 2.4"/></g></svg><b>KO</b><span>한국어</span></a></li><li><a href="../zh/privacy.html" hreflang="zh-Hans" lang="zh-Hans" data-lang="zh"><svg class="flag" viewBox="0 0 30 20" width="21" height="14" aria-hidden="true"><rect width="30" height="20" fill="#DE2910"/><g fill="#FFDE00"><polygon points="5.00,2.00 5.71,4.03 7.85,4.07 6.14,5.37 6.76,7.43 5.00,6.20 3.24,7.43 3.86,5.37 2.15,4.07 4.29,4.03"/><polygon points="10.39,1.08 10.34,1.79 11.00,2.09 10.30,2.26 10.22,2.97 9.84,2.37 9.14,2.52 9.60,1.97 9.25,1.34 9.91,1.61"/><polygon points="12.71,3.29 12.40,3.94 12.89,4.45 12.18,4.36 11.84,4.99 11.72,4.28 11.01,4.16 11.64,3.82 11.55,3.11 12.06,3.60"/><polygon points="12.94,6.66 12.38,7.11 12.62,7.79 12.01,7.40 11.44,7.83 11.62,7.14 11.04,6.72 11.75,6.68 11.97,6.00 12.22,6.67"/><polygon points="10.34,8.06 10.33,8.78 11.00,9.03 10.32,9.25 10.28,9.96 9.86,9.38 9.17,9.56 9.60,8.99 9.21,8.38 9.89,8.62"/></g></svg><b>ZH</b><span>简体中文</span></a></li></ul>
@@ -554,6 +567,18 @@ footer a:hover { color: var(--text); }
     <p>सवाल या अनुरोध: <a href="mailto:nexttierstudio@gmail.com">nexttierstudio@gmail.com</a></p>
   </section>
 </main>
+
+<section class="end">
+  <div class="wrap">
+    <img src="../img/icon-192.png" alt="" width="72" height="72">
+    <h2>शुरुआत करें <span class="gold">दिन में एक नज़र से।</span></h2>
+    <p>Google Play पर मुफ़्त। किसी खाते की ज़रूरत नहीं।</p>
+    <div class="end-row">
+      <a class="btn" href="https://play.google.com/store/apps/details?id=com.nexttier.pocketglance"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4.2 2.4c-.3.3-.4.7-.4 1.2v16.8c0 .5.1.9.4 1.2l9.5-9.6zm10.6 10.7 2.7 2.7-11.4 6.5c-.4.2-.9.3-1.2.1zm0-2.2-9.9-9.3c.3-.2.8-.1 1.2.1l11.4 6.5zm3.9 3.9-3-3 3-3 3.2 1.8c.9.5.9 1.9 0 2.4z"/></svg>जल्द आ रहा है</a>
+      <a class="back" href="./#features">देखें यह क्या करता है</a>
+    </div>
+  </div>
+</section>
 
 <footer>
   <div class="wrap">
@@ -720,6 +745,7 @@ footer a:hover { color: var(--text); }
       if (el.closest(".menu")) return "menu";
       if (el.closest(".bar")) return "bar";
       if (el.closest("footer")) return "footer";
+      if (el.closest(".end")) return "legal_end";
       var s = el.closest("section[id], .hero, .closer, main");
       return s ? (s.id || (s.classList.contains("hero") ? "hero" : s.classList.contains("closer") ? "closing" : "page")) : "page";
     }
