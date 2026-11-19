@@ -17,7 +17,7 @@ body { padding-top: var(--bar-h); }
 }
 .bar.float { padding: 10px var(--gutter) 0; }
 .bar.float .bar-in {
-  max-width: 1240px; height: 54px; border-radius: 28px; padding-inline: 18px 9px;
+  max-width: 1000px; height: 54px; border-radius: 28px; padding-inline: 9px;
   border-color: var(--bar-line); box-shadow: 0 18px 44px -20px rgba(0, 0, 0, 0.55);
 }
 .bar.float .bar-in, .bar.open .bar-in {
@@ -25,6 +25,7 @@ body { padding-top: var(--bar-h); }
 }
 .brand { justify-self: start; display: flex; align-items: center; gap: 10px; font: 600 17px/1 var(--ui); letter-spacing: -0.01em; color: var(--bar-text); text-decoration: none; white-space: nowrap; }
 .brand img { width: 28px; height: 28px; border-radius: 8px; }
+.bar.float .brand { margin-inline-start: 9px; transition: margin .5s var(--ease); }
 .links { display: flex; align-items: center; gap: 8px; }
 .links a { font: 500 15px/1 var(--ui); color: var(--bar-muted); text-decoration: none; padding: 9px 12px; border-radius: 999px; white-space: nowrap; transition: color .2s; }
 .links a:hover { color: var(--bar-text); }
@@ -77,7 +78,9 @@ body { padding-top: var(--bar-h); }
   /* Wide screens: a taller bar and a larger download button. The side columns are equal when
      there is room (up to 1200px of content), so the links sit in the middle of the bar. */
   :root { --bar-h: 68px; }
-  .bar.float .bar-in { height: 60px; padding-inline: 20px 10px; }
+  /* Scrolled: the bar draws in from both sides into a narrower pill, centred like the page.
+     The padding is the same on both sides so the links stay in the middle. */
+  .bar.float .bar-in { height: 60px; padding-inline: 10px; }
   .nav-cta { height: 44px; gap: 9px; padding: 0 22px 0 18px; font-size: 15px; }
   .nav-cta svg { width: 17px; height: 17px; }
 }
