@@ -136,14 +136,14 @@ body { padding-top: var(--bar-h); }
 .bar-in {
   position: relative; margin: 0 auto; max-width: 100%; height: var(--bar-h);
   display: grid; grid-template-columns: minmax(max-content, 1fr) auto minmax(max-content, 1fr); align-items: center; gap: 16px;
-  padding-inline: max(var(--gutter), calc((100% - 1036px) / 2));
+  padding-inline: max(var(--gutter), calc((100% - 1200px) / 2));
   background: var(--bar-bg); border: 1px solid transparent; border-bottom-color: var(--bar-line); border-radius: 0;
   -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px);
   transition: max-width .5s var(--ease), height .5s var(--ease), border-radius .5s var(--ease), padding .5s var(--ease), box-shadow .5s var(--ease), border-color .5s var(--ease), background-color .35s var(--ease);
 }
 .bar.float { padding: 10px var(--gutter) 0; }
 .bar.float .bar-in {
-  max-width: 1080px; height: 54px; border-radius: 28px; padding-inline: 18px 9px;
+  max-width: 1240px; height: 54px; border-radius: 28px; padding-inline: 18px 9px;
   border-color: var(--bar-line); box-shadow: 0 18px 44px -20px rgba(0, 0, 0, 0.55);
 }
 .brand { justify-self: start; display: flex; align-items: center; gap: 10px; font: 600 12px/1 var(--ui); letter-spacing: 0.18em; text-transform: uppercase; color: var(--brand); text-decoration: none; white-space: nowrap; }
@@ -198,9 +198,15 @@ body { padding-top: var(--bar-h); }
 }
 @media (min-width: 960px) {
   .menu { display: none; }
+  /* Wide screens: a taller bar and a larger download button. The side columns are equal when
+     there is room (up to 1200px of content), so the links sit in the middle of the bar. */
+  :root { --bar-h: 68px; }
+  .bar.float .bar-in { height: 60px; padding-inline: 20px 10px; }
+  .nav-cta { height: 44px; gap: 9px; padding: 0 22px 0 18px; font-size: 15px; }
+  .nav-cta svg { width: 17px; height: 17px; }
 }
 /* The bar's download button drops its tag until there is room for it in every language. */
-@media (max-width: 1139px) {
+@media (max-width: 1279px) {
   .nav-cta .soon { display: none; }
 }
 /* Without the script there is no menu button: the links stay in the bar and wrap. */
