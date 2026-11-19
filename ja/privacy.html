@@ -518,7 +518,7 @@ footer a:hover { color: var(--text); }
   <section>
     <h2><span>12</span>変更とお問い合わせ</h2>
     <p>本ポリシーは更新されることがあります。最新版は常に施行日とともにこのページに掲載し、重要な変更はアプリやリリースノートでもお知らせします。</p>
-    <p><strong>このウェブサイトについて。</strong>このサイトは、あなたが同意しない限り Cookie もトラッキングも使用しません。アクセス解析のお知らせで<strong>許可する</strong>を選んだ場合に限り、Google Analytics for Firebase を読み込みます。これはこのサイト自身の Cookie を設定し、閲覧したページ、クリックしたリンクやボタン（ダウンロードボタンや言語の選択など）、ブラウザと端末の種類、言語、IP アドレスから推定されるおおよその地域を記録します。私たちはあなたの同意に基づき、サイトのどの部分が役立っているかを知るためにこれを使います。Google シグナルと広告のパーソナライズは無効にしており、このデータを広告に使うことはありません。<strong>許可しない</strong>を選んだ場合や、ブラウザが Global Privacy Control の信号を送っている場合は、何も読み込みません。各ページ下部の<strong>アクセス解析の設定</strong>からいつでも選択を変更でき、その際にこれらの Cookie も削除されます。ライト／ダーク、言語、アクセス解析の選択はあなたのブラウザにのみ保存され、どこにも送信されません。メールをいただいた場合、そのメッセージは返信のためにのみ使用します。</p>
+    <p><strong>このウェブサイトについて。</strong>このサイトは、あなたが同意しない限り Cookie もトラッキングも使用しません。アクセス解析のお知らせで<strong>許可する</strong>を選んだ場合に限り、Google Analytics for Firebase を読み込みます。これはこのサイト自身の Cookie を設定し、閲覧したページ、クリックしたリンクやボタン（ダウンロードボタンや言語の選択など）、ブラウザと端末の種類、言語、IP アドレスから推定されるおおよその地域を記録します。また、ホームページのどのセクションまでスクロールしたかを記録し、Firebase Performance Monitoring がページの読み込みと応答の速さを測定します。そのために、ランダムなインストール ID をブラウザに保存します。私たちはあなたの同意に基づき、サイトのどの部分が役立っているかを知るためにこれを使います。Google シグナルと広告のパーソナライズは無効にしており、このデータを広告に使うことはありません。<strong>許可しない</strong>を選んだ場合や、ブラウザが Global Privacy Control の信号を送っている場合は、何も読み込みません。各ページ下部の<strong>アクセス解析の設定</strong>からいつでも選択を変更でき、その際にこれらの Cookie と ID も削除されます。ライト／ダーク、言語、アクセス解析の選択はあなたのブラウザにのみ保存され、どこにも送信されません。メールをいただいた場合、そのメッセージは返信のためにのみ使用します。</p>
     <p>ご質問やご依頼：<a href="mailto:nexttierstudio@gmail.com">nexttierstudio@gmail.com</a></p>
   </section>
 </main>
@@ -577,8 +577,10 @@ footer a:hover { color: var(--text); }
   // Until they pick Allow nothing is loaded from Google and no cookie is set. A browser that
   // sends Global Privacy Control counts as No thanks and is not asked. The choice is kept in
   // this browser ("analytics" = yes / no); "Analytics settings" in the footer reopens the notice.
-  // Measured: page views, plus the clicks below (download, language, links, theme).
-  // On localhost events go to DebugView only (debug_mode), so testing stays out of the reports.
+  // Measured: page views, the clicks below (download, language, links, theme), which homepage
+  // sections are reached, and page speed (Firebase Performance Monitoring: load times and
+  // network requests). On localhost Analytics events go to DebugView only (debug_mode) and
+  // Performance Monitoring stays off unless the address has ?perf, so testing stays out of the reports.
   (function () {
     var FIREBASE = "https://www.gstatic.com/firebasejs/10.14.1/";
     var CONFIG = {
@@ -593,25 +595,33 @@ footer a:hover { color: var(--text); }
     var KEY = "analytics", LANG = "ja";
     var local = /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
     var box = document.getElementById("consent");
-    var sdk = null, analytics = null, queue = [], loading = false, on = false;
+    var perfOn = !local || /[?&]perf(=|&|$)/.test(location.search);
+    var sdk = null, analytics = null, perf = null, queue = [], loading = false, on = false;
 
     function saved() { try { return localStorage.getItem(KEY); } catch (e) { return null; } }
     function save(v) { try { localStorage.setItem(KEY, v); } catch (e) {} }
 
     function start() {
       on = true;
-      if (analytics) { sdk.setAnalyticsCollectionEnabled(analytics, true); return; }
+      if (analytics) { sdk.setAnalyticsCollectionEnabled(analytics, true); setPerf(true); return; }
       if (loading) return;
       loading = true;
-      Promise.all([import(FIREBASE + "firebase-app.js"), import(FIREBASE + "firebase-analytics.js")]).then(function (m) {
+      Promise.all([
+        import(FIREBASE + "firebase-app.js"),
+        import(FIREBASE + "firebase-analytics.js"),
+        perfOn ? import(FIREBASE + "firebase-performance.js") : null
+      ]).then(function (m) {
         sdk = m[1];
         // Measurement only: no advertising storage, no Google signals, no ad personalisation.
         sdk.setConsent({ analytics_storage: "granted", ad_storage: "denied", ad_user_data: "denied", ad_personalization: "denied" });
         var config = { allow_google_signals: false, allow_ad_personalization_signals: false };
         if (local) config.debug_mode = true;
-        analytics = sdk.initializeAnalytics(m[0].initializeApp(CONFIG), { config: config });
+        var app = m[0].initializeApp(CONFIG);
+        analytics = sdk.initializeAnalytics(app, { config: config });
+        // Page load timings are read from the browser after the fact, so starting late still counts them.
+        if (m[2]) perf = m[2].getPerformance(app);
         sdk.setUserProperties(analytics, { site_language: LANG });
-        if (!on) sdk.setAnalyticsCollectionEnabled(analytics, false);
+        if (!on) { sdk.setAnalyticsCollectionEnabled(analytics, false); setPerf(false); }
         queue.splice(0).forEach(function (e) { track(e[0], e[1]); });
       }).catch(function () { loading = false; });
     }
@@ -620,6 +630,9 @@ footer a:hover { color: var(--text); }
       on = false;
       queue = [];
       if (analytics) sdk.setAnalyticsCollectionEnabled(analytics, false);
+      setPerf(false);
+      // And the random installation ID Firebase keeps in this browser's IndexedDB.
+      try { ["firebase-installations-database", "firebase-heartbeat-database"].forEach(function (n) { indexedDB.deleteDatabase(n); }); } catch (e) {}
       // Remove the cookies Analytics set (_ga, _ga_<id>) on this host and the parent domain.
       var host = location.hostname, parts = host.split(".");
       var domains = ["", host, "." + host];
@@ -632,6 +645,8 @@ footer a:hover { color: var(--text); }
         });
       });
     }
+
+    function setPerf(v) { if (perf) { perf.dataCollectionEnabled = v; perf.instrumentationEnabled = v; } }
 
     function track(name, params) {
       if (!on) return;
@@ -655,6 +670,18 @@ footer a:hover { color: var(--text); }
     var choice = saved();
     if (choice === "yes") start();
     else if (choice !== "no" && navigator.globalPrivacyControl !== true) show();
+
+    // Homepage sections reached: once per page view, when the section's top passes the middle of the screen.
+    if ("IntersectionObserver" in window) {
+      var seen = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (!e.isIntersecting || !on) return;
+          track("section_view", { section: e.target.id || "closing" });
+          seen.unobserve(e.target);
+        });
+      }, { rootMargin: "0px 0px -50% 0px" });
+      document.querySelectorAll("#features, #private, #pro, .closer").forEach(function (s) { seen.observe(s); });
+    }
 
     // What was clicked, and where: the bar, the phone menu, the footer, or a section of the page.
     function where(el) {

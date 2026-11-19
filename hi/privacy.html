@@ -518,7 +518,7 @@ footer a:hover { color: var(--text); }
   <section>
     <h2><span>12</span>बदलाव और संपर्क</h2>
     <p>हम इस नीति को अपडेट कर सकते हैं। मौजूदा संस्करण हमेशा अपनी प्रभावी तिथि के साथ इसी पेज पर रहता है, और महत्वपूर्ण बदलाव ऐप या उसके रिलीज़ नोट्स में भी बताए जाएँगे।</p>
-    <p><strong>यह वेबसाइट।</strong> जब तक आप सहमति न दें, यह साइट बिना कुकी और बिना ट्रैकिंग के चलती है। केवल तभी, जब आप एनालिटिक्स सूचना में <strong>अनुमति दें</strong> चुनते हैं, यह Firebase के लिए Google Analytics लोड करती है। यह साइट की अपनी कुकी सेट करता है और रिकॉर्ड करता है कि आप कौन-से पेज देखते हैं, किन लिंक और बटनों पर क्लिक करते हैं (जैसे डाउनलोड बटन या कोई भाषा), आपका ब्राउज़र और डिवाइस का प्रकार, आपकी भाषा, और आपके IP पते से अनुमानित लोकेशन। हम आपकी सहमति के आधार पर इसका उपयोग यह देखने के लिए करते हैं कि साइट के कौन-से हिस्से उपयोगी हैं। Google सिग्नल और विज्ञापन वैयक्तिकरण बंद हैं, और यह डेटा विज्ञापन के लिए उपयोग नहीं होता। अगर आप <strong>नहीं, धन्यवाद</strong> चुनते हैं, या आपका ब्राउज़र Global Privacy Control संकेत भेजता है, तो कुछ भी लोड नहीं होता। आप हर पेज के नीचे <strong>एनालिटिक्स सेटिंग्स</strong> से कभी भी अपनी पसंद बदल सकते हैं, जिससे ये कुकी भी हट जाती हैं। लाइट/डार्क, भाषा और एनालिटिक्स की आपकी पसंद आपके अपने ब्राउज़र में सहेजी जाती है और कहीं नहीं भेजी जाती। अगर आप हमें ईमेल करते हैं, तो हम आपके संदेश का उपयोग सिर्फ़ जवाब देने के लिए करते हैं।</p>
+    <p><strong>यह वेबसाइट।</strong> जब तक आप सहमति न दें, यह साइट बिना कुकी और बिना ट्रैकिंग के चलती है। केवल तभी, जब आप एनालिटिक्स सूचना में <strong>अनुमति दें</strong> चुनते हैं, यह Firebase के लिए Google Analytics लोड करती है। यह साइट की अपनी कुकी सेट करता है और रिकॉर्ड करता है कि आप कौन-से पेज देखते हैं, किन लिंक और बटनों पर क्लिक करते हैं (जैसे डाउनलोड बटन या कोई भाषा), आपका ब्राउज़र और डिवाइस का प्रकार, आपकी भाषा, और आपके IP पते से अनुमानित लोकेशन। यह यह भी दर्ज करता है कि आप होमपेज के किन हिस्सों तक स्क्रॉल करते हैं, और Firebase Performance Monitoring मापता है कि पेज कितनी जल्दी लोड होते हैं और प्रतिक्रिया देते हैं; इसके लिए आपके ब्राउज़र में एक रैंडम इंस्टॉलेशन आईडी रखी जाती है। हम आपकी सहमति के आधार पर इसका उपयोग यह देखने के लिए करते हैं कि साइट के कौन-से हिस्से उपयोगी हैं। Google सिग्नल और विज्ञापन वैयक्तिकरण बंद हैं, और यह डेटा विज्ञापन के लिए उपयोग नहीं होता। अगर आप <strong>नहीं, धन्यवाद</strong> चुनते हैं, या आपका ब्राउज़र Global Privacy Control संकेत भेजता है, तो कुछ भी लोड नहीं होता। आप हर पेज के नीचे <strong>एनालिटिक्स सेटिंग्स</strong> से कभी भी अपनी पसंद बदल सकते हैं, जिससे ये कुकी और आईडी भी हट जाती हैं। लाइट/डार्क, भाषा और एनालिटिक्स की आपकी पसंद आपके अपने ब्राउज़र में सहेजी जाती है और कहीं नहीं भेजी जाती। अगर आप हमें ईमेल करते हैं, तो हम आपके संदेश का उपयोग सिर्फ़ जवाब देने के लिए करते हैं।</p>
     <p>सवाल या अनुरोध: <a href="mailto:nexttierstudio@gmail.com">nexttierstudio@gmail.com</a></p>
   </section>
 </main>
@@ -577,8 +577,10 @@ footer a:hover { color: var(--text); }
   // Until they pick Allow nothing is loaded from Google and no cookie is set. A browser that
   // sends Global Privacy Control counts as No thanks and is not asked. The choice is kept in
   // this browser ("analytics" = yes / no); "Analytics settings" in the footer reopens the notice.
-  // Measured: page views, plus the clicks below (download, language, links, theme).
-  // On localhost events go to DebugView only (debug_mode), so testing stays out of the reports.
+  // Measured: page views, the clicks below (download, language, links, theme), which homepage
+  // sections are reached, and page speed (Firebase Performance Monitoring: load times and
+  // network requests). On localhost Analytics events go to DebugView only (debug_mode) and
+  // Performance Monitoring stays off unless the address has ?perf, so testing stays out of the reports.
   (function () {
     var FIREBASE = "https://www.gstatic.com/firebasejs/10.14.1/";
     var CONFIG = {
@@ -593,25 +595,33 @@ footer a:hover { color: var(--text); }
     var KEY = "analytics", LANG = "hi";
     var local = /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
     var box = document.getElementById("consent");
-    var sdk = null, analytics = null, queue = [], loading = false, on = false;
+    var perfOn = !local || /[?&]perf(=|&|$)/.test(location.search);
+    var sdk = null, analytics = null, perf = null, queue = [], loading = false, on = false;
 
     function saved() { try { return localStorage.getItem(KEY); } catch (e) { return null; } }
     function save(v) { try { localStorage.setItem(KEY, v); } catch (e) {} }
 
     function start() {
       on = true;
-      if (analytics) { sdk.setAnalyticsCollectionEnabled(analytics, true); return; }
+      if (analytics) { sdk.setAnalyticsCollectionEnabled(analytics, true); setPerf(true); return; }
       if (loading) return;
       loading = true;
-      Promise.all([import(FIREBASE + "firebase-app.js"), import(FIREBASE + "firebase-analytics.js")]).then(function (m) {
+      Promise.all([
+        import(FIREBASE + "firebase-app.js"),
+        import(FIREBASE + "firebase-analytics.js"),
+        perfOn ? import(FIREBASE + "firebase-performance.js") : null
+      ]).then(function (m) {
         sdk = m[1];
         // Measurement only: no advertising storage, no Google signals, no ad personalisation.
         sdk.setConsent({ analytics_storage: "granted", ad_storage: "denied", ad_user_data: "denied", ad_personalization: "denied" });
         var config = { allow_google_signals: false, allow_ad_personalization_signals: false };
         if (local) config.debug_mode = true;
-        analytics = sdk.initializeAnalytics(m[0].initializeApp(CONFIG), { config: config });
+        var app = m[0].initializeApp(CONFIG);
+        analytics = sdk.initializeAnalytics(app, { config: config });
+        // Page load timings are read from the browser after the fact, so starting late still counts them.
+        if (m[2]) perf = m[2].getPerformance(app);
         sdk.setUserProperties(analytics, { site_language: LANG });
-        if (!on) sdk.setAnalyticsCollectionEnabled(analytics, false);
+        if (!on) { sdk.setAnalyticsCollectionEnabled(analytics, false); setPerf(false); }
         queue.splice(0).forEach(function (e) { track(e[0], e[1]); });
       }).catch(function () { loading = false; });
     }
@@ -620,6 +630,9 @@ footer a:hover { color: var(--text); }
       on = false;
       queue = [];
       if (analytics) sdk.setAnalyticsCollectionEnabled(analytics, false);
+      setPerf(false);
+      // And the random installation ID Firebase keeps in this browser's IndexedDB.
+      try { ["firebase-installations-database", "firebase-heartbeat-database"].forEach(function (n) { indexedDB.deleteDatabase(n); }); } catch (e) {}
       // Remove the cookies Analytics set (_ga, _ga_<id>) on this host and the parent domain.
       var host = location.hostname, parts = host.split(".");
       var domains = ["", host, "." + host];
@@ -632,6 +645,8 @@ footer a:hover { color: var(--text); }
         });
       });
     }
+
+    function setPerf(v) { if (perf) { perf.dataCollectionEnabled = v; perf.instrumentationEnabled = v; } }
 
     function track(name, params) {
       if (!on) return;
@@ -655,6 +670,18 @@ footer a:hover { color: var(--text); }
     var choice = saved();
     if (choice === "yes") start();
     else if (choice !== "no" && navigator.globalPrivacyControl !== true) show();
+
+    // Homepage sections reached: once per page view, when the section's top passes the middle of the screen.
+    if ("IntersectionObserver" in window) {
+      var seen = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (!e.isIntersecting || !on) return;
+          track("section_view", { section: e.target.id || "closing" });
+          seen.unobserve(e.target);
+        });
+      }, { rootMargin: "0px 0px -50% 0px" });
+      document.querySelectorAll("#features, #private, #pro, .closer").forEach(function (s) { seen.observe(s); });
+    }
 
     // What was clicked, and where: the bar, the phone menu, the footer, or a section of the page.
     function where(el) {

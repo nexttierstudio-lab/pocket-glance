@@ -518,7 +518,7 @@ footer a:hover { color: var(--text); }
   <section>
     <h2><span>12</span>变更与联系</h2>
     <p>我们可能会更新本政策。当前版本及其生效日期始终公布在本页面，重要变更也会在应用内或版本说明中注明。</p>
-    <p><strong>本网站。</strong>除非你同意，本网站不使用 Cookie，也不进行任何跟踪。只有当你在统计分析提示中选择<strong>允许</strong>时，网站才会加载 Google Analytics for Firebase。它会设置本网站自己的 Cookie，并记录你浏览的页面、你点击的链接和按钮（例如下载按钮或某种语言）、你的浏览器和设备类型、语言，以及根据你的 IP 地址推断的大致位置。我们基于你的同意使用这些信息，以了解网站的哪些部分有用。Google 信号和广告个性化均已关闭，这些数据不会用于广告。如果你选择<strong>不用了</strong>，或者你的浏览器发送了 Global Privacy Control 信号，则不会加载任何内容。你可以随时通过每个页面底部的<strong>统计分析设置</strong>更改选择，这也会删除这些 Cookie。你对浅色/深色、语言和统计分析的选择只保存在你自己的浏览器中，不会发送到任何地方。如果你给我们发邮件，我们只会用你的消息来回复你。</p>
+    <p><strong>本网站。</strong>除非你同意，本网站不使用 Cookie，也不进行任何跟踪。只有当你在统计分析提示中选择<strong>允许</strong>时，网站才会加载 Google Analytics for Firebase。它会设置本网站自己的 Cookie，并记录你浏览的页面、你点击的链接和按钮（例如下载按钮或某种语言）、你的浏览器和设备类型、语言，以及根据你的 IP 地址推断的大致位置。它还会记录你在首页滚动到了哪些部分，并由 Firebase Performance Monitoring 测量页面加载和响应的速度，为此会在你的浏览器中保存一个随机的安装标识符。我们基于你的同意使用这些信息，以了解网站的哪些部分有用。Google 信号和广告个性化均已关闭，这些数据不会用于广告。如果你选择<strong>不用了</strong>，或者你的浏览器发送了 Global Privacy Control 信号，则不会加载任何内容。你可以随时通过每个页面底部的<strong>统计分析设置</strong>更改选择，这也会删除这些 Cookie 和标识符。你对浅色/深色、语言和统计分析的选择只保存在你自己的浏览器中，不会发送到任何地方。如果你给我们发邮件，我们只会用你的消息来回复你。</p>
     <p>问题或请求：<a href="mailto:nexttierstudio@gmail.com">nexttierstudio@gmail.com</a></p>
   </section>
 </main>
@@ -577,8 +577,10 @@ footer a:hover { color: var(--text); }
   // Until they pick Allow nothing is loaded from Google and no cookie is set. A browser that
   // sends Global Privacy Control counts as No thanks and is not asked. The choice is kept in
   // this browser ("analytics" = yes / no); "Analytics settings" in the footer reopens the notice.
-  // Measured: page views, plus the clicks below (download, language, links, theme).
-  // On localhost events go to DebugView only (debug_mode), so testing stays out of the reports.
+  // Measured: page views, the clicks below (download, language, links, theme), which homepage
+  // sections are reached, and page speed (Firebase Performance Monitoring: load times and
+  // network requests). On localhost Analytics events go to DebugView only (debug_mode) and
+  // Performance Monitoring stays off unless the address has ?perf, so testing stays out of the reports.
   (function () {
     var FIREBASE = "https://www.gstatic.com/firebasejs/10.14.1/";
     var CONFIG = {
@@ -593,25 +595,33 @@ footer a:hover { color: var(--text); }
     var KEY = "analytics", LANG = "zh";
     var local = /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
     var box = document.getElementById("consent");
-    var sdk = null, analytics = null, queue = [], loading = false, on = false;
+    var perfOn = !local || /[?&]perf(=|&|$)/.test(location.search);
+    var sdk = null, analytics = null, perf = null, queue = [], loading = false, on = false;
 
     function saved() { try { return localStorage.getItem(KEY); } catch (e) { return null; } }
     function save(v) { try { localStorage.setItem(KEY, v); } catch (e) {} }
 
     function start() {
       on = true;
-      if (analytics) { sdk.setAnalyticsCollectionEnabled(analytics, true); return; }
+      if (analytics) { sdk.setAnalyticsCollectionEnabled(analytics, true); setPerf(true); return; }
       if (loading) return;
       loading = true;
-      Promise.all([import(FIREBASE + "firebase-app.js"), import(FIREBASE + "firebase-analytics.js")]).then(function (m) {
+      Promise.all([
+        import(FIREBASE + "firebase-app.js"),
+        import(FIREBASE + "firebase-analytics.js"),
+        perfOn ? import(FIREBASE + "firebase-performance.js") : null
+      ]).then(function (m) {
         sdk = m[1];
         // Measurement only: no advertising storage, no Google signals, no ad personalisation.
         sdk.setConsent({ analytics_storage: "granted", ad_storage: "denied", ad_user_data: "denied", ad_personalization: "denied" });
         var config = { allow_google_signals: false, allow_ad_personalization_signals: false };
         if (local) config.debug_mode = true;
-        analytics = sdk.initializeAnalytics(m[0].initializeApp(CONFIG), { config: config });
+        var app = m[0].initializeApp(CONFIG);
+        analytics = sdk.initializeAnalytics(app, { config: config });
+        // Page load timings are read from the browser after the fact, so starting late still counts them.
+        if (m[2]) perf = m[2].getPerformance(app);
         sdk.setUserProperties(analytics, { site_language: LANG });
-        if (!on) sdk.setAnalyticsCollectionEnabled(analytics, false);
+        if (!on) { sdk.setAnalyticsCollectionEnabled(analytics, false); setPerf(false); }
         queue.splice(0).forEach(function (e) { track(e[0], e[1]); });
       }).catch(function () { loading = false; });
     }
@@ -620,6 +630,9 @@ footer a:hover { color: var(--text); }
       on = false;
       queue = [];
       if (analytics) sdk.setAnalyticsCollectionEnabled(analytics, false);
+      setPerf(false);
+      // And the random installation ID Firebase keeps in this browser's IndexedDB.
+      try { ["firebase-installations-database", "firebase-heartbeat-database"].forEach(function (n) { indexedDB.deleteDatabase(n); }); } catch (e) {}
       // Remove the cookies Analytics set (_ga, _ga_<id>) on this host and the parent domain.
       var host = location.hostname, parts = host.split(".");
       var domains = ["", host, "." + host];
@@ -632,6 +645,8 @@ footer a:hover { color: var(--text); }
         });
       });
     }
+
+    function setPerf(v) { if (perf) { perf.dataCollectionEnabled = v; perf.instrumentationEnabled = v; } }
 
     function track(name, params) {
       if (!on) return;
@@ -655,6 +670,18 @@ footer a:hover { color: var(--text); }
     var choice = saved();
     if (choice === "yes") start();
     else if (choice !== "no" && navigator.globalPrivacyControl !== true) show();
+
+    // Homepage sections reached: once per page view, when the section's top passes the middle of the screen.
+    if ("IntersectionObserver" in window) {
+      var seen = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (!e.isIntersecting || !on) return;
+          track("section_view", { section: e.target.id || "closing" });
+          seen.unobserve(e.target);
+        });
+      }, { rootMargin: "0px 0px -50% 0px" });
+      document.querySelectorAll("#features, #private, #pro, .closer").forEach(function (s) { seen.observe(s); });
+    }
 
     // What was clicked, and where: the bar, the phone menu, the footer, or a section of the page.
     function where(el) {
