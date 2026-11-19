@@ -102,8 +102,9 @@ def rel(from_code, to_code, page=""):
 # The pages built for every language: (file, template). Legal pages take their wording from
 # legal/<code>/<file>: a title line, a description line, "---", then the page's body.
 PAGES = [("index.html", "page.html"), ("privacy.html", "legal.html"), ("terms.html", "legal.html"), ("delete-data.html", "legal.html")]
-# Links in the bar: the homepage's sections and two legal pages, or the three legal pages.
-HOME_LINKS = [("#features", "nav_features"), ("#pro", "nav_pro"), ("privacy.html", "nav_privacy"), ("terms.html", "nav_terms")]
+# Links in the bar, three on every page: two homepage sections and the Privacy Policy, or the
+# three legal pages. Terms stays in the footer.
+HOME_LINKS = [("#features", "nav_features"), ("#pro", "nav_pro"), ("privacy.html", "nav_privacy")]
 LEGAL_LINKS = [("privacy.html", "nav_privacy"), ("terms.html", "nav_terms"), ("delete-data.html", "nav_delete")]
 
 
