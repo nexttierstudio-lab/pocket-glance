@@ -86,7 +86,7 @@
   "legal_tr_note": "This page is a translation, provided for convenience. If it differs from the English version, the English version applies.",
   "legal_tr_link": "Read the English version",
   "consent_label": "Analytics choice",
-  "consent_text": "Help us make Pocket Glance better by allowing analytics (via Google Analytics). We never use it to identify you or show you ads, and it never sees anything in your app.",
+  "consent_text": "Help us make Pocket Glance better by allowing analytics. We never use it to identify you or show you ads, and it never sees anything in your app.",
   "consent_yes": "Yes, happy to help",
   "consent_no": "No thanks",
   "consent_settings": "Analytics settings",
