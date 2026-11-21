@@ -253,8 +253,8 @@ body { padding-top: var(--bar-h); }
 .menu .mode-row button { height: 42px; font-size: 15px; }
 :root:not(.js) .mode { display: none; }
 /* ---------- Analytics notice ----------
-   A small card in the bottom corner, shown until the visitor picks Allow or No thanks.
-   Nothing is measured before Allow. "Analytics settings" in the footer brings it back. */
+   A small card in the bottom corner, shown until the visitor picks Allow Analytics or Decline.
+   Nothing is measured before Allow Analytics. "Analytics settings" in the footer brings it back. */
 .consent {
   position: fixed; z-index: 40; inset-inline-start: var(--gutter); bottom: var(--gutter);
   width: min(400px, calc(100% - 2 * var(--gutter)));
@@ -265,6 +265,7 @@ body { padding-top: var(--bar-h); }
 .consent[hidden] { display: none; }
 .consent p { margin: 0 0 12px; color: var(--muted); }
 .consent p a { color: var(--text); }
+.consent .consent-title { margin: 0 0 6px; color: var(--text); font: 500 1.12rem/1.3 var(--heading); }
 .consent .row { display: flex; justify-content: flex-end; gap: 8px; flex-wrap: wrap; }
 .consent button { font: 500 0.86rem/1 var(--ui); height: 36px; padding: 0 16px; border-radius: 999px; cursor: pointer; border: 1px solid var(--divider); background: transparent; color: var(--text); }
 .consent button:hover { background: var(--tile); }
@@ -563,7 +564,7 @@ footer a:hover { color: var(--text); }
   <section>
     <h2><span>12</span>التغييرات والتواصل</h2>
     <p>قد نحدّث هذه السياسة. النسخة الحالية موجودة دائمًا في هذه الصفحة مع تاريخ سريانها، وسنشير إلى التغييرات المهمة أيضًا في التطبيق أو في ملاحظات الإصدار.</p>
-    <p><strong>هذا الموقع.</strong> يعمل الموقع دون ملفات تعريف ارتباط ودون تتبّع ما لم توافق. ولا يُحمِّل Google Analytics for Firebase إلا إذا اخترت <strong>نعم، بكل سرور</strong> في إشعار التحليلات، وعندها يضع ملفات تعريف ارتباط خاصة بالموقع ويسجّل الصفحات التي تشاهدها، والروابط والأزرار التي تنقر عليها (مثل زر التنزيل أو اختيار لغة)، ومتصفحك ونوع جهازك، ولغتك، وموقعًا تقريبيًا مستنتجًا من عنوان IP الخاص بك. ويسجّل أيضًا الأقسام التي تصل إليها في الصفحة الرئيسية، ويقيس Firebase Performance Monitoring سرعة تحميل الصفحات واستجابتها باستخدام معرّف تثبيت عشوائي يُحفظ في متصفحك. نستخدم ذلك بناءً على موافقتك لمعرفة الأجزاء المفيدة من الموقع. إشارات Google وتخصيص الإعلانات متوقفة، ولا تُستخدم هذه البيانات للإعلانات. إذا اخترت <strong>لا، شكرًا</strong>، أو أرسل متصفحك إشارة Global Privacy Control، فلا يُحمَّل أي شيء. يمكنك تغيير رأيك في أي وقت من <strong>إعدادات التحليلات</strong> أسفل كل صفحة، وهذا يحذف أيضًا ملفات تعريف الارتباط والمعرّفات تلك. تُحفظ اختياراتك للوضع الفاتح/الداكن واللغة والتحليلات في متصفحك أنت ولا تُرسل إلى أي مكان. وإذا راسلتنا، فإننا نستخدم رسالتك للرد عليك فقط.</p>
+    <p><strong>هذا الموقع.</strong> يعمل الموقع دون ملفات تعريف ارتباط ودون تتبّع ما لم توافق. ولا يُحمِّل Google Analytics for Firebase إلا إذا اخترت <strong>السماح بالتحليلات</strong> في إشعار التحليلات، وعندها يضع ملفات تعريف ارتباط خاصة بالموقع ويسجّل الصفحات التي تشاهدها، والروابط والأزرار التي تنقر عليها (مثل زر التنزيل أو اختيار لغة)، ومتصفحك ونوع جهازك، ولغتك، وموقعًا تقريبيًا مستنتجًا من عنوان IP الخاص بك. ويسجّل أيضًا الأقسام التي تصل إليها في الصفحة الرئيسية، ويقيس Firebase Performance Monitoring سرعة تحميل الصفحات واستجابتها باستخدام معرّف تثبيت عشوائي يُحفظ في متصفحك. نستخدم ذلك بناءً على موافقتك لمعرفة الأجزاء المفيدة من الموقع. إشارات Google وتخصيص الإعلانات متوقفة، ولا تُستخدم هذه البيانات للإعلانات. إذا اخترت <strong>رفض</strong>، أو أرسل متصفحك إشارة Global Privacy Control، فلا يُحمَّل أي شيء. يمكنك تغيير رأيك في أي وقت من <strong>إعدادات التحليلات</strong> أسفل كل صفحة، وهذا يحذف أيضًا ملفات تعريف الارتباط والمعرّفات تلك. تُحفظ اختياراتك للوضع الفاتح/الداكن واللغة والتحليلات في متصفحك أنت ولا تُرسل إلى أي مكان. وإذا راسلتنا، فإننا نستخدم رسالتك للرد عليك فقط.</p>
     <p>للأسئلة أو الطلبات: <a href="mailto:nexttierstudio@gmail.com">nexttierstudio@gmail.com</a></p>
   </section>
 </main>
@@ -587,10 +588,11 @@ footer a:hover { color: var(--text); }
   </div>
 </footer>
 <div class="consent" id="consent" role="region" aria-label="خيار التحليلات" hidden>
-  <p>ساعدنا في تحسين Pocket Glance بالسماح بالتحليلات (عبر Google Analytics). لا نستخدمها أبدًا للتعرّف على هويتك أو لعرض الإعلانات عليك، ولا ترى أي شيء من تطبيقك. <a href="privacy.html">سياسة الخصوصية</a></p>
+  <p class="consent-title">ساعدنا في تحسين Pocket Glance</p>
+  <p>اسمح لنا بجمع بيانات أساسية عن استخدام الموقع، مثل الزيارات والتفاعلات، لنفهم كيف يُستخدم الموقع ونحسّن تجربتك. لا نستخدم هذه البيانات للإعلانات. <a href="privacy.html">سياسة الخصوصية</a></p>
   <div class="row">
-    <button type="button" data-consent="no">لا، شكرًا</button>
-    <button type="button" class="yes" data-consent="yes">نعم، بكل سرور</button>
+    <button type="button" data-consent="no">رفض</button>
+    <button type="button" class="yes" data-consent="yes">السماح بالتحليلات</button>
   </div>
 </div>
 <script>

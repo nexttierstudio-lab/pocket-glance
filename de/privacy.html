@@ -253,8 +253,8 @@ body { padding-top: var(--bar-h); }
 .menu .mode-row button { height: 42px; font-size: 15px; }
 :root:not(.js) .mode { display: none; }
 /* ---------- Analytics notice ----------
-   A small card in the bottom corner, shown until the visitor picks Allow or No thanks.
-   Nothing is measured before Allow. "Analytics settings" in the footer brings it back. */
+   A small card in the bottom corner, shown until the visitor picks Allow Analytics or Decline.
+   Nothing is measured before Allow Analytics. "Analytics settings" in the footer brings it back. */
 .consent {
   position: fixed; z-index: 40; inset-inline-start: var(--gutter); bottom: var(--gutter);
   width: min(400px, calc(100% - 2 * var(--gutter)));
@@ -265,6 +265,7 @@ body { padding-top: var(--bar-h); }
 .consent[hidden] { display: none; }
 .consent p { margin: 0 0 12px; color: var(--muted); }
 .consent p a { color: var(--text); }
+.consent .consent-title { margin: 0 0 6px; color: var(--text); font: 500 1.12rem/1.3 var(--heading); }
 .consent .row { display: flex; justify-content: flex-end; gap: 8px; flex-wrap: wrap; }
 .consent button { font: 500 0.86rem/1 var(--ui); height: 36px; padding: 0 16px; border-radius: 999px; cursor: pointer; border: 1px solid var(--divider); background: transparent; color: var(--text); }
 .consent button:hover { background: var(--tile); }
@@ -563,7 +564,7 @@ footer a:hover { color: var(--text); }
   <section>
     <h2><span>12</span>Änderungen und Kontakt</h2>
     <p>Wir können diese Erklärung aktualisieren. Die aktuelle Fassung steht immer mit ihrem Gültigkeitsdatum auf dieser Seite, und wichtige Änderungen werden auch in der App oder in den Versionshinweisen erwähnt.</p>
-    <p><strong>Diese Website.</strong> Die Website funktioniert ohne Cookies und ohne Tracking, solange du nicht zustimmst. Nur wenn du im Analyse-Hinweis <strong>Ja, gerne</strong> wählst, lädt sie Google Analytics für Firebase. Es setzt eigene Cookies der Website und erfasst die Seiten, die du ansiehst, die Links und Schaltflächen, die du anklickst (etwa den Download-Button oder eine Sprache), deinen Browser und Gerätetyp, deine Sprache und einen ungefähren Standort, der aus deiner IP-Adresse abgeleitet wird. Außerdem wird erfasst, bis zu welchen Abschnitten der Startseite du scrollst, und Firebase Performance Monitoring misst, wie schnell Seiten laden und reagieren; dafür wird eine zufällige Installations-ID in deinem Browser gespeichert. Wir nutzen das auf Grundlage deiner Einwilligung, um zu sehen, welche Teile der Website nützlich sind. Google Signals und personalisierte Werbung sind ausgeschaltet, und diese Daten werden nicht für Werbung verwendet. Wenn du <strong>Nein, danke</strong> wählst oder dein Browser ein Global-Privacy-Control-Signal sendet, wird nichts geladen. Du kannst deine Wahl jederzeit über <strong>Analyse-Einstellungen</strong> unten auf jeder Seite ändern; dabei werden diese Cookies und Kennungen auch gelöscht. Deine Wahl für Hell/Dunkel, Sprache und Analyse wird in deinem eigenen Browser gespeichert und nirgendwohin gesendet. Wenn du uns schreibst, nutzen wir deine Nachricht nur, um dir zu antworten.</p>
+    <p><strong>Diese Website.</strong> Die Website funktioniert ohne Cookies und ohne Tracking, solange du nicht zustimmst. Nur wenn du im Analyse-Hinweis <strong>Analysen erlauben</strong> wählst, lädt sie Google Analytics für Firebase. Es setzt eigene Cookies der Website und erfasst die Seiten, die du ansiehst, die Links und Schaltflächen, die du anklickst (etwa den Download-Button oder eine Sprache), deinen Browser und Gerätetyp, deine Sprache und einen ungefähren Standort, der aus deiner IP-Adresse abgeleitet wird. Außerdem wird erfasst, bis zu welchen Abschnitten der Startseite du scrollst, und Firebase Performance Monitoring misst, wie schnell Seiten laden und reagieren; dafür wird eine zufällige Installations-ID in deinem Browser gespeichert. Wir nutzen das auf Grundlage deiner Einwilligung, um zu sehen, welche Teile der Website nützlich sind. Google Signals und personalisierte Werbung sind ausgeschaltet, und diese Daten werden nicht für Werbung verwendet. Wenn du <strong>Ablehnen</strong> wählst oder dein Browser ein Global-Privacy-Control-Signal sendet, wird nichts geladen. Du kannst deine Wahl jederzeit über <strong>Analyse-Einstellungen</strong> unten auf jeder Seite ändern; dabei werden diese Cookies und Kennungen auch gelöscht. Deine Wahl für Hell/Dunkel, Sprache und Analyse wird in deinem eigenen Browser gespeichert und nirgendwohin gesendet. Wenn du uns schreibst, nutzen wir deine Nachricht nur, um dir zu antworten.</p>
     <p>Fragen oder Anliegen: <a href="mailto:nexttierstudio@gmail.com">nexttierstudio@gmail.com</a></p>
   </section>
 </main>
@@ -587,10 +588,11 @@ footer a:hover { color: var(--text); }
   </div>
 </footer>
 <div class="consent" id="consent" role="region" aria-label="Analyse-Einstellung" hidden>
-  <p>Hilf uns, Pocket Glance besser zu machen, indem du Analysen erlaubst (über Google Analytics). Wir nutzen sie nie, um dich zu identifizieren oder dir Werbung zu zeigen, und sie sehen nie etwas aus deiner App. <a href="privacy.html">Datenschutzerklärung</a></p>
+  <p class="consent-title">Hilf uns, Pocket Glance zu verbessern</p>
+  <p>Erlaube uns, grundlegende Nutzungsdaten der Website wie Besuche und Interaktionen zu erfassen, damit wir verstehen, wie die Seite genutzt wird, und dein Erlebnis verbessern können. Wir nutzen diese Daten nicht für Werbung. <a href="privacy.html">Datenschutzerklärung</a></p>
   <div class="row">
-    <button type="button" data-consent="no">Nein, danke</button>
-    <button type="button" class="yes" data-consent="yes">Ja, gerne</button>
+    <button type="button" data-consent="no">Ablehnen</button>
+    <button type="button" class="yes" data-consent="yes">Analysen erlauben</button>
   </div>
 </div>
 <script>
