@@ -288,6 +288,10 @@ body, .bar, .hero, .tiles div, .card { transition: background-color .35s var(--e
   animation: drift 16s ease-in-out infinite alternate; pointer-events: none;
 }
 .hero .wrap { position: relative; }
+.back-home { display: inline-flex; align-items: center; gap: 6px; margin: 0 0 26px; font: 500 14px/1 var(--ui); color: var(--hero-meta); text-decoration: none; transition: color .3s var(--ease); }
+.back-home:hover { color: var(--brand); }
+.back-home svg { flex: none; }
+[dir="rtl"] .back-home svg { transform: scaleX(-1); }
 .eyebrow { font: 600 12px/1 var(--ui); letter-spacing: 0.18em; text-transform: uppercase; color: var(--brand); margin: 0 0 22px; }
 h1 { font: 600 clamp(2.6rem, calc(8 * var(--vw)), 4.75rem)/1.04 var(--heading); letter-spacing: -0.01em; margin: 0 auto 24px; max-width: 14ch; text-wrap: balance; }
 .lead { font: italic 500 clamp(1.15rem, calc(2.4 * var(--vw)), 1.4rem)/1.5 var(--heading); margin: 0 auto 26px; max-width: 34em; color: var(--hero-lead); text-wrap: pretty; }
@@ -318,6 +322,8 @@ p { margin: 0 0 14px; }
 ul, ol { padding-inline-start: 1.2em; margin: 0 0 14px; }
 li { margin: 7px 0; padding-inline-start: 4px; }
 li::marker { color: var(--accent); }
+h3 { font: 600 1.3rem/1.25 var(--heading); margin: 30px 0 12px; }
+h2 + h3 { margin-top: 0; }
 .short { font: italic 500 1.3rem/1.4 var(--heading); margin: 0 0 18px; text-wrap: pretty; }
 .table-wrap { overflow-x: auto; margin: 0 0 14px; }
 table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
@@ -450,103 +456,71 @@ footer a:hover { color: var(--text); }
 
 <div class="hero">
   <div class="wrap">
+    <a class="back-home" href="./"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>ホームに戻る</a>
     <p class="eyebrow">Pocket Glance</p>
     <h1>利用規約</h1>
-    <p class="lead">Pocket Glance は、あなた自身のお金を把握するためのアプリです。本規約では、アプリに期待できること、私たちがお願いすること、そして私たちの責任の範囲を説明します。</p>
-    <p class="meta">NextTier Studio の Pocket Glance · 2026年11月15日施行</p>
+    <p class="lead">Pocket Glance に期待できること、お願いしたいこと、そして当方の責任の範囲について。</p>
+    <p class="meta">NextTier Studio の Pocket Glance · 2026年11月22日施行</p>
     <p class="tr-note">このページは便宜上の翻訳です。英語版と内容が異なる場合は、英語版が優先されます。 <a href="../terms.html" hreflang="en" lang="en">英語版を読む</a></p>
   </div>
 </div>
 
 <main class="wrap">
   <section>
-    <h2><span>01</span>合意</h2>
-    <p>本規約は、あなたと Pocket Glance アプリの独立系デベロッパーである <strong>NextTier Studio</strong> との間の合意です。NextTier Studio は個人デベロッパーの公開名であり、会社ではありません。本規約の「私たち」はそのデベロッパーを指します。アプリをインストールまたは使用することで、あなたは本規約と<a href="privacy.html">プライバシーポリシー</a>に同意したものとみなされます。同意いただけない場合は、アプリを使用しないでください。</p>
-    <p>アプリの使用と購入には、18歳以上、またはお住まいの地域の成年年齢に達している必要があります。</p>
+    <h2><span>01</span>規約への同意</h2>
+    <p>本規約は、あなたと、個人開発者の公開名である <strong>NextTier Studio</strong>（以下「当方」）との間の合意です。Pocket Glance をインストールまたは使用することで、本規約と<a href="privacy.html">プライバシーポリシー</a>に同意したことになります。同意しない場合は、アプリを使用しないでください。18 歳以上、またはお住まいの地域の成年年齢以上である必要があります。</p>
   </section>
 
   <section>
-    <h2><span>02</span>記録のためのツールであり、金融アドバイスではありません</h2>
-    <p class="short">アプリはあなたが入力したものを記録します。お金を扱うことも、お金の使い方を指示することもありません。</p>
-    <p>Pocket Glance では、支出、予算、貯金目標、サブスクリプションを記録して確認できます。銀行口座には接続せず、お金を保管、移動、貸付、投資することも、あなたに代わって支払いや支払いの取り消しを行うこともありません。私たちは銀行、決済サービス、または金融・税務・法律のアドバイザーではありません。</p>
-    <p>アプリ内の数値、グラフ、分析は、あなたの入力に基づく一般的な情報です。金融、投資、税務、法律に関する助言ではありません。お金に関する判断は、ご自身の責任で行ってください。</p>
+    <h2><span>02</span>Pocket Glance の利用</h2>
+    <p>当方は、あなた自身の端末で非商用目的にアプリを使用するための、個人的で譲渡不可のライセンスを付与します。アプリの複製、改変、再販売、リバースエンジニアリング、購入やセキュリティの機能の回避、違法な使用はしないでください。アプリの不正使用によって生じた損失については、法律で認められる範囲であなたが責任を負います。</p>
+    <p>当方は、アプリや機能を変更・一時停止・終了することがあり、本規約への重大な違反があった場合はライセンスを終了することがあります。アプリをアンインストールし、サブスクリプションを解約すれば、いつでも利用をやめられます。</p>
   </section>
 
   <section>
-    <h2><span>03</span>正確さ</h2>
+    <h2><span>03</span>金融情報に関する注意</h2>
+    <p>Pocket Glance は記録のためのツールです。銀行には接続せず、お金を動かしたり支払いを代行したりすることはありません。数値、グラフ、分析は入力内容に基づく一般的な情報であり、金融・投資・税務・法律上の助言ではありません。お金に関する判断はご自身で行ってください。</p>
+    <p>アプリの正確さは入力内容によります。通貨換算はアプリに組み込まれたおおよそのレートを使い、リマインダーは端末に依存するため遅れたり届かなかったりすることがあります。請求の支払いや無料試用の解約を期限内に行うのはご自身の責任です。</p>
+  </section>
+
+  <section>
+    <h2><span>04</span>データの保存とバックアップ</h2>
+    <p>データはお使いのスマートフォンに保存され、当方はコピーを保有していません。バックアップなしで端末を紛失したり、アプリをアンインストールしたり、ストレージを消去したりすると、データは復元できません。忘れたバックアップのパスワードを当方が復元することはできません。端末、Google アカウント、バックアップやエクスポートしたファイルの保護はご自身の責任です。バックアップは当方が管理していない Google ドライブに依存します。</p>
+  </section>
+
+  <section>
+    <h2><span>05</span>Pro 機能とサブスクリプション</h2>
+    <p>Pocket Glance Pro は、年間サブスクリプションまたは買い切り（永久版）として、いずれも Google Play で提供されます。価格、請求期間、無料試用の有無は確定前に表示されます。永久版の Pro は、アプリが提供・サポートされている限り有効で、購入した Google アカウントに紐づきます。</p>
+    <p>当方は、価格や Pro に含まれる機能を変更することがあります。価格を変更する場合は事前にお知らせし、支払い済みの期間が終わるまでは購入した内容をご利用いただけます。</p>
+  </section>
+
+  <section>
+    <h2><span>06</span>支払いと解約</h2>
     <ul>
-      <li>アプリの正確さは入力内容の正確さによります。ご自身の明細と照らし合わせてください。</li>
-      <li>通貨換算にはアプリに組み込まれた参考レートを使います。レートは概算でリアルタイムではなく、銀行のレートとは異なります。</li>
-      <li>リマインダーは端末とその設定に左右され、遅れて届いたり届かなかったりすることがあります。請求の支払いや、サブスクリプション・無料トライアルの期限内の解約は、引き続きご自身の責任です。</li>
+      <li>支払いは Google Play がその規約に従って処理します。</li>
+      <li>サブスクリプションは、Google Play で解約するまでその時点の価格で自動更新されます。アプリをアンインストールしても解約にはなりません。</li>
+      <li>無料試用を始めた場合、終了前に解約しない限り、試用終了時に課金されます。</li>
+      <li>解約後も、支払い済みの期間の終わりまで Pro は有効です。</li>
+      <li>返金は Google Play がそのポリシーに従って対応します。一部使用した期間は、法律で求められない限り返金されません。</li>
     </ul>
+    <p>サブスクリプションの管理方法は<a href="help.html#subscriptions">ヘルプとサポート</a>をご覧ください。</p>
   </section>
 
   <section>
-    <h2><span>04</span>データとバックアップ</h2>
-    <p class="short">記録はあなたのもので、スマホの中にあります。私たちはコピーを持っていないため、復元することはできません。</p>
+    <h2><span>07</span>責任の制限</h2>
+    <p>アプリは「現状のまま」かつ「提供可能な範囲で」提供されます。エラーがないこと、常に利用できること、計算・リマインダー・バックアップが常に機能することは保証しません。</p>
+    <p>法律で認められる範囲で、当方は、間接的な損失、データの消失、金銭や貯蓄の損失、支払いの遅れ、延滞料、望まない更新、税務上の影響、アプリを使って行った判断について責任を負いません。アプリに関するすべての請求に対する当方の責任の総額は、請求前 12 か月間にあなたが当方に支払った金額、またはそれより多い場合は 10 米ドルを上限とします。</p>
+    <p>本規約のいずれも、排除できない消費者法上の権利を奪うものではありません。</p>
+  </section>
+
+  <section>
+    <h2><span>08</span>変更とお問い合わせ</h2>
+    <p>当方は本規約を更新することがあります。最新版と施行日は常にこのページに掲載し、アプリの使用を続けることで、変更後の規約に同意したものとみなされます。一部が無効となっても、残りは引き続き有効です。本規約はあなたと当方との間のものであり、Google との間のものではありません。</p>
+    <p>本規約は開発者が居住する国の法律に準拠し、その国の裁判所が管轄権を持ちます。ただし、お住まいの国の強行的な消費者保護は失われません。法律で認められる範囲で、請求は集団訴訟ではなく個別に、かつ 1 年以内に行う必要があります。問題がある場合は、まずメールでご連絡いただき、解決のため 30 日の猶予をください。</p>
     <ul>
-      <li>スマートフォンの紛失、初期化、機種変更、またはアプリのアンインストールやストレージの消去を行うと、バックアップがない限りデータは失われます。バックアップの確保はご自身の責任です。</li>
-      <li>バックアップのパスワードを忘れると、そのバックアップは開けません。私たちはリセットできません。</li>
-      <li>パスワードのないバックアップとエクスポートしたスプレッドシートは暗号化されていません。保管場所はご自身で決めてください。</li>
-      <li>端末と Google アカウントの保護はご自身の責任です。</li>
+      <li><strong>サポート：</strong><a href="mailto:support.pocketglance@gmail.com">support.pocketglance@gmail.com</a></li>
+      <li><strong>開発者：</strong><a href="mailto:nexttierstudio@gmail.com">nexttierstudio@gmail.com</a></li>
     </ul>
-  </section>
-
-  <section>
-    <h2><span>05</span>Pocket Glance Pro</h2>
-    <p>Pro は Google Play を通じて、自動更新の年額サブスクリプション、または1回限りの買い切り（ライフタイム）として販売されます。価格、請求期間、無料トライアルの有無は、購入を確定する前に表示されます。</p>
-    <ul>
-      <li><strong>無料トライアル。</strong>Google Play で無料トライアルが提供された場合、終了前に解約しない限り、終了時に年額料金が請求されます。</li>
-      <li><strong>自動更新。</strong>サブスクリプションは解約するまで、毎年その時点の価格で自動的に更新されます。</li>
-      <li><strong>解約。</strong>Google Play の<strong>お支払いと定期購入 → 定期購入</strong>、または <a href="https://play.google.com/store/account/subscriptions" rel="noopener">play.google.com/store/account/subscriptions</a> からいつでも解約できます。Pro は支払い済みの期間の終わりまで有効です。アプリをアンインストールしてもサブスクリプションは解約されません。</li>
-      <li><strong>ライフタイム。</strong>私たちがアプリを提供・サポートしている限り Pro を利用できることを意味します。購入した Google アカウントに紐づき、譲渡はできません。</li>
-      <li><strong>返金。</strong>返金は Google Play の<a href="https://support.google.com/googleplay/answer/2479637" rel="noopener">返金ポリシー</a>に従って Google Play が対応します。法律で求められない限り、一部利用した期間の返金は行いません。</li>
-      <li><strong>変更。</strong>価格や、無料の機能と Pro の機能の区分を変更することがあります。価格の変更は事前に Google Play からお知らせし、支払い済みの機能はその支払い期間中は引き続き利用できます。</li>
-    </ul>
-  </section>
-
-  <section>
-    <h2><span>06</span>アプリの使用</h2>
-    <p>私たちはあなたに、ご自身の端末で非商用目的にアプリを使用するための、個人的で譲渡不可のライセンスを付与します。アプリおよび Pocket Glance と NextTier Studio の名称は私たちに帰属します。あなたは次のことを行わないことに同意します。</p>
-    <ul>
-      <li>アプリの複製、改変、再販売、再配布</li>
-      <li>法律で認められている場合を除く、リバースエンジニアリング</li>
-      <li>購入確認、プランの制限、セキュリティ機能の回避</li>
-      <li>違法な目的での使用</li>
-    </ul>
-    <p>あなたが本規約に違反したりアプリを不正に使用したりしたことで私たちに損害が生じた場合、法律で認められる範囲で、あなたはその損害を補償することに同意します。</p>
-  </section>
-
-  <section>
-    <h2><span>07</span>アプリの変更とほかのサービス</h2>
-    <p>私たちはいつでもアプリやその機能を更新、変更、または終了することがあり、サポートやアップデートを提供する義務は負いません。アプリは1人で開発・運営しているため、サポートへの返信に時間がかかることがあります。アプリは Google Play、Google ドライブ、Firebase、そしてあなたの端末に依存しています。私たちはこれらを管理しておらず、その可用性や、それらが原因で生じた損失（バックアップの消失や利用不能を含む）について責任を負いません。</p>
-  </section>
-
-  <section>
-    <h2><span>08</span>保証の否認</h2>
-    <p>私たちはアプリを正確で信頼できるものに保つよう努めていますが、アプリは法律で認められる範囲で、いかなる保証もなく<strong>「現状有姿」かつ「提供可能な範囲」</strong>で提供されます。エラーがないこと、常に利用できること、計算・換算・リマインダーが正確かつ時間どおりであること、データが決して失われないことは約束しません。</p>
-  </section>
-
-  <section>
-    <h2><span>09</span>責任の制限</h2>
-    <p>法律で認められる範囲で、</p>
-    <ul>
-      <li>私たちは、間接的または派生的な損害、データ・金銭・利益・貯蓄の損失、支払い漏れ、延滞料、望まない更新、税務上の影響、お金に関する判断について責任を負いません。</li>
-      <li>アプリに関するすべての請求に対する私たちの責任の総額は、請求前の12か月間にあなたが私たちに支払った金額、または 10 米ドルのいずれか大きい方を上限とします。</li>
-    </ul>
-    <p><strong>あなたの法的権利。</strong>本規約のいかなる内容も、法律上制限できない責任を制限するものではなく、お住まいの国の法律で放棄できないとされている消費者の権利を奪うものでもありません。</p>
-  </section>
-
-  <section>
-    <h2><span>10</span>紛争</h2>
-    <p>苦情がある場合は、まずメールでご連絡いただき、解決のために30日間の猶予をください。本規約はデベロッパーが居住する国の法律に準拠し、その国の裁判所が管轄権を有します。消費者の方は、お住まいの国の強行的な保護を引き続き受けられます。法律で認められる範囲で、請求は集団訴訟ではなく個別にのみ、また1年以内にのみ行うことができます。</p>
-  </section>
-
-  <section>
-    <h2><span>11</span>一般条項</h2>
-    <p>本規約は更新されることがあります。最新版は常に施行日とともにこのページに掲載され、アプリを使い続けることで最新版に同意したものとみなされます。サブスクリプションを解約したうえでアプリをアンインストールすれば、いつでも利用をやめられます。本規約への重大な違反があった場合、私たちはあなたのライセンスを終了することがあります。</p>
-    <p>本規約の一部が執行できない場合でも、残りの部分は引き続き適用されます。本規約はあなたと私たちとの間のものであり、Google との間のものではありません。</p>
-    <p>お問い合わせ：<a href="mailto:nexttierstudio@gmail.com">nexttierstudio@gmail.com</a></p>
   </section>
 </main>
 
@@ -565,7 +539,7 @@ footer a:hover { color: var(--text); }
 <footer>
   <div class="wrap">
     <span>© 2026 NextTier Studio · Pocket Glance</span>
-    <span><a href="privacy.html">プライバシーポリシー</a> · <a href="terms.html">利用規約</a> · <a href="delete-data.html">データの削除</a> · <button type="button" class="consent-open">アクセス解析の設定</button> · <a href="mailto:nexttierstudio@gmail.com">nexttierstudio@gmail.com</a></span>
+    <span><a href="privacy.html">プライバシーポリシー</a> · <a href="terms.html">利用規約</a> · <a href="help.html">ヘルプとサポート</a> · <button type="button" class="consent-open">アクセス解析の設定</button> · <a href="mailto:nexttierstudio@gmail.com">nexttierstudio@gmail.com</a></span>
   </div>
 </footer>
 <div class="consent" id="consent" role="region" aria-label="アクセス解析の設定" hidden>
