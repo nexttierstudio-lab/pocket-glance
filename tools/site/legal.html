@@ -114,6 +114,10 @@ body, .bar, .hero, .tiles div, .card { transition: background-color .35s var(--e
   animation: drift 16s ease-in-out infinite alternate; pointer-events: none;
 }
 .hero .wrap { position: relative; }
+.back-home { display: inline-flex; align-items: center; gap: 6px; margin: 0 0 26px; font: 500 14px/1 var(--ui); color: var(--hero-meta); text-decoration: none; transition: color .3s var(--ease); }
+.back-home:hover { color: var(--brand); }
+.back-home svg { flex: none; }
+[dir="rtl"] .back-home svg { transform: scaleX(-1); }
 .eyebrow { font: 600 12px/1 var(--ui); letter-spacing: 0.18em; text-transform: uppercase; color: var(--brand); margin: 0 0 22px; }
 h1 { font: 600 clamp(2.6rem, calc(8 * var(--vw)), 4.75rem)/1.04 var(--heading); letter-spacing: -0.01em; margin: 0 auto 24px; max-width: 14ch; text-wrap: balance; }
 .lead { font: italic 500 clamp(1.15rem, calc(2.4 * var(--vw)), 1.4rem)/1.5 var(--heading); margin: 0 auto 26px; max-width: 34em; color: var(--hero-lead); text-wrap: pretty; }
@@ -144,6 +148,8 @@ p { margin: 0 0 14px; }
 ul, ol { padding-inline-start: 1.2em; margin: 0 0 14px; }
 li { margin: 7px 0; padding-inline-start: 4px; }
 li::marker { color: var(--accent); }
+h3 { font: 600 1.3rem/1.25 var(--heading); margin: 30px 0 12px; }
+h2 + h3 { margin-top: 0; }
 .short { font: italic 500 1.3rem/1.4 var(--heading); margin: 0 0 18px; text-wrap: pretty; }
 .table-wrap { overflow-x: auto; margin: 0 0 14px; }
 table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
@@ -262,7 +268,7 @@ footer a:hover { color: var(--text); }
 <footer>
   <div class="wrap">
     <span>© 2026 NextTier Studio · Pocket Glance</span>
-    <span><a href="privacy.html">{{l_privacy_t}}</a> · <a href="terms.html">{{l_terms_t}}</a> · <a href="delete-data.html">{{l_delete_t}}</a> · <button type="button" class="consent-open">{{consent_settings}}</button> · <a href="mailto:nexttierstudio@gmail.com">nexttierstudio@gmail.com</a></span>
+    <span><a href="privacy.html">{{l_privacy_t}}</a> · <a href="terms.html">{{l_terms_t}}</a> · <a href="help.html">{{l_help_t}}</a> · <button type="button" class="consent-open">{{consent_settings}}</button> · <a href="mailto:nexttierstudio@gmail.com">nexttierstudio@gmail.com</a></span>
   </div>
 </footer>
 {{>consent.html}}

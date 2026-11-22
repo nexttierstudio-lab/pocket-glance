@@ -1,11 +1,12 @@
 # Pocket Glance website
 
-Homepage, Privacy Policy, Terms & Conditions and data-deletion instructions for the Pocket Glance
+Homepage, Privacy Policy, Terms & Conditions and Help & Support (including data deletion) for the Pocket Glance
 Android app, served with GitHub Pages.
 
-- `index.html`, `privacy.html`, `terms.html`, `delete-data.html`: homepage, Privacy Policy,
-  Terms & Conditions and data-deletion instructions in English (generated, see below)
-- `es/`, `pt/`, `fr/`, `de/`, `hi/`, `ar/`, `ja/`, `ko/`, `zh/`: the same four pages in the app's
+- `index.html`, `privacy.html`, `terms.html`, `help.html`: homepage, Privacy Policy,
+  Terms & Conditions and Help & Support in English (generated, see below). `delete-data.html` is
+  generated as a redirect to `help.html#delete`, so the Google Play deletion link keeps working
+- `es/`, `pt/`, `fr/`, `de/`, `hi/`, `ar/`, `ja/`, `ko/`, `zh/`: the same pages in the app's
   other languages (generated)
 - `img/`: app icon and phone screenshots used by the homepage
 - `tools/site/`: the page templates, the wording for every language, and the build script
@@ -24,7 +25,7 @@ Don't edit the four pages or the language folders by hand: they are overwritten 
 - Top bar (shared by every page): `tools/site/partials/bar.css`, `bar.html`, `bar.js`
 - Short wording: `tools/site/i18n/<code>.json` (`en.json` is the source; every other file must
   have exactly the same keys)
-- Legal text: `tools/site/legal/<code>/privacy.html`, `terms.html`, `delete-data.html`
+- Legal text: `tools/site/legal/<code>/privacy.html`, `terms.html`, `help.html`
   (`en/` is the source). When the English text changes, update every language. Translated
   legal pages say that the English version applies if they differ.
 
@@ -63,7 +64,7 @@ already built, `--open` to open the browser for you. Stop it with Ctrl+C. It onl
 computer, and since every link is relative, pages behave as they will on GitHub Pages.
 
 Check the homepage, a couple of language folders (for example `/es/` and the right-to-left `/ar/`),
-and the Privacy, Terms and Delete data pages, then commit and push.
+and the Privacy, Terms and Help pages, then commit and push.
 
 ## Publish on your own domain
 
