@@ -288,6 +288,10 @@ body, .bar, .hero, .tiles div, .card { transition: background-color .35s var(--e
   animation: drift 16s ease-in-out infinite alternate; pointer-events: none;
 }
 .hero .wrap { position: relative; }
+.back-home { display: inline-flex; align-items: center; gap: 6px; margin: 0 0 26px; font: 500 14px/1 var(--ui); color: var(--hero-meta); text-decoration: none; transition: color .3s var(--ease); }
+.back-home:hover { color: var(--brand); }
+.back-home svg { flex: none; }
+[dir="rtl"] .back-home svg { transform: scaleX(-1); }
 .eyebrow { font: 600 12px/1 var(--ui); letter-spacing: 0.18em; text-transform: uppercase; color: var(--brand); margin: 0 0 22px; }
 h1 { font: 600 clamp(2.6rem, calc(8 * var(--vw)), 4.75rem)/1.04 var(--heading); letter-spacing: -0.01em; margin: 0 auto 24px; max-width: 14ch; text-wrap: balance; }
 .lead { font: italic 500 clamp(1.15rem, calc(2.4 * var(--vw)), 1.4rem)/1.5 var(--heading); margin: 0 auto 26px; max-width: 34em; color: var(--hero-lead); text-wrap: pretty; }
@@ -318,6 +322,8 @@ p { margin: 0 0 14px; }
 ul, ol { padding-inline-start: 1.2em; margin: 0 0 14px; }
 li { margin: 7px 0; padding-inline-start: 4px; }
 li::marker { color: var(--accent); }
+h3 { font: 600 1.3rem/1.25 var(--heading); margin: 30px 0 12px; }
+h2 + h3 { margin-top: 0; }
 .short { font: italic 500 1.3rem/1.4 var(--heading); margin: 0 0 18px; text-wrap: pretty; }
 .table-wrap { overflow-x: auto; margin: 0 0 14px; }
 table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
@@ -450,103 +456,71 @@ footer a:hover { color: var(--text); }
 
 <div class="hero">
   <div class="wrap">
+    <a class="back-home" href="./"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Retour à l’accueil</a>
     <p class="eyebrow">Pocket Glance</p>
     <h1>Conditions générales</h1>
-    <p class="lead">Pocket Glance vous aide à suivre votre propre argent. Ces conditions précisent ce que vous pouvez attendre de l'app, ce que nous vous demandons et où s'arrête notre responsabilité.</p>
-    <p class="meta">Pocket Glance par NextTier Studio · En vigueur depuis le 15 novembre 2026</p>
+    <p class="lead">Ce que vous pouvez attendre de Pocket Glance, ce que nous vous demandons et où s'arrête notre responsabilité.</p>
+    <p class="meta">Pocket Glance par NextTier Studio · En vigueur depuis le 22 novembre 2026</p>
     <p class="tr-note">Cette page est une traduction fournie pour votre commodité. En cas de différence avec la version anglaise, la version anglaise prévaut. <a href="../terms.html" hreflang="en" lang="en">Lire la version anglaise</a></p>
   </div>
 </div>
 
 <main class="wrap">
   <section>
-    <h2><span>01</span>Accord</h2>
-    <p>Ces conditions constituent un accord entre vous et <strong>NextTier Studio</strong>, le développeur indépendant de l'app Pocket Glance. NextTier Studio est le nom sous lequel publie un développeur individuel, et non une société ; « nous » désigne ce développeur dans ces conditions. En installant ou en utilisant l'app, vous acceptez ces conditions ainsi que notre <a href="privacy.html">Politique de confidentialité</a>. Si vous n'êtes pas d'accord, n'utilisez pas l'app.</p>
-    <p>Vous devez avoir au moins 18 ans, ou l'âge de la majorité légale là où vous vivez, pour utiliser l'app et effectuer des achats.</p>
+    <h2><span>01</span>Acceptation des conditions</h2>
+    <p>Ces conditions sont un accord entre vous et <strong>NextTier Studio</strong>, le nom commercial d'un développeur indépendant (« nous »). En installant ou en utilisant Pocket Glance, vous acceptez ces conditions et notre <a href="privacy.html">Politique de confidentialité</a>. Si vous n'êtes pas d'accord, n'utilisez pas l'app. Vous devez avoir au moins 18 ans, ou l'âge de la majorité là où vous vivez.</p>
   </section>
 
   <section>
-    <h2><span>02</span>Un outil de suivi, pas un conseil financier</h2>
-    <p class="short">L'app enregistre ce que vous saisissez. Elle ne gère pas votre argent et ne vous dit pas quoi en faire.</p>
-    <p>Pocket Glance vous permet d'enregistrer et de consulter vos dépenses, budgets, objectifs d'épargne et abonnements. Elle ne se connecte à aucun compte bancaire et ne détient, ne déplace, ne prête ni n'investit d'argent, et n'effectue ni n'annule de paiements pour vous. Nous ne sommes ni une banque, ni un service de paiement, ni un conseiller financier, fiscal ou juridique.</p>
-    <p>Les chiffres, graphiques et analyses de l'app sont des informations générales fondées sur vos saisies. Ce ne sont pas des conseils financiers, d'investissement, fiscaux ou juridiques. Vous êtes responsable de vos propres décisions financières.</p>
+    <h2><span>02</span>Utilisation de Pocket Glance</h2>
+    <p>Nous vous accordons une licence personnelle et non transférable pour utiliser l'app sur vos propres appareils, à des fins non commerciales. Ne copiez pas, ne modifiez pas, ne revendez pas et ne décompilez pas l'app, ne contournez pas ses fonctions d'achat ou de sécurité et ne l'utilisez pas de manière illégale. Vous êtes responsable des pertes causées par une mauvaise utilisation de l'app, dans la mesure permise par la loi.</p>
+    <p>Nous pouvons modifier, suspendre ou arrêter l'app ou une fonction, et mettre fin à votre licence en cas de manquement grave à ces conditions. Vous pouvez arrêter à tout moment en désinstallant l'app et en résiliant tout abonnement.</p>
   </section>
 
   <section>
-    <h2><span>03</span>Exactitude</h2>
+    <h2><span>03</span>Avertissement sur les informations financières</h2>
+    <p>Pocket Glance est un outil de suivi. Il ne se connecte à aucune banque, ne déplace pas d'argent et n'effectue aucun paiement pour vous. Les chiffres, graphiques et analyses sont des informations générales fondées sur vos saisies, pas des conseils financiers, d'investissement, fiscaux ou juridiques, et vos décisions financières vous appartiennent.</p>
+    <p>L'app n'est fiable que si vos saisies le sont. La conversion de devises utilise des taux approximatifs intégrés, et les rappels dépendent de votre appareil et peuvent être en retard ou manqués : payer vos factures et résilier vos essais à temps relève de vous.</p>
+  </section>
+
+  <section>
+    <h2><span>04</span>Stockage des données et sauvegardes</h2>
+    <p>Vos données sont stockées sur votre téléphone et nous n'en avons aucune copie. Si vous perdez votre appareil, désinstallez l'app ou effacez son stockage sans sauvegarde, les données sont irrécupérables. Nous ne pouvons pas récupérer un mot de passe de sauvegarde oublié. Vous êtes responsable de la sécurité de votre appareil, de votre compte Google et de vos sauvegardes ou fichiers exportés. Les sauvegardes reposent sur Google Drive, que nous ne contrôlons pas.</p>
+  </section>
+
+  <section>
+    <h2><span>05</span>Fonctions Pro et abonnements</h2>
+    <p>Pocket Glance Pro est proposé en abonnement annuel ou en achat unique à vie, tous deux via Google Play. Le prix, la période de facturation et tout essai gratuit sont affichés avant confirmation. Pro à vie dure tant que l'app est proposée et prise en charge, et est lié au compte Google qui l'a acheté.</p>
+    <p>Nous pouvons modifier les prix ou les fonctions incluses dans Pro. Nous vous préviendrons des changements de prix, et vous gardez ce que vous avez payé jusqu'à la fin de la période.</p>
+  </section>
+
+  <section>
+    <h2><span>06</span>Paiements et résiliations</h2>
     <ul>
-      <li>L'app n'est exacte que dans la mesure où vos saisies le sont. Vérifiez-la par rapport à vos propres relevés.</li>
-      <li>Les conversions de devises utilisent des taux de référence intégrés à l'app. Ils sont approximatifs, ne sont pas en temps réel et différeront du taux de votre banque.</li>
-      <li>Les rappels dépendent de votre appareil et de ses réglages et peuvent arriver en retard ou ne pas arriver. Payer vos factures et résilier vos abonnements ou essais à temps reste votre responsabilité.</li>
+      <li>Les paiements sont traités par Google Play selon ses conditions.</li>
+      <li>Les abonnements se renouvellent automatiquement au prix en vigueur jusqu'à résiliation dans Google Play. Désinstaller l'app ne résilie pas l'abonnement.</li>
+      <li>Si vous commencez un essai gratuit, vous êtes débité à la fin de l'essai sauf résiliation avant.</li>
+      <li>Après résiliation, Pro reste actif jusqu'à la fin de la période payée.</li>
+      <li>Les remboursements sont gérés par Google Play selon ses règles. Les périodes partiellement utilisées ne sont pas remboursées, sauf si la loi l'exige.</li>
     </ul>
+    <p>Voir <a href="help.html#subscriptions">Aide et assistance</a> pour gérer un abonnement.</p>
   </section>
 
   <section>
-    <h2><span>04</span>Vos données et sauvegardes</h2>
-    <p class="short">Vos données vous appartiennent et restent sur votre téléphone. Nous n'en gardons aucune copie et ne pouvons donc pas les restaurer.</p>
+    <h2><span>07</span>Limitation de responsabilité</h2>
+    <p>L'app est fournie « en l'état » et « selon disponibilité ». Nous ne garantissons pas qu'elle soit exempte d'erreurs ou toujours disponible, ni que les calculs, rappels ou sauvegardes fonctionnent toujours.</p>
+    <p>Dans la mesure permise par la loi, nous ne sommes pas responsables des pertes indirectes, pertes de données, pertes d'argent ou d'épargne, paiements manqués, frais de retard, renouvellements non souhaités, conséquences fiscales ou décisions prises à l'aide de l'app. Notre responsabilité totale pour toute réclamation concernant l'app est limitée au montant que vous nous avez payé au cours des 12 mois précédant la réclamation, ou à 10 USD si ce montant est supérieur.</p>
+    <p>Rien dans ces conditions ne vous retire les droits impératifs que vous accorde le droit de la consommation.</p>
+  </section>
+
+  <section>
+    <h2><span>08</span>Modifications et contact</h2>
+    <p>Nous pouvons mettre à jour ces conditions. La version en vigueur et sa date figurent toujours sur cette page, et continuer à utiliser l'app vaut acceptation. Si une partie est inapplicable, le reste demeure valable. Ces conditions vous lient à nous, et non à Google.</p>
+    <p>Ces conditions sont régies par la loi du pays où réside le développeur, dont les tribunaux sont compétents, sans vous priver des protections impératives des consommateurs de votre pays. Dans la mesure permise par la loi, les réclamations doivent être faites à titre individuel, et non dans le cadre d'une action collective, et dans un délai d'un an. En cas de problème, écrivez-nous d'abord et laissez-nous 30 jours pour le résoudre.</p>
     <ul>
-      <li>Si votre téléphone est perdu, réinitialisé ou remplacé, ou si vous désinstallez l'app ou effacez son stockage, vos données sont perdues sauf si vous avez une sauvegarde. Il vous appartient d'en conserver une.</li>
-      <li>Si vous oubliez le mot de passe d'une sauvegarde, elle ne peut pas être ouverte. Nous ne pouvons pas le réinitialiser.</li>
-      <li>Les sauvegardes sans mot de passe et les tableurs exportés ne sont pas chiffrés. Vous choisissez où les conserver.</li>
-      <li>Vous êtes responsable de la sécurité de votre appareil et de votre compte Google.</li>
+      <li><strong>Assistance :</strong> <a href="mailto:support.pocketglance@gmail.com">support.pocketglance@gmail.com</a></li>
+      <li><strong>Développeur :</strong> <a href="mailto:nexttierstudio@gmail.com">nexttierstudio@gmail.com</a></li>
     </ul>
-  </section>
-
-  <section>
-    <h2><span>05</span>Pocket Glance Pro</h2>
-    <p>Pro est vendu via Google Play sous forme d'abonnement annuel à renouvellement automatique ou d'achat unique à vie. Le prix, la période de facturation et tout essai gratuit sont indiqués avant votre confirmation.</p>
-    <ul>
-      <li><strong>Essai gratuit.</strong> Si Google Play vous en propose un, le prix annuel vous est facturé à la fin de l'essai, sauf si vous résiliez avant.</li>
-      <li><strong>Renouvellement.</strong> L'abonnement se renouvelle automatiquement chaque année au prix alors en vigueur, jusqu'à ce que vous le résiliiez.</li>
-      <li><strong>Résiliation.</strong> Résiliez à tout moment dans Google Play, sous <strong>Paiements et abonnements → Abonnements</strong>, ou sur <a href="https://play.google.com/store/account/subscriptions" rel="noopener">play.google.com/store/account/subscriptions</a>. Pro reste actif jusqu'à la fin de la période payée. Désinstaller l'app ne résilie pas l'abonnement.</li>
-      <li><strong>À vie.</strong> Cela signifie un accès à Pro aussi longtemps que nous proposons et maintenons l'app. Il est lié au compte Google qui l'a acheté et ne peut pas être transféré.</li>
-      <li><strong>Remboursements.</strong> Les remboursements sont gérés par Google Play selon <a href="https://support.google.com/googleplay/answer/2479637" rel="noopener">ses règles de remboursement</a>. Nous ne remboursons pas les périodes partiellement utilisées, sauf si la loi l'exige.</li>
-      <li><strong>Modifications.</strong> Nous pouvons modifier les prix et la répartition des fonctions entre la version gratuite et Pro. Tout changement de prix vous sera annoncé à l'avance par Google Play, et les fonctions que vous avez payées restent disponibles pour la période payée.</li>
-    </ul>
-  </section>
-
-  <section>
-    <h2><span>06</span>Utilisation de l'app</h2>
-    <p>Nous vous accordons une licence personnelle et non transférable pour utiliser l'app sur vos propres appareils à des fins non commerciales. L'app et les noms Pocket Glance et NextTier Studio nous appartiennent. Vous vous engagez à ne pas :</p>
-    <ul>
-      <li>copier, modifier, revendre ou redistribuer l'app ;</li>
-      <li>la décompiler ou en faire de l'ingénierie inverse, sauf si la loi le permet ;</li>
-      <li>contourner les vérifications d'achat, les limites des formules ou les fonctions de sécurité ;</li>
-      <li>l'utiliser à des fins illégales.</li>
-    </ul>
-    <p>Si nous subissons un préjudice parce que vous enfreignez ces conditions ou faites un mauvais usage de l'app, vous acceptez de le couvrir, dans la mesure permise par la loi.</p>
-  </section>
-
-  <section>
-    <h2><span>07</span>Évolutions de l'app et autres services</h2>
-    <p>Nous pouvons mettre à jour, modifier ou arrêter l'app ou toute fonction à tout moment, et nous ne sommes pas tenus de fournir assistance ou mises à jour. L'app est créée et maintenue par une seule personne, les réponses aux demandes d'assistance peuvent donc prendre du temps. L'app dépend de Google Play, Google Drive, Firebase et de votre appareil. Nous ne les contrôlons pas et ne sommes pas responsables de leur disponibilité ni des pertes qu'ils causent, y compris des sauvegardes perdues ou indisponibles.</p>
-  </section>
-
-  <section>
-    <h2><span>08</span>Absence de garantie</h2>
-    <p>Nous nous efforçons de garder l'app exacte et fiable, mais elle est fournie <strong>« en l'état » et « selon disponibilité »</strong>, sans garantie d'aucune sorte, dans la mesure permise par la loi. Nous ne promettons pas qu'elle sera exempte d'erreurs ou toujours disponible, que les calculs, conversions ou rappels seront exacts ou ponctuels, ni que des données ne seront jamais perdues.</p>
-  </section>
-
-  <section>
-    <h2><span>09</span>Limitation de responsabilité</h2>
-    <p>Dans la mesure permise par la loi :</p>
-    <ul>
-      <li>nous ne sommes pas responsables des pertes indirectes ou consécutives, ni de toute perte de données, d'argent, de bénéfices ou d'économies, ni d'un paiement manqué, de frais de retard, d'un renouvellement non souhaité, d'une conséquence fiscale ou d'une décision financière ;</li>
-      <li>notre responsabilité totale pour toute réclamation liée à l'app est limitée au montant que vous nous avez payé au cours des 12 mois précédant la réclamation, ou à 10 USD si ce montant est supérieur.</li>
-    </ul>
-    <p><strong>Vos droits légaux.</strong> Rien dans ces conditions ne limite une responsabilité que la loi interdit de limiter, ni ne supprime les droits des consommateurs auxquels la loi de votre pays interdit de renoncer.</p>
-  </section>
-
-  <section>
-    <h2><span>10</span>Litiges</h2>
-    <p>En cas de réclamation, écrivez-nous d'abord et laissez-nous 30 jours pour y remédier. Ces conditions sont régies par les lois du pays où vit le développeur, dont les tribunaux sont compétents. Si vous êtes un consommateur, vous conservez les protections impératives du pays où vous vivez. Dans la mesure permise par la loi, les réclamations ne peuvent être introduites qu'à titre individuel, et non dans le cadre d'une action collective, et dans un délai d'un an.</p>
-  </section>
-
-  <section>
-    <h2><span>11</span>Dispositions générales</h2>
-    <p>Nous pouvons mettre à jour ces conditions. La version en vigueur figure toujours sur cette page avec sa date d'entrée en vigueur, et continuer à utiliser l'app vaut acceptation. Vous pouvez arrêter à tout moment en désinstallant l'app, après avoir résilié tout abonnement. Nous pouvons mettre fin à votre licence si vous enfreignez gravement ces conditions.</p>
-    <p>Si une partie de ces conditions est inapplicable, le reste continue de s'appliquer. Ces conditions vous lient à nous, et non à Google.</p>
-    <p>Questions : <a href="mailto:nexttierstudio@gmail.com">nexttierstudio@gmail.com</a></p>
   </section>
 </main>
 
@@ -565,7 +539,7 @@ footer a:hover { color: var(--text); }
 <footer>
   <div class="wrap">
     <span>© 2026 NextTier Studio · Pocket Glance</span>
-    <span><a href="privacy.html">Politique de confidentialité</a> · <a href="terms.html">Conditions générales</a> · <a href="delete-data.html">Supprimer vos données</a> · <button type="button" class="consent-open">Paramètres des statistiques</button> · <a href="mailto:nexttierstudio@gmail.com">nexttierstudio@gmail.com</a></span>
+    <span><a href="privacy.html">Politique de confidentialité</a> · <a href="terms.html">Conditions générales</a> · <a href="help.html">Aide et assistance</a> · <button type="button" class="consent-open">Paramètres des statistiques</button> · <a href="mailto:nexttierstudio@gmail.com">nexttierstudio@gmail.com</a></span>
   </div>
 </footer>
 <div class="consent" id="consent" role="region" aria-label="Choix des statistiques" hidden>

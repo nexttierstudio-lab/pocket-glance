@@ -31,7 +31,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SUBPATH = "pocket_glance"
 DIST = ROOT / "dist"
 STATIC = ["fonts", "img"]  # the pages themselves come from tools/site/build.py
-LEGAL = ["privacy.html", "terms.html", "delete-data.html"]
+LEGAL = ["privacy.html", "terms.html", "help.html", "delete-data.html"]
 LANG_FOLDERS = ["es", "pt", "fr", "de", "hi", "ar", "ja", "ko", "zh"]
 
 

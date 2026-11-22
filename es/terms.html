@@ -288,6 +288,10 @@ body, .bar, .hero, .tiles div, .card { transition: background-color .35s var(--e
   animation: drift 16s ease-in-out infinite alternate; pointer-events: none;
 }
 .hero .wrap { position: relative; }
+.back-home { display: inline-flex; align-items: center; gap: 6px; margin: 0 0 26px; font: 500 14px/1 var(--ui); color: var(--hero-meta); text-decoration: none; transition: color .3s var(--ease); }
+.back-home:hover { color: var(--brand); }
+.back-home svg { flex: none; }
+[dir="rtl"] .back-home svg { transform: scaleX(-1); }
 .eyebrow { font: 600 12px/1 var(--ui); letter-spacing: 0.18em; text-transform: uppercase; color: var(--brand); margin: 0 0 22px; }
 h1 { font: 600 clamp(2.6rem, calc(8 * var(--vw)), 4.75rem)/1.04 var(--heading); letter-spacing: -0.01em; margin: 0 auto 24px; max-width: 14ch; text-wrap: balance; }
 .lead { font: italic 500 clamp(1.15rem, calc(2.4 * var(--vw)), 1.4rem)/1.5 var(--heading); margin: 0 auto 26px; max-width: 34em; color: var(--hero-lead); text-wrap: pretty; }
@@ -318,6 +322,8 @@ p { margin: 0 0 14px; }
 ul, ol { padding-inline-start: 1.2em; margin: 0 0 14px; }
 li { margin: 7px 0; padding-inline-start: 4px; }
 li::marker { color: var(--accent); }
+h3 { font: 600 1.3rem/1.25 var(--heading); margin: 30px 0 12px; }
+h2 + h3 { margin-top: 0; }
 .short { font: italic 500 1.3rem/1.4 var(--heading); margin: 0 0 18px; text-wrap: pretty; }
 .table-wrap { overflow-x: auto; margin: 0 0 14px; }
 table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
@@ -450,103 +456,71 @@ footer a:hover { color: var(--text); }
 
 <div class="hero">
   <div class="wrap">
+    <a class="back-home" href="./"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Volver al inicio</a>
     <p class="eyebrow">Pocket Glance</p>
     <h1>Términos y condiciones</h1>
-    <p class="lead">Pocket Glance te ayuda a llevar el control de tu propio dinero. Estos términos explican qué puedes esperar de la app, qué te pedimos y hasta dónde llega nuestra responsabilidad.</p>
-    <p class="meta">Pocket Glance de NextTier Studio · Vigentes desde el 15 de noviembre de 2026</p>
+    <p class="lead">Qué puedes esperar de Pocket Glance, qué te pedimos y hasta dónde llega nuestra responsabilidad.</p>
+    <p class="meta">Pocket Glance de NextTier Studio · Vigente desde el 22 de noviembre de 2026</p>
     <p class="tr-note">Esta página es una traducción para tu comodidad. Si difiere de la versión en inglés, prevalece la versión en inglés. <a href="../terms.html" hreflang="en" lang="en">Leer la versión en inglés</a></p>
   </div>
 </div>
 
 <main class="wrap">
   <section>
-    <h2><span>01</span>Acuerdo</h2>
-    <p>Estos términos son un acuerdo entre tú y <strong>NextTier Studio</strong>, el desarrollador independiente de la app Pocket Glance. NextTier Studio es el nombre con el que publica un desarrollador individual, no una empresa, y "nosotros" en estos términos se refiere a ese desarrollador. Al instalar o usar la app, aceptas estos términos y nuestra <a href="privacy.html">Política de privacidad</a>. Si no estás de acuerdo, no uses la app.</p>
-    <p>Debes tener al menos 18 años, o la mayoría de edad legal donde vives, para usar la app y hacer compras.</p>
+    <h2><span>01</span>Aceptación de los términos</h2>
+    <p>Estos términos son un acuerdo entre tú y <strong>NextTier Studio</strong>, el nombre comercial de un desarrollador independiente ("nosotros"). Al instalar o usar Pocket Glance aceptas estos términos y nuestra <a href="privacy.html">Política de privacidad</a>. Si no estás de acuerdo, no uses la app. Debes tener al menos 18 años, o la mayoría de edad legal donde vives.</p>
   </section>
 
   <section>
-    <h2><span>02</span>Una herramienta de registro, no asesoría financiera</h2>
-    <p class="short">La app registra lo que ingresas. No maneja tu dinero ni te dice qué hacer con él.</p>
-    <p>Pocket Glance te permite registrar y revisar tus gastos, presupuestos, metas de ahorro y suscripciones. No se conecta a cuentas bancarias y no guarda, mueve, presta ni invierte dinero, ni hace o cancela pagos por ti. No somos un banco, un servicio de pagos ni un asesor financiero, fiscal o legal.</p>
-    <p>Las cifras, gráficos y análisis de la app son información general basada en lo que ingresas. No son asesoría financiera, de inversión, fiscal ni legal. Tú eres responsable de tus propias decisiones financieras.</p>
+    <h2><span>02</span>Uso de Pocket Glance</h2>
+    <p>Te damos una licencia personal e intransferible para usar la app en tus propios dispositivos con fines no comerciales. No copies, modifiques, revendas ni apliques ingeniería inversa a la app, no eludas sus funciones de compra o seguridad y no la uses de forma ilegal. Eres responsable de las pérdidas causadas por un mal uso de la app, en la medida que permita la ley.</p>
+    <p>Podemos cambiar, pausar o retirar la app o cualquier función, y podemos poner fin a tu licencia si incumples gravemente estos términos. Puedes dejar de usarla en cualquier momento desinstalándola y cancelando cualquier suscripción.</p>
   </section>
 
   <section>
-    <h2><span>03</span>Exactitud</h2>
+    <h2><span>03</span>Aviso sobre información financiera</h2>
+    <p>Pocket Glance es una herramienta de seguimiento. No se conecta a bancos, no mueve dinero ni hace pagos por ti. Las cifras, gráficos y análisis son información general basada en lo que introduces, no asesoramiento financiero, de inversión, fiscal ni legal, y tus decisiones financieras son tuyas.</p>
+    <p>La app solo es tan precisa como tus datos. La conversión de divisas usa tipos aproximados integrados, y los recordatorios dependen de tu dispositivo y pueden llegar tarde o no llegar, así que pagar facturas y cancelar pruebas a tiempo depende de ti.</p>
+  </section>
+
+  <section>
+    <h2><span>04</span>Almacenamiento de datos y copias de seguridad</h2>
+    <p>Tus datos se guardan en tu teléfono y no tenemos ninguna copia. Si pierdes el dispositivo, desinstalas la app o borras su almacenamiento sin una copia de seguridad, los datos no se pueden recuperar. No podemos recuperar una contraseña de copia olvidada. Eres responsable de proteger tu dispositivo, tu cuenta de Google y cualquier copia o archivo exportado. Las copias dependen de Google Drive, que no controlamos.</p>
+  </section>
+
+  <section>
+    <h2><span>05</span>Funciones Pro y suscripciones</h2>
+    <p>Pocket Glance Pro está disponible como suscripción anual o como compra única de por vida, ambas a través de Google Play. El precio, el periodo de facturación y cualquier prueba gratuita se muestran antes de confirmar. Pro de por vida dura mientras la app se ofrezca y tenga soporte, y está vinculada a la cuenta de Google que la compró.</p>
+    <p>Podemos cambiar los precios o las funciones incluidas en Pro. Avisaremos de los cambios de precio, y conservas lo que pagaste hasta el final de ese periodo.</p>
+  </section>
+
+  <section>
+    <h2><span>06</span>Pagos y cancelaciones</h2>
     <ul>
-      <li>La app solo es tan exacta como lo que ingresas. Compárala con tus propios estados de cuenta.</li>
-      <li>Las conversiones de moneda usan tipos de referencia incluidos en la app. Son aproximados, no están actualizados en tiempo real y diferirán del tipo que aplique tu banco.</li>
-      <li>Los recordatorios dependen de tu dispositivo y su configuración, y pueden llegar tarde o no llegar. Pagar tus cuentas y cancelar suscripciones o pruebas a tiempo sigue siendo tu responsabilidad.</li>
+      <li>Google Play procesa los pagos según sus condiciones.</li>
+      <li>Las suscripciones se renuevan automáticamente al precio vigente hasta que las canceles en Google Play. Desinstalar la app no las cancela.</li>
+      <li>Si empiezas una prueba gratuita, se te cobra al terminar salvo que la canceles antes.</li>
+      <li>Tras cancelar, Pro sigue activo hasta el final del periodo pagado.</li>
+      <li>Google Play gestiona los reembolsos según sus políticas. Los periodos usados en parte no se reembolsan salvo que la ley lo exija.</li>
     </ul>
+    <p>Consulta <a href="help.html#subscriptions">Ayuda y soporte</a> para saber cómo gestionar una suscripción.</p>
   </section>
 
   <section>
-    <h2><span>04</span>Tus datos y copias de seguridad</h2>
-    <p class="short">Tus registros son tuyos y viven en tu teléfono. No guardamos ninguna copia, así que no podemos restaurarlos.</p>
+    <h2><span>07</span>Limitación de responsabilidad</h2>
+    <p>La app se ofrece "tal cual" y "según disponibilidad". No garantizamos que no tenga errores ni que esté siempre disponible, ni que los cálculos, recordatorios o copias funcionen siempre.</p>
+    <p>En la medida que permita la ley, no somos responsables de pérdidas indirectas, pérdida de datos, pérdida de dinero o ahorros, pagos olvidados, recargos, renovaciones no deseadas, consecuencias fiscales ni decisiones que tomes con la app. Nuestra responsabilidad total por todas las reclamaciones sobre la app se limita a lo que nos pagaste en los 12 meses anteriores a la reclamación, o 10 USD si esa cantidad es mayor.</p>
+    <p>Nada en estos términos elimina los derechos que te da la ley de consumo y que no pueden excluirse.</p>
+  </section>
+
+  <section>
+    <h2><span>08</span>Cambios y contacto</h2>
+    <p>Podemos actualizar estos términos. La versión vigente y su fecha siempre están en esta página, y seguir usando la app significa que los aceptas. Si alguna parte no se puede aplicar, el resto sigue vigente. Estos términos son entre tú y nosotros, no Google.</p>
+    <p>Estos términos se rigen por las leyes del país donde reside el desarrollador, cuyos tribunales son competentes, sin quitarte las protecciones obligatorias de consumo de tu propio país. En la medida que permita la ley, las reclamaciones deben presentarse de forma individual, no como acción colectiva, y en el plazo de un año. Si tienes un problema, escríbenos primero y danos 30 días para resolverlo.</p>
     <ul>
-      <li>Si pierdes, restableces o cambias tu teléfono, o desinstalas la app o borras su almacenamiento, tus datos se pierden a menos que tengas una copia de seguridad. Mantenerla es tu responsabilidad.</li>
-      <li>Si olvidas la contraseña de una copia de seguridad, no se podrá abrir. No podemos restablecerla.</li>
-      <li>Las copias sin contraseña y las hojas de cálculo exportadas no están cifradas. Tú decides dónde guardarlas.</li>
-      <li>Eres responsable de proteger tu dispositivo y tu cuenta de Google.</li>
+      <li><strong>Soporte:</strong> <a href="mailto:support.pocketglance@gmail.com">support.pocketglance@gmail.com</a></li>
+      <li><strong>Desarrollador:</strong> <a href="mailto:nexttierstudio@gmail.com">nexttierstudio@gmail.com</a></li>
     </ul>
-  </section>
-
-  <section>
-    <h2><span>05</span>Pocket Glance Pro</h2>
-    <p>Pro se vende a través de Google Play como una suscripción anual con renovación automática o como una compra única de por vida. El precio, el periodo de facturación y cualquier prueba gratuita se muestran antes de que confirmes.</p>
-    <ul>
-      <li><strong>Prueba gratuita.</strong> Si Google Play te ofrece una, se te cobrará el precio anual cuando termine, a menos que canceles antes.</li>
-      <li><strong>Renovación.</strong> La suscripción se renueva automáticamente cada año al precio vigente en ese momento hasta que la canceles.</li>
-      <li><strong>Cancelación.</strong> Cancela cuando quieras en Google Play, en <strong>Pagos y suscripciones → Suscripciones</strong>, o en <a href="https://play.google.com/store/account/subscriptions" rel="noopener">play.google.com/store/account/subscriptions</a>. Pro sigue activo hasta el final del periodo pagado. Desinstalar la app no cancela la suscripción.</li>
-      <li><strong>De por vida.</strong> Significa acceso a Pro mientras ofrezcamos y mantengamos la app. Está vinculado a la cuenta de Google con la que se compró y no se puede transferir.</li>
-      <li><strong>Reembolsos.</strong> Los reembolsos se gestionan a través de Google Play según <a href="https://support.google.com/googleplay/answer/2479637" rel="noopener">sus políticas de reembolso</a>. No reembolsamos periodos usados parcialmente, salvo que la ley lo exija.</li>
-      <li><strong>Cambios.</strong> Podemos cambiar los precios y qué funciones son gratuitas o parte de Pro. Google Play te avisará con antelación de cualquier cambio de precio, y las funciones que pagaste seguirán disponibles durante el periodo pagado.</li>
-    </ul>
-  </section>
-
-  <section>
-    <h2><span>06</span>Uso de la app</h2>
-    <p>Te otorgamos una licencia personal e intransferible para usar la app en tus propios dispositivos con fines no comerciales. La app y los nombres Pocket Glance y NextTier Studio nos pertenecen. Aceptas no:</p>
-    <ul>
-      <li>copiar, modificar, revender ni redistribuir la app;</li>
-      <li>aplicarle ingeniería inversa, salvo donde la ley lo permita;</li>
-      <li>eludir las verificaciones de compra, los límites del plan o las funciones de seguridad;</li>
-      <li>usarla para fines ilegales.</li>
-    </ul>
-    <p>Si sufrimos una pérdida porque incumples estos términos o haces un mal uso de la app, aceptas cubrirla, en la medida en que la ley lo permita.</p>
-  </section>
-
-  <section>
-    <h2><span>07</span>Cambios en la app y otros servicios</h2>
-    <p>Podemos actualizar, cambiar o discontinuar la app o cualquier función en cualquier momento, y no estamos obligados a ofrecer soporte ni actualizaciones. La app la crea y mantiene una sola persona, así que las respuestas a las solicitudes de soporte pueden tardar. La app depende de Google Play, Google Drive, Firebase y tu dispositivo. No los controlamos y no somos responsables de su disponibilidad ni de las pérdidas que causen, incluidas copias de seguridad perdidas o no disponibles.</p>
-  </section>
-
-  <section>
-    <h2><span>08</span>Sin garantía</h2>
-    <p>Trabajamos para que la app sea exacta y fiable, pero se ofrece <strong>"tal cual" y "según disponibilidad"</strong>, sin garantías de ningún tipo, en la medida en que la ley lo permita. No prometemos que esté libre de errores ni siempre disponible, que los cálculos, conversiones o recordatorios sean correctos o puntuales, ni que nunca se pierdan datos.</p>
-  </section>
-
-  <section>
-    <h2><span>09</span>Limitación de responsabilidad</h2>
-    <p>En la medida en que la ley lo permita:</p>
-    <ul>
-      <li>no somos responsables de pérdidas indirectas o consecuentes, ni de ninguna pérdida de datos, dinero, ganancias o ahorros, ni de pagos no realizados, recargos por mora, renovaciones no deseadas, consecuencias fiscales o decisiones financieras;</li>
-      <li>nuestra responsabilidad total por todas las reclamaciones relacionadas con la app se limita a lo que nos pagaste en los 12 meses anteriores a la reclamación, o a 10 USD si esa cantidad es mayor.</li>
-    </ul>
-    <p><strong>Tus derechos legales.</strong> Nada en estos términos limita la responsabilidad que la ley no permite limitar, ni elimina los derechos del consumidor que la ley de tu país declara irrenunciables.</p>
-  </section>
-
-  <section>
-    <h2><span>10</span>Disputas</h2>
-    <p>Si tienes una queja, escríbenos primero y danos 30 días para solucionarla. Estos términos se rigen por las leyes del país donde vive el desarrollador, y sus tribunales son competentes. Si eres consumidor, conservas las protecciones obligatorias del país donde vives. En la medida en que la ley lo permita, las reclamaciones solo pueden presentarse de forma individual, no como parte de una demanda colectiva, y dentro del plazo de un año.</p>
-  </section>
-
-  <section>
-    <h2><span>11</span>Disposiciones generales</h2>
-    <p>Podemos actualizar estos términos. La versión vigente siempre está en esta página con su fecha de entrada en vigor, y seguir usando la app significa que la aceptas. Puedes dejar de usarla en cualquier momento desinstalándola, después de cancelar cualquier suscripción. Podemos terminar tu licencia si incumples gravemente estos términos.</p>
-    <p>Si alguna parte de estos términos no puede hacerse cumplir, el resto sigue aplicándose. Estos términos son entre tú y nosotros, no Google.</p>
-    <p>Preguntas: <a href="mailto:nexttierstudio@gmail.com">nexttierstudio@gmail.com</a></p>
   </section>
 </main>
 
@@ -565,7 +539,7 @@ footer a:hover { color: var(--text); }
 <footer>
   <div class="wrap">
     <span>© 2026 NextTier Studio · Pocket Glance</span>
-    <span><a href="privacy.html">Política de privacidad</a> · <a href="terms.html">Términos y condiciones</a> · <a href="delete-data.html">Elimina tus datos</a> · <button type="button" class="consent-open">Ajustes de analítica</button> · <a href="mailto:nexttierstudio@gmail.com">nexttierstudio@gmail.com</a></span>
+    <span><a href="privacy.html">Política de privacidad</a> · <a href="terms.html">Términos y condiciones</a> · <a href="help.html">Ayuda y soporte</a> · <button type="button" class="consent-open">Ajustes de analítica</button> · <a href="mailto:nexttierstudio@gmail.com">nexttierstudio@gmail.com</a></span>
   </div>
 </footer>
 <div class="consent" id="consent" role="region" aria-label="Preferencia de analítica" hidden>

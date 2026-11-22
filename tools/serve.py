@@ -17,7 +17,7 @@ import webbrowser
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-PAGES = ["index.html", "privacy.html", "terms.html", "delete-data.html"]
+PAGES = ["index.html", "privacy.html", "terms.html", "help.html"]
 
 
 def main():

@@ -5,7 +5,7 @@
 
 Templates:
     page.html                 the homepage
-    legal.html                the Privacy Policy, Terms and Delete-your-data pages
+    legal.html                the Privacy Policy, Terms and Help & Support pages
     partials/bar.*            the top bar (styles, markup, script), shared by both
 
 Wording:
@@ -13,7 +13,7 @@ Wording:
     legal/<code>/<page>.html  the text of each legal page: a "title:" line, a "description:"
                               line, "---", then the page body (en/ is the source of truth)
 
-It writes, for each of index.html, privacy.html, terms.html and delete-data.html:
+It writes, for each of index.html, privacy.html, terms.html and help.html:
 
     <page>          English, at the site root
     <code>/<page>   every other language, e.g. es/privacy.html
@@ -101,7 +101,7 @@ def rel(from_code, to_code, page=""):
 
 # The pages built for every language: (file, template). Legal pages take their wording from
 # legal/<code>/<file>: a title line, a description line, "---", then the page's body.
-PAGES = [("index.html", "page.html"), ("privacy.html", "legal.html"), ("terms.html", "legal.html"), ("delete-data.html", "legal.html")]
+PAGES = [("index.html", "page.html"), ("privacy.html", "legal.html"), ("terms.html", "legal.html"), ("help.html", "legal.html")]
 # Links in the bar, the same three on every page: two homepage sections and the homepage's
 # privacy section (not the policy itself). The legal pages are reached from the footer and from
 # that section's link, so visitors only open them when they mean to.
@@ -179,6 +179,11 @@ def main(site_url=SITE_URL, out_root=ROOT):
             if template == "legal.html":
                 title, description, body = legal_content(code, file)
                 system["page_title"], system["page_description"] = title, description
+                system["back_link"] = (
+                    '    <a class="back-home" href="./"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">'
+                    '<path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>'
+                    f'</svg>{s["back_home"]}</a>\n'
+                )
                 # A translated legal page says so and links to the English original.
                 system["tr_note"] = "" if code == "en" else (
                     f'    <p class="tr-note">{s["legal_tr_note"]} '
@@ -193,6 +198,32 @@ def main(site_url=SITE_URL, out_root=ROOT):
             out.parent.mkdir(parents=True, exist_ok=True)
             out.write_text(out_text, encoding="utf-8", newline="\n")
             print("wrote", out)
+
+    # delete-data.html was the old data-deletion page. Google Play and older links point at it,
+    # so it stays, in every language, as a page that sends visitors on to Help & Support.
+    for code, *_ in LANGS:
+        out = out_root / folder(code) / "delete-data.html"
+        out.write_text(REDIRECT.format(url=f"{site_url}{folder(code)}help.html#delete", target="help.html#delete"),
+                       encoding="utf-8", newline="\n")
+        print("wrote", out)
+
+
+REDIRECT = """<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Delete your data · Pocket Glance</title>
+  <link rel="canonical" href="{url}">
+  <meta name="robots" content="noindex">
+  <meta http-equiv="refresh" content="0; url={target}">
+  <script>location.replace("{target}");</script>
+</head>
+<body>
+  <p>How to delete your Pocket Glance data is now part of <a href="{target}">Help &amp; Support</a>.</p>
+</body>
+</html>
+"""
 
 
 if __name__ == "__main__":
